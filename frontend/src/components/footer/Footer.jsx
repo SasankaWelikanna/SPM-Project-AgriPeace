@@ -1,58 +1,65 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer class="bg-white dark:bg-gray-900">
-      <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
-        <div class="lg:flex lg:items-start lg:gap-8">
-          <div class="">
-            <img src={'./logo.png'} alt="" className="w-screen px-20 h-auto md:hidden lg:hidden" />
+    <footer className="bg-white dark:bg-gray-900 mt-8 border-t border-gray-300 pt-8 dark:border-gray-800">
+      <div className="mx-auto max-w-screen-xl px-4 pb-16 sm:px-6 lg:px-8">
+        <div className="lg:flex lg:items-start lg:gap-8">
+          <div className="">
+            <img
+              src={"./logo.png"}
+              alt=""
+              className="w-screen px-20 h-auto md:hidden lg:hidden"
+            />
           </div>
 
-          <div class="mt-8 grid grid-cols-2 gap-8 lg:mt-0 lg:grid-cols-5 lg:gap-y-16">
-            <div class="col-span-2">
+          <div className="mt-8 grid grid-cols-2 gap-8 lg:mt-0 lg:grid-cols-5 lg:gap-y-16">
+            <div className="col-span-2">
               <div>
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                   Get the latest news!
                 </h2>
 
-                <p class="mt-4 text-gray-500 dark:text-gray-400">
-                  
-Stay updated with the latest agricultural trends, innovations, and expert insights for your farming success.
+                <p className="mt-4 text-gray-500 dark:text-gray-400">
+                  Stay updated with the latest agricultural trends, innovations,
+                  and expert insights for your farming success.
                 </p>
               </div>
             </div>
 
-            <div class="col-span-2 lg:col-span-3 lg:flex lg:items-end">
-              <form class="w-full">
-                <label for="UserEmail" class="sr-only">
+            <div className="col-span-2 lg:col-span-3 lg:flex lg:items-end">
+              <form className="w-full">
+                <label for="UserEmail" className="sr-only">
                   {" "}
                   Email{" "}
                 </label>
 
-                <div class="border border-gray-100 p-2 focus-within:ring sm:flex sm:items-center sm:gap-4 dark:border-gray-800 rounded-lg">
+                <div className="border border-gray-100 p-2 focus-within:ring sm:flex sm:items-center sm:gap-4 dark:border-gray-800 rounded-lg">
                   <input
                     type="email"
                     id="UserEmail"
                     placeholder="john@rhcp.com"
-                    class="w-full border-none focus:border-transparent focus:ring-transparent sm:text-sm dark:bg-gray-900 dark:text-white"
+                    className="w-full border-none focus:border-transparent focus:ring-transparent sm:text-sm dark:bg-gray-900 dark:text-white"
                   />
 
-                  <button class="mt-1 w-full bg-teal-500 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white transition-none hover:bg-teal-600 sm:mt-0 sm:w-auto sm:shrink-0 rounded-lg">
-                    Sign Up
-                  </button>
+                  <NavLink to={"/register"}>
+                    <button className="mt-1 w-full bg-teal-500 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white transition-none hover:bg-teal-600 sm:mt-0 sm:w-auto sm:shrink-0 rounded-lg">
+                      Sign Up
+                    </button>
+                  </NavLink>
                 </div>
               </form>
             </div>
 
-            <div class="col-span-2 sm:col-span-1">
-              <p class="font-medium text-gray-900 dark:text-white">Services</p>
+            <div className="col-span-2 sm:col-span-1">
+              <p className="font-medium text-gray-900 dark:text-white">Services</p>
 
-              <ul class="mt-6 space-y-4 text-sm">
+              <ul className="mt-6 space-y-4 text-sm">
                 <li>
                   <a
                     href="#"
-                    class="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
+                    className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
                   >
                     1on1 Coaching
                   </a>
@@ -61,7 +68,7 @@ Stay updated with the latest agricultural trends, innovations, and expert insigh
                 <li>
                   <a
                     href="#"
-                    class="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
+                    className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
                   >
                     Company Review
                   </a>
@@ -70,7 +77,7 @@ Stay updated with the latest agricultural trends, innovations, and expert insigh
                 <li>
                   <a
                     href="#"
-                    class="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
+                    className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
                   >
                     Accounts Review
                   </a>
@@ -79,7 +86,7 @@ Stay updated with the latest agricultural trends, innovations, and expert insigh
                 <li>
                   <a
                     href="#"
-                    class="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
+                    className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
                   >
                     HR Consulting
                   </a>
@@ -88,7 +95,7 @@ Stay updated with the latest agricultural trends, innovations, and expert insigh
                 <li>
                   <a
                     href="#"
-                    class="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
+                    className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
                   >
                     SEO Optimisation
                   </a>
@@ -96,14 +103,14 @@ Stay updated with the latest agricultural trends, innovations, and expert insigh
               </ul>
             </div>
 
-            <div class="col-span-2 sm:col-span-1">
-              <p class="font-medium text-gray-900 dark:text-white">Company</p>
+            <div className="col-span-2 sm:col-span-1">
+              <p className="font-medium text-gray-900 dark:text-white">Company</p>
 
-              <ul class="mt-6 space-y-4 text-sm">
+              <ul className="mt-6 space-y-4 text-sm">
                 <li>
                   <a
                     href="#"
-                    class="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
+                    className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
                   >
                     About
                   </a>
@@ -112,7 +119,7 @@ Stay updated with the latest agricultural trends, innovations, and expert insigh
                 <li>
                   <a
                     href="#"
-                    class="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
+                    className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
                   >
                     Meet the Team
                   </a>
@@ -121,7 +128,7 @@ Stay updated with the latest agricultural trends, innovations, and expert insigh
                 <li>
                   <a
                     href="#"
-                    class="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
+                    className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
                   >
                     Accounts Review
                   </a>
@@ -129,16 +136,16 @@ Stay updated with the latest agricultural trends, innovations, and expert insigh
               </ul>
             </div>
 
-            <div class="col-span-2 sm:col-span-1">
-              <p class="font-medium text-gray-900 dark:text-white">
+            <div className="col-span-2 sm:col-span-1">
+              <p className="font-medium text-gray-900 dark:text-white">
                 Helpful Links
               </p>
 
-              <ul class="mt-6 space-y-4 text-sm">
+              <ul className="mt-6 space-y-4 text-sm">
                 <li>
                   <a
                     href="#"
-                    class="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
+                    className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
                   >
                     Contact
                   </a>
@@ -147,7 +154,7 @@ Stay updated with the latest agricultural trends, innovations, and expert insigh
                 <li>
                   <a
                     href="#"
-                    class="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
+                    className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
                   >
                     FAQs
                   </a>
@@ -156,7 +163,7 @@ Stay updated with the latest agricultural trends, innovations, and expert insigh
                 <li>
                   <a
                     href="#"
-                    class="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
+                    className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
                   >
                     Live Chat
                   </a>
@@ -164,14 +171,14 @@ Stay updated with the latest agricultural trends, innovations, and expert insigh
               </ul>
             </div>
 
-            <div class="col-span-2 sm:col-span-1">
-              <p class="font-medium text-gray-900 dark:text-white">Legal</p>
+            <div className="col-span-2 sm:col-span-1">
+              <p className="font-medium text-gray-900 dark:text-white">Legal</p>
 
-              <ul class="mt-6 space-y-4 text-sm">
+              <ul className="mt-6 space-y-4 text-sm">
                 <li>
                   <a
                     href="#"
-                    class="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
+                    className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
                   >
                     Accessibility
                   </a>
@@ -180,7 +187,7 @@ Stay updated with the latest agricultural trends, innovations, and expert insigh
                 <li>
                   <a
                     href="#"
-                    class="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
+                    className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
                   >
                     Returns Policy
                   </a>
@@ -189,7 +196,7 @@ Stay updated with the latest agricultural trends, innovations, and expert insigh
                 <li>
                   <a
                     href="#"
-                    class="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
+                    className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
                   >
                     Refund Policy
                   </a>
@@ -198,7 +205,7 @@ Stay updated with the latest agricultural trends, innovations, and expert insigh
                 <li>
                   <a
                     href="#"
-                    class="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
+                    className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
                   >
                     Hiring Statistics
                   </a>
@@ -206,14 +213,14 @@ Stay updated with the latest agricultural trends, innovations, and expert insigh
               </ul>
             </div>
 
-            <div class="col-span-2 sm:col-span-1">
-              <p class="font-medium text-gray-900 dark:text-white">Downloads</p>
+            <div className="col-span-2 sm:col-span-1">
+              <p className="font-medium text-gray-900 dark:text-white">Downloads</p>
 
-              <ul class="mt-6 space-y-4 text-sm">
+              <ul className="mt-6 space-y-4 text-sm">
                 <li>
                   <a
                     href="#"
-                    class="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
+                    className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
                   >
                     Marketing Calendar
                   </a>
@@ -222,7 +229,7 @@ Stay updated with the latest agricultural trends, innovations, and expert insigh
                 <li>
                   <a
                     href="#"
-                    class="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
+                    className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
                   >
                     SEO Infographics
                   </a>
@@ -230,18 +237,18 @@ Stay updated with the latest agricultural trends, innovations, and expert insigh
               </ul>
             </div>
 
-            <ul class="col-span-2 flex justify-start gap-6 lg:col-span-5 lg:justify-end -mt-7">
+            <ul className="col-span-2 flex justify-start gap-6 lg:col-span-5 lg:justify-end -mt-7">
               <li>
                 <a
                   href="#"
                   rel="noreferrer"
                   target="_blank"
-                  class="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
+                  className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
                 >
-                  <span class="sr-only">Facebook</span>
+                  <span className="sr-only">Facebook</span>
 
                   <svg
-                    class="h-6 w-6"
+                    className="h-6 w-6"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                     aria-hidden="true"
@@ -260,12 +267,12 @@ Stay updated with the latest agricultural trends, innovations, and expert insigh
                   href="#"
                   rel="noreferrer"
                   target="_blank"
-                  class="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
+                  className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
                 >
-                  <span class="sr-only">Instagram</span>
+                  <span className="sr-only">Instagram</span>
 
                   <svg
-                    class="h-6 w-6"
+                    className="h-6 w-6"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                     aria-hidden="true"
@@ -284,12 +291,12 @@ Stay updated with the latest agricultural trends, innovations, and expert insigh
                   href="#"
                   rel="noreferrer"
                   target="_blank"
-                  class="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
+                  className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
                 >
-                  <span class="sr-only">Twitter</span>
+                  <span className="sr-only">Twitter</span>
 
                   <svg
-                    class="h-6 w-6"
+                    className="h-6 w-6"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                     aria-hidden="true"
@@ -304,12 +311,12 @@ Stay updated with the latest agricultural trends, innovations, and expert insigh
                   href="#"
                   rel="noreferrer"
                   target="_blank"
-                  class="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
+                  className="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
                 >
-                  <span class="sr-only">GitHub</span>
+                  <span className="sr-only">GitHub</span>
 
                   <svg
-                    class="h-6 w-6"
+                    className="h-6 w-6"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                     aria-hidden="true"
@@ -322,45 +329,21 @@ Stay updated with the latest agricultural trends, innovations, and expert insigh
                   </svg>
                 </a>
               </li>
-
-              <li>
-                <a
-                  href="#"
-                  rel="noreferrer"
-                  target="_blank"
-                  class="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
-                >
-                  <span class="sr-only">Dribbble</span>
-
-                  <svg
-                    class="h-6 w-6"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c5.51 0 10-4.48 10-10S17.51 2 12 2zm6.605 4.61a8.502 8.502 0 011.93 5.314c-.281-.054-3.101-.629-5.943-.271-.065-.141-.12-.293-.184-.445a25.416 25.416 0 00-.564-1.236c3.145-1.28 4.577-3.124 4.761-3.362zM12 3.475c2.17 0 4.154.813 5.662 2.148-.152.216-1.443 1.941-4.48 3.08-1.399-2.57-2.95-4.675-3.189-5A8.687 8.687 0 0112 3.475zm-3.633.803a53.896 53.896 0 013.167 4.935c-3.992 1.063-7.517 1.04-7.896 1.04a8.581 8.581 0 014.729-5.975zM3.453 12.01v-.26c.37.01 4.512.065 8.775-1.215.25.477.477.965.694 1.453-.109.033-.228.065-.336.098-4.404 1.42-6.747 5.303-6.942 5.629a8.522 8.522 0 01-2.19-5.705zM12 20.547a8.482 8.482 0 01-5.239-1.8c.152-.315 1.888-3.656 6.703-5.337.022-.01.033-.01.054-.022a35.318 35.318 0 011.823 6.475 8.4 8.4 0 01-3.341.684zm4.761-1.465c-.086-.52-.542-3.015-1.659-6.084 2.679-.423 5.022.271 5.314.369a8.468 8.468 0 01-3.655 5.715z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                </a>
-              </li>
             </ul>
           </div>
         </div>
 
-        <div class="mt-8 border-t border-gray-100 pt-8 dark:border-gray-800">
-          <div class="sm:flex sm:justify-between">
-            <p class="text-xs text-gray-500 dark:text-gray-400">
+        <div className="mt-8 border-t border-gray-300 pt-8 dark:border-gray-800">
+          <div className="sm:flex sm:justify-between">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
               &copy; 2024. AgriPeace. All rights reserved.
             </p>
 
-            <ul class="mt-8 flex flex-wrap justify-start gap-4 text-xs sm:mt-0 lg:justify-end">
+            <ul className="mt-8 flex flex-wrap justify-start gap-4 text-xs sm:mt-0 lg:justify-end">
               <li>
                 <a
                   href="#"
-                  class="text-gray-500 transition hover:opacity-75 dark:text-gray-400"
+                  className="text-gray-500 transition hover:opacity-75 dark:text-gray-400"
                 >
                   Terms & Conditions
                 </a>
@@ -369,7 +352,7 @@ Stay updated with the latest agricultural trends, innovations, and expert insigh
               <li>
                 <a
                   href="#"
-                  class="text-gray-500 transition hover:opacity-75 dark:text-gray-400"
+                  className="text-gray-500 transition hover:opacity-75 dark:text-gray-400"
                 >
                   Privacy Policy
                 </a>
@@ -378,7 +361,7 @@ Stay updated with the latest agricultural trends, innovations, and expert insigh
               <li>
                 <a
                   href="#"
-                  class="text-gray-500 transition hover:opacity-75 dark:text-gray-400"
+                  className="text-gray-500 transition hover:opacity-75 dark:text-gray-400"
                 >
                   Cookies
                 </a>
