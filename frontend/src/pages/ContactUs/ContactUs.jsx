@@ -5,7 +5,7 @@ import { FaLinkedinIn } from "react-icons/fa";
 const ContactUs = () => {
   return (
     <>
-      <div className="flex justify-center items-center w-screen h-screen bg-white dark:bg-gray-900">
+      <div className="flex justify-center items-center w-screen h-screen bg-white dark:bg-gray-900 mt-20">
         <div className="container mx-auto my-4 px-4 lg:px-20">
           <div className="w-full p-8 my-4 md:px-12 lg:w-9/12 lg:pl-20 lg:pr-40 mr-auto rounded-2xl shadow-2xl dark:bg-gray-700">
             <div className="flex">
