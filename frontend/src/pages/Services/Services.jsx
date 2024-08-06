@@ -74,7 +74,7 @@ const Services = () => {
         {services.map((service, index) => (
           <div
             key={index}
-            className="bg-white shadow-lg rounded-lg p-6 hover:shadow-2xl transition-shadow duration-1000 transform hover:scale-105"
+            className="bg-white shadow-lg rounded-lg p-6 hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
           >
             <div className="flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4">
               <span className="text-3xl text-green-600">{service.icon}</span>
@@ -83,26 +83,31 @@ const Services = () => {
               {service.title}
             </h2>
             <p className="text-gray-700 mb-4">{service.description}</p>
-            <details className="text-gray-700 cursor-pointer">
+            <details
+              className="text-gray-700 cursor-pointer group overflow-hidden"
+              open={false} // Initially closed
+            >
               <summary className="flex items-center">
-                <span className="text-green-600 hover:text-green-800 transition-colors duration-1000">
+                <span className="text-green-600 hover:text-green-800 transition-all duration-300">
                   Read more
                 </span>
-                <IoMdArrowDropright className="ml-1 text-green-600" />
+                <IoMdArrowDropright className="ml-1 text-green-600 transition-transform group-open:rotate-90" />
               </summary>
-              <p className="mt-2">{service.details}</p>
+              <p className="mt-2 transition-all duration-300 ease-in-out max-h-0 group-open:max-h-[200px] overflow-auto">
+                {service.details}
+              </p>
             </details>
           </div>
         ))}
       </div>
 
       <section className="mt-16">
-        <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">
+        <h2 className="text-3xl font-bold text-gray-900 text-center mb-8 dark:text-white">
           What Our Clients Say
         </h2>
         <div className="flex justify-center">
           <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-1000 transform hover:scale-105">
+            <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
               <p className="text-gray-700 italic">
                 "The soil testing service was a game-changer for our farm. We
                 were able to improve our soil health significantly and saw a
@@ -112,7 +117,7 @@ const Services = () => {
                 - Farmer John
               </p>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-1000 transform hover:scale-105">
+            <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
               <p className="text-gray-700 italic">
                 "The crop consultation helped us choose the best crops for our
                 climate and market. Their expert advice and support have been
@@ -127,16 +132,16 @@ const Services = () => {
       </section>
 
       <section className="mt-16 text-center">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">
+        <h2 className="text-3xl font-bold text-gray-900 mb-4 dark:text-white">
           Ready to Get Started?
         </h2>
-        <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+        <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto dark:text-gray-300">
           Contact us today to learn more about our services and how we can help
           you achieve your farming goals. Our team of experts is here to support
           you every step of the way.
         </p>
         <NavLink to={'/contact'}>
-          <button className="inline-block bg-secondary text-white px-6 py-3 rounded-md text-lg font-medium hover:bg-green-700 transition-colors duration-1000">
+          <button className="inline-block bg-secondary text-white px-6 py-3 rounded-md text-lg font-medium hover:bg-green-700 transition-all duration-300">
             Contact Us
           </button>
         </NavLink>
