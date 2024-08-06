@@ -4,28 +4,38 @@ import Home from "../pages/Home/Home";
 import Services from "../pages/Services/Services";
 import ContactUs from "../pages/ContactUs/ContactUs";
 import AboutUs from "../pages/AboutUs/AboutUs";
+import Login from "../pages/user/Login";
+import Register from "../pages/user/Register";
 
 export const router = createBrowserRouter([
-   {
-     path: "/",
-     element: <MainLayout/>,
-     children: [
+  {
+    path: "/",
+    element: <MainLayout />,
+    children: [
       {
-         path: "/",
-         element: <Home/>
+        path: "/",
+        element: <Home />,
       },
       {
         path: "/services",
-        element: <Services/>
+        element: <Services />,
       },
       {
         path: "/contact",
-        element: <ContactUs/>
+        element: <ContactUs />,
       },
       {
         path: "/aboutUs",
-        element: <AboutUs/>
-      }
-     ]
-   },
- ]);
+        element: <AboutUs />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
+      },
+    ],
+  },
+]);
