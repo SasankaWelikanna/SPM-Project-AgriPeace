@@ -76,14 +76,14 @@
 //           "bg-white backdrop-filter backdrop-blur-xl bg-opacity-0 dark:text-white text-black"
 //         );
 //       } else {
-//         setNavBg("bg-white dark:bg-black dark:text-white text-black");
+//         setNavBg("bg-white dark:bg-gray-900 dark:text-white text-black");
 //       }
 //     } else {
 //       setNavBg(
 //         `${
 //           isHome || location.pathname === "/"
 //             ? "bg-transparent"
-//             : "bg-white dark:bg-black"
+//             : "bg-white dark:bg-gray-900"
 //         }dark:text-white text-white`
 //       );
 //     }
@@ -99,7 +99,7 @@
 //       animate={{ opacity: 1 }}
 //       transition={{ duration: 0.5 }}
 //       className={`${
-//         isHome ? navBg : "bg-white dark:bg-black backdrop-blur-2xl"
+//         isHome ? navBg : "bg-white dark:bg-gray-900 backdrop-blur-2xl"
 //       } ${
 //         isFixed ? "static" : "fixed"
 //       } top-0 transition-colors duration-500 ease-in-out w-full z-10`}
@@ -340,7 +340,7 @@ const NavBar = () => {
         setNavBg("bg-transparent text-white dark:text-white");
       }
     } else {
-      setNavBg("bg-white dark:bg-black text-black dark:text-white");
+      setNavBg("bg-white dark:bg-gray-900 text-black dark:text-white");
     }
   }, [scrollPosition, isHome]);
 
@@ -354,7 +354,7 @@ const NavBar = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
       className={`${
-        isHome ? navBg : "bg-white dark:bg-black backdrop-blur-2xl text-black dark:text-white"
+        isHome ? navBg : "bg-white dark:bg-gray-900 backdrop-blur-2xl text-black dark:text-white"
       } ${isFixed ? "static" : "fixed"} top-0 transition-colors duration-500 ease-in-out w-full z-10`}
     >
       <div className="lg:w-[95%] mx-auto sm:px-6 lg:px-6">
