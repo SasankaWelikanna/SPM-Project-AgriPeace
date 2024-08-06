@@ -136,7 +136,7 @@ const Services = () => {
           you every step of the way.
         </p>
         <NavLink to={'/contact'}>
-          <button className="inline-block bg-green-600 text-white px-6 py-3 rounded-md text-lg font-medium hover:bg-green-700 transition-colors duration-1000">
+          <button className="inline-block bg-secondary text-white px-6 py-3 rounded-md text-lg font-medium hover:bg-green-700 transition-colors duration-1000">
             Contact Us
           </button>
         </NavLink>
