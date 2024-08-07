@@ -9,6 +9,7 @@ import Register from "../pages/user/Register";
 import DashboardLayout from "../layout/DashboardLayout";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import FarmerHome from "../pages/Dashboard/Farmer/FarmerHome";
+import AdminHome from "../pages/Dashboard/Admin/AdminHome";
 
 export const router = createBrowserRouter([
   {
@@ -54,6 +55,12 @@ export const router = createBrowserRouter([
       {
         path: "farmer-home",
         element: <FarmerHome />,
+      },
+
+      // admin routes
+      {
+        path: "admin-home",
+        element: <AdminHome/>
       }
     ]
   }

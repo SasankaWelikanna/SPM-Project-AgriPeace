@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Switch } from "@mui/material";
 import farmerImg from "../../assets/farmer.jpg";
 import { FaBars } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { AuthContext } from "../../utilities/providers/AuthProvider";
+import Swal from "sweetalert2";
 
 const navLinks = [
   { name: "Home", route: "/" },
@@ -35,7 +37,7 @@ const NavBar = () => {
   const [isFixed, setIsFixed] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [navBg, setNavBg] = useState("bg-[#15151580]");
-  const user = true;
+  const {logout, user} = useContext(AuthContext)
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -79,7 +81,26 @@ const NavBar = () => {
   }, [scrollPosition, isHome]);
 
   const handleLogout = () => {
-    console.log("Logged out");
+    Swal.fire({
+      title: "Are you sure want to logout?",
+      text: "",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Logout me!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logout().then(
+          Swal.fire({
+            title: "Logged Out!",
+            text: "You have been successfully logged out.",
+            icon: "success",
+          })
+        );
+        navigate("/").catch((error) => console.log(error));
+      }
+    });
   };
 
   return (
