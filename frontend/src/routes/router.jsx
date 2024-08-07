@@ -6,6 +6,9 @@ import ContactUs from "../pages/ContactUs/ContactUs";
 import AboutUs from "../pages/AboutUs/AboutUs";
 import Login from "../pages/user/Login";
 import Register from "../pages/user/Register";
+import DashboardLayout from "../layout/DashboardLayout";
+import Dashboard from "../pages/Dashboard/Dashboard";
+import FarmerHome from "../pages/Dashboard/Farmer/FarmerHome";
 
 export const router = createBrowserRouter([
   {
@@ -38,4 +41,20 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/dashboard",
+    element: <DashboardLayout/>,
+    children: [
+      {
+        index: true,
+        element: <Dashboard/>
+      },
+
+      // farmer routes
+      {
+        path: "farmer-home",
+        element: <FarmerHome />,
+      }
+    ]
+  }
 ]);

@@ -9,6 +9,7 @@ import {
 } from "react-icons/fa";
 import { IoMdArrowDropright } from "react-icons/io";
 import { NavLink } from "react-router-dom";
+import Scroll from "../../hooks/useScroll";
 
 const services = [
   {
@@ -58,6 +59,7 @@ const services = [
 const Services = () => {
   return (
     <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8 dark:bg-gray-900 mt-20">
+      <Scroll/>
       <header className="text-center mb-12">
         <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-4">
           Our Services

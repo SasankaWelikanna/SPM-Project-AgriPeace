@@ -76,6 +76,14 @@ async function run() {
       res.send(result);
     });
 
+    // GET USER BY EMAIL
+    app.get('/user/:email', verifyJWT, async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const result = await userCollection.findOne(query);
+      res.send(result);
+  })
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Successfully connected to MongoDB!");
