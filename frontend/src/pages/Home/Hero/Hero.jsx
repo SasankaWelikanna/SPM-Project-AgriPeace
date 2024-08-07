@@ -26,7 +26,7 @@ const Hero = () => {
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-5">
-              <button className="px-7 py-3 rounded-lg bg-secondary font-bold uppercase">
+              <button className="px-7 py-3 rounded-lg bg-secondary font-bold uppercase hover:scale-105 duration-300">
                 Join Today
               </button>
               <NavLink to={'/services'}>
