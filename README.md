@@ -8,9 +8,6 @@ cd frontend -> npm run dev
 To login
 enter url - http://localhost:5173/login
 
-To register
-enter url - http://localhost:5173/register
-
 🔹 user login
 ▪️email - user@gmail.com
 ▪️password - user12345
