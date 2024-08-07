@@ -204,7 +204,7 @@ const DashboardLayout = () => {
           <p
             className={`uppercase ml-3 text-gray-500 mb-3 ${!open && "hidden"}`}
           >
-            <small>Usefull links</small>
+            <small>Useful links</small>
           </p>
           {lastMenuItems.map((menuItem, index) => (
             <li key={index} className="mb-2">
