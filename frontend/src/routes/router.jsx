@@ -10,6 +10,8 @@ import DashboardLayout from "../layout/DashboardLayout";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import FarmerHome from "../pages/Dashboard/Farmer/FarmerHome";
 import AdminHome from "../pages/Dashboard/Admin/AdminHome";
+import ManageUsers from "../pages/Dashboard/Admin/ManageUsers";
+import UpdateUser from "../pages/Dashboard/Admin/UpdateUser";
 
 export const router = createBrowserRouter([
   {
@@ -61,6 +63,15 @@ export const router = createBrowserRouter([
       {
         path: "admin-home",
         element: <AdminHome/>
+      },
+      {
+        path: "manage-users",
+        element: <ManageUsers/>
+      },
+      {
+        path: "update-user/:id",
+        element: <UpdateUser/>,
+        loader: ({params}) => fetch(`http://localhost:3000/users/${params.id}`)
       }
     ]
   }
