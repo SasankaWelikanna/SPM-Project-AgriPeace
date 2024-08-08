@@ -30,7 +30,7 @@ const adminNavItems = [
   {
     to: "/dashboard/manage-deseases",
     icon: <FaViruses className="text-2xl" />,
-    label: "Manage Deseases",
+    label: "Manage Diseases",
   },
 ];
 
