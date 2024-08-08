@@ -76,6 +76,12 @@ async function run() {
       res.send(result);
     });
 
+    // GET ALL USERS
+    app.get('/users', async (req, res) => {
+      const users = await userCollection.find({}).toArray();
+      res.send(users);
+  })
+
     // GET USER BY EMAIL
     app.get('/user/:email', verifyJWT, async (req, res) => {
       const email = req.params.email;
@@ -83,6 +89,18 @@ async function run() {
       const result = await userCollection.findOne(query);
       res.send(result);
   })
+
+  // Admins stats 
+  app.get('/admin-stats', verifyJWT, verifyAdmin, async (req, res) => {
+    const totalUsers = (await userCollection.find().toArray()).length;
+    const result = {
+        totalUsers
+    }
+    res.send(result);
+})
+
+
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
