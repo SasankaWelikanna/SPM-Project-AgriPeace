@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const FarmerHome = () => {
    const {currentUser} = useUser();
   return (
-    <div className='h-screen flex justify-center items-center'>
+    <div className='mt-5 flex justify-center items-center'>
       <div>
          <div>
             <h1 className='text-4xl capitalize font-bold'>Hi, <span className='text-secondary items-stretch'>{currentUser?.name}!</span> Welcome to your dashboard </h1>
