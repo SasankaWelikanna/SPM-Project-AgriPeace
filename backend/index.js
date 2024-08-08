@@ -13,20 +13,24 @@ app.use(express.json());
 const verifyJWT = (req, res, next) => {
   const authorization = req.headers.authorization;
   if (!authorization) {
-      return res.status(401).send({ error: true, message: 'Unauthorized access' })
+    return res
+      .status(401)
+      .send({ error: true, message: "Unauthorized access" });
   }
-  const token = authorization?.split(' ')[1]
+  const token = authorization?.split(" ")[1];
   jwt.verify(token, process.env.ACCESS_SECRET, (err, decoded) => {
-      if (err) {
-          return res.status(403).send({ error: true, message: 'Forbidden user or token has expired' })
-      }
-      req.decoded = decoded;
-      next()
-  })
-}
+    if (err) {
+      return res
+        .status(403)
+        .send({ error: true, message: "Forbidden user or token has expired" });
+    }
+    req.decoded = decoded;
+    next();
+  });
+};
 
 // mongodb connection
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@agripeace-server.sqb4jsm.mongodb.net/?retryWrites=true&w=majority&appName=agripeace-server`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -53,13 +57,14 @@ async function run() {
       const email = req.decoded.email;
       const query = { email: email };
       const user = await userCollection.findOne(query);
-      if (user.role === 'admin') {
-          next()
+      if (user.role === "admin") {
+        next();
+      } else {
+        return res
+          .status(401)
+          .send({ error: true, message: "Unauthorize access" });
       }
-      else {
-          return res.status(401).send({ error: true, message: 'Unauthorize access' })
-      }
-  }
+    };
 
     app.post("/api/set-token", (req, res) => {
       const user = req.body;
@@ -76,13 +81,64 @@ async function run() {
       res.send(result);
     });
 
+    // GET ALL USERS
+    app.get("/users", async (req, res) => {
+      const users = await userCollection.find({}).toArray();
+      res.send(users);
+    });
+
+    // GET USER BY ID
+    app.get("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const user = await userCollection.findOne(query);
+      res.send(user);
+    });
+
+    // Delete a user
+    app.delete("/delete-user/:id", verifyJWT, verifyAdmin, async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await userCollection.deleteOne(query);
+      res.send(result);
+    });
+
+    // UPDATE USER
+    app.put("/update-user/:id", verifyJWT, verifyAdmin, async (req, res) => {
+      const id = req.params.id;
+      const updatedUser = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          name: updatedUser.name,
+          email: updatedUser.email,
+          role: updatedUser.option,
+          address: updatedUser.address,
+          phone: updatedUser.phone,
+          photoUrl: updatedUser.photoUrl,
+        },
+      };
+      const result = await userCollection.updateOne(filter, updateDoc, options);
+      res.send(result);
+    });
+
     // GET USER BY EMAIL
-    app.get('/user/:email', verifyJWT, async (req, res) => {
+    app.get("/user/:email", verifyJWT, async (req, res) => {
       const email = req.params.email;
       const query = { email: email };
       const result = await userCollection.findOne(query);
       res.send(result);
-  })
+    });
+
+    // Admins stats
+    app.get("/admin-stats", verifyJWT, verifyAdmin, async (req, res) => {
+      const totalUsers = (await userCollection.find().toArray()).length;
+      const result = {
+        totalUsers,
+      };
+      res.send(result);
+    });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
