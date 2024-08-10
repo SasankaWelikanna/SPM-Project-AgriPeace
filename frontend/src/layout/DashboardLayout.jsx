@@ -28,9 +28,9 @@ const adminNavItems = [
     label: "Manage Fertilizers",
   },
   {
-    to: "/dashboard/manage-deseases",
+    to: "/dashboard/manage-plant",
     icon: <FaViruses className="text-2xl" />,
-    label: "Manage Diseases",
+    label: "Plant Mangement",
   },
 ];
 
@@ -97,10 +97,8 @@ const DashboardLayout = () => {
   };
 
   if (loader) {
-   return (
-     <Loader/>
-   );
- }
+    return <Loader />;
+  }
 
   return (
     <div className="flex">
@@ -241,8 +239,8 @@ const DashboardLayout = () => {
       </div>
 
       <div className="h-screen overflow-y-auto px-8 flex-1">
-         <Scroll/>
-         <Outlet/>
+        <Scroll />
+        <Outlet />
       </div>
     </div>
   );
