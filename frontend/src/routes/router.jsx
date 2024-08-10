@@ -12,6 +12,7 @@ import FarmerHome from "../pages/Dashboard/Farmer/FarmerHome";
 import AdminHome from "../pages/Dashboard/Admin/AdminHome";
 import ManageUsers from "../pages/Dashboard/Admin/ManageUsers";
 import UpdateUser from "../pages/Dashboard/Admin/UpdateUser";
+import PlantManagement from "../pages/Dashboard/Admin/PlantManagement";
 
 export const router = createBrowserRouter([
   {
@@ -46,11 +47,11 @@ export const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <DashboardLayout/>,
+    element: <DashboardLayout />,
     children: [
       {
         index: true,
-        element: <Dashboard/>
+        element: <Dashboard />,
       },
 
       // farmer routes
@@ -62,17 +63,24 @@ export const router = createBrowserRouter([
       // admin routes
       {
         path: "admin-home",
-        element: <AdminHome/>
+        element: <AdminHome />,
       },
       {
         path: "manage-users",
-        element: <ManageUsers/>
+        element: <ManageUsers />,
       },
       {
         path: "update-user/:id",
-        element: <UpdateUser/>,
-        loader: ({params}) => fetch(`http://localhost:3000/users/${params.id}`)
-      }
-    ]
-  }
+        element: <UpdateUser />,
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/users/${params.id}`),
+      },
+
+      //plant management
+      {
+        path: "manage-plant",
+        element: <PlantManagement />,
+      },
+    ],
+  },
 ]);
