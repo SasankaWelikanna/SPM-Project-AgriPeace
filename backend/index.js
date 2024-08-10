@@ -156,4 +156,5 @@ app.get("/", (req, res) => {
 
 app.listen(port, () => {
   console.log(`AgriPeace Server listening on port ${port}`);
+  console.log('வ ன க் க ம்');
 });
