@@ -3,6 +3,7 @@ import { MdOutlineAlternateEmail, MdOutlineRemoveRedEye } from "react-icons/md";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import GoogleLogin from "../../components/Social/GoogleLogin";
 import useAuth from "../../hooks/useAuth";
+import Scroll from "../../hooks/useScroll";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,6 +27,7 @@ const Login = () => {
 
   return (
     <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+      <Scroll/>
       <h1 className="text-2xl font-bold text-secondary sm:text-3xl text-center">
         Log In to Your Account
       </h1>

@@ -12,6 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
 import GoogleLogin from "../../components/Social/GoogleLogin";
 import { AuthContext } from "../../utilities/providers/AuthProvider";
 import axios from "axios";
+import Scroll from "../../hooks/useScroll";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -68,6 +69,7 @@ const Register = () => {
 
   return (
     <div className="flex justify-center items-center pt-14 bg-white dark:bg-gray-900 -mt-14">
+      <Scroll/>
       <div className="bg-white p-8 rounded-lg shadow-md">
         <h2 className="text-3xl font-bold text-center text-secondary mb-6">
           Please Register
