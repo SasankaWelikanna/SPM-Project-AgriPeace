@@ -88,54 +88,65 @@ const PlantForm = ({ handleSubmit, initialData }) => {
   };
 
   return (
-    <form onSubmit={handleFormSubmit}>
-      <div className="mb-3">
-        <label htmlFor="imageUrl" className="form-label">
+    <form onSubmit={handleFormSubmit} className="space-y-4">
+      <div className="mb-4">
+        <label
+          htmlFor="imageUrl"
+          className="block text-gray-700 font-semibold mb-1"
+        >
           {uploading ? `Uploading: ${imgPerc}%` : "Image"}
         </label>
         <input
           type="file"
-          className="form-control"
+          className="w-full p-2 border border-gray-300 rounded-md"
           name="imageUrl"
           onChange={(e) => setImg(e.target.files[0])}
         />
       </div>
-      <div className="mb-3">
-        <label htmlFor="name" className="form-label">
-          Fruit Name
+      <div className="mb-4">
+        <label
+          htmlFor="name"
+          className="block text-gray-700 font-semibold mb-1"
+        >
+          Plant Name
         </label>
         <input
           type="text"
-          className="form-control"
+          className="w-full p-2 border border-gray-300 rounded-md"
           name="name"
-          placeholder="Fruit Name"
+          placeholder="Plant Name"
           onChange={handleChange}
           value={formData.name}
           required
         />
       </div>
-      <div className="mb-3">
-        <label htmlFor="date" className="form-label">
+      <div className="mb-4">
+        <label
+          htmlFor="date"
+          className="block text-gray-700 font-semibold mb-1"
+        >
           Date
         </label>
         <input
           type="date"
-          className="form-control"
+          className="w-full p-2 border border-gray-300 rounded-md"
           name="date"
-          placeholder="Date"
           onChange={handleChange}
           value={formData.date}
           min={getCurrentDate()} // Set the min attribute to today's date
           required
         />
       </div>
-      <div className="mb-3">
-        <label htmlFor="description" className="form-label">
+      <div className="mb-4">
+        <label
+          htmlFor="description"
+          className="block text-gray-700 font-semibold mb-1"
+        >
           Description
         </label>
         <input
           type="text"
-          className="form-control"
+          className="w-full p-2 border border-gray-300 rounded-md"
           name="description"
           placeholder="Description"
           onChange={handleChange}
@@ -144,7 +155,10 @@ const PlantForm = ({ handleSubmit, initialData }) => {
         />
       </div>
 
-      <button type="submit" className="btn btn-success">
+      <button
+        type="submit"
+        className="w-full py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600"
+      >
         Submit
       </button>
     </form>

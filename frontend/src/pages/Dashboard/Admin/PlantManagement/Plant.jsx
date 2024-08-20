@@ -1,22 +1,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { BlobProvider } from "@react-pdf/renderer";
+// import { BlobProvider } from "@react-pdf/renderer";
 import SearchBar from "./SearchBar";
-// import Excel from "../../../../assests/img/icons/excel.png";
-// import Pdf from "../../../../assests/img/icons/pdf.png";
-// import Refresh from "../../../../assests/img/icons/refresh.png";
-import * as XLSX from "xlsx";
-import { writeFile } from "xlsx";
+// import * as XLSX from "xlsx";
+// import { writeFile } from "xlsx";
+import Modal from "./Modal";
 import PlantForm from "./PlantForm";
 import PlantReport from "./PlantReport";
 import { ToastContainer, toast } from "react-toastify";
 
-// import SpinnerModal from "../../../spinner/SpinnerModal";
-
 axios.defaults.baseURL = "http://localhost:8070/";
 
 function Plant() {
-  // const [loading, setLoading] = useState(true);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [dataList, setDataList] = useState([]);
@@ -25,19 +20,16 @@ function Plant() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
 
-  // useEffect(() => {
-  //   // Fetch data
-  //   getFetchData();
-  //   // Simulate loading for 3 seconds
-  //   const timeout = setTimeout(() => {
-  //     setLoading(false);
-  //   }, 3000);
-  //   // Clear timeout on component unmount
-  //   return () => clearTimeout(timeout);
-  // }, []);
+  useEffect(() => {
+    getFetchData();
+    const timeout = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+    return () => clearTimeout(timeout);
+  }, []);
 
   useEffect(() => {
-    setFilteredDataList(dataList); // Initialize filteredDataList with dataList
+    setFilteredDataList(dataList);
   }, [dataList]);
 
   const getFetchData = async () => {
@@ -61,40 +53,32 @@ function Plant() {
     getFetchData();
   };
 
-  const generateExcelFile = () => {
-    const rearrangedDataList = dataList.map((plant) => ({
-      Name: plant.name,
-      Date: plant.date,
-      Description: plant.description,
-    }));
+  // const generateExcelFile = () => {
+  //   const rearrangedDataList = dataList.map((plant) => ({
+  //     Name: plant.name,
+  //     Date: plant.date,
+  //     Description: plant.description,
+  //   }));
 
-    const ws = XLSX.utils.json_to_sheet(rearrangedDataList);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Plant Report");
-    writeFile(wb, "plant_report.xlsx");
-  };
+  //   const ws = XLSX.utils.json_to_sheet(rearrangedDataList);
+  //   const wb = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(wb, ws, "Plant Report");
+  //   writeFile(wb, "plant_report.xlsx");
+  // };
 
-  const handleButtonClick = () => {
-    getFetchData();
-    generateExcelFile();
-  };
+  // const handleButtonClick = () => {
+  //   getFetchData();
+  //   generateExcelFile();
+  // };
 
-  const handleAddModalOpen = () => {
-    setAddModalOpen(true);
-  };
-
-  const handleAddModalClose = () => {
-    setAddModalOpen(false);
-  };
+  const handleAddModalOpen = () => setAddModalOpen(true);
+  const handleAddModalClose = () => setAddModalOpen(false);
 
   const handleEditModalOpen = (plant) => {
     setSelectedPlant(plant);
     setEditModalOpen(true);
   };
-
-  const handleEditModalClose = () => {
-    setEditModalOpen(false);
-  };
+  const handleEditModalClose = () => setEditModalOpen(false);
 
   const handleDelete = async (id) => {
     try {
@@ -109,10 +93,7 @@ function Plant() {
 
   const handleAddSubmit = async (formData) => {
     try {
-      await axios.post("/Plant/add", {
-        ...formData,
-        imageUrl: formData.imageUrl,
-      });
+      await axios.post("/Plant/add", formData);
       toast.success("Fruit Type Added!");
       handleAddModalClose();
       getFetchData();
@@ -123,10 +104,7 @@ function Plant() {
 
   const handleEditSubmit = async (formData) => {
     try {
-      await axios.put(`/Plant/update/${formData._id}`, {
-        ...formData,
-        imageUrl: formData.imageUrl,
-      });
+      await axios.put(`/Plant/update/${formData._id}`, formData);
       toast.success("Plant Updated");
       handleEditModalClose();
       getFetchData();
@@ -139,154 +117,173 @@ function Plant() {
     setDeleteId(id);
     setShowDeleteModal(true);
   };
-
   const handleCloseDeleteModal = () => {
     setShowDeleteModal(false);
-    setDeleteId(null); // Reset deleteId after closing the modal
+    setDeleteId(null);
   };
 
   return (
-    <div id="main" className="main">
+    <div id="main" className="main p-4 bg-gray-50">
       <br />
       <br />
-
-      {/* {loading ? ( // Display spinner while loading is true
-        <SpinnerModal show={loading} />
-      ) : ( */}
-      <div className="card recent-sales overflow-auto">
-        <div className="card-body">
-          <div class="page-header">
-            <div class="add-item d-flex">
-              <div class="card-title">
-                Plant Details
-                <h6>Manage plant details</h6>
+      <div className="card bg-white shadow-md rounded-lg overflow-auto">
+        <div className="card-body p-6">
+          <div className="page-header flex justify-between items-center mb-4">
+            <div className="add-item flex items-center">
+              <div className="card-title">
+                <h2 className="text-xl font-semibold text-gray-700">
+                  Plant Details
+                </h2>
+                <h6 className="text-sm text-gray-500">Manage plant details</h6>
               </div>
             </div>
-            <ul class="table-top-head">
-              <li>
+            <ul className="flex space-x-4">
+              {/* <li>
                 <BlobProvider
                   document={<PlantReport dataList={dataList} />}
                   fileName="PlantReport.pdf"
                 >
-                  {({ url, blob }) => (
+                  {({ url }) => (
                     <div className="button-container">
-                      <a href={url} target="_blank">
-                        {/* <img src={Pdf} alt="Pdf Icon" className="icon" /> */}
+                      <a
+                        href={url}
+                        target="_blank"
+                        className="text-blue-500 hover:underline"
+                      >
+                        PDF Report
                       </a>
                     </div>
                   )}
                 </BlobProvider>
-              </li>
+              </li> */}
               <li>
                 <div className="button-container">
-                  <a href="#" onClick={handleButtonClick}>
-                    {/* <img src={Excel} alt="Excel Icon" className="icon" /> */}
+                  <a
+                    href="#"
+                    // onClick={handleButtonClick}
+                    className="text-green-500 hover:underline"
+                  >
+                    Excel Report
                   </a>
                 </div>
               </li>
               <li>
                 <div className="button-container">
-                  <a href="#" onClick={handleRefreshClick}>
-                    {/* <img src={Refresh} alt="Refresh Icon" className="icon" /> */}
+                  <a
+                    href="#"
+                    onClick={handleRefreshClick}
+                    className="text-blue-500 hover:underline"
+                  >
+                    Refresh
                   </a>
                 </div>
               </li>
             </ul>
-            <div class="page-btn">
+            <div className="page-btn">
               <button
                 type="button"
-                className="btn btn-added"
+                className="btn btn-added bg-blue-500 text-white py-2 px-4 rounded-lg"
                 onClick={handleAddModalOpen}
               >
                 <i className="bi bi-plus-circle"></i> Add Plant
               </button>
             </div>
           </div>
-          {/* <Modal show={addModalOpen} onHide={handleAddModalClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Add Plant</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <PlantForm handleSubmit={handleAddSubmit} />
-            </Modal.Body>
+
+          {/* Add Plant Modal */}
+          <Modal
+            isOpen={addModalOpen}
+            onClose={handleAddModalClose}
+            title="Add Plant"
+          >
+            <PlantForm handleSubmit={handleAddSubmit} />
           </Modal>
-          <Modal show={editModalOpen} onHide={handleEditModalClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Edit Plant</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <PlantForm
-                handleSubmit={handleEditSubmit}
-                initialData={selectedPlant}
-              />
-            </Modal.Body>
+
+          {/* Edit Plant Modal */}
+          <Modal
+            isOpen={editModalOpen}
+            onClose={handleEditModalClose}
+            title="Edit Plant"
+          >
+            <PlantForm
+              handleSubmit={handleEditSubmit}
+              initialData={selectedPlant}
+            />
           </Modal>
-          <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
-            <Modal.Header closeButton>
-              <Modal.Title>Confirm Delete</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              Are you sure you want to delete this record?
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleCloseDeleteModal}>
+
+          {/* Delete Confirmation Modal */}
+          <Modal
+            isOpen={showDeleteModal}
+            onClose={handleCloseDeleteModal}
+            title="Confirm Delete"
+          >
+            <p>Are you sure you want to delete this record?</p>
+            <div className="mt-6 flex justify-end">
+              <button
+                className="px-4 py-2 mr-4 bg-gray-300 rounded hover:bg-gray-400"
+                onClick={handleCloseDeleteModal}
+              >
                 Cancel
-              </Button>
-              <Button variant="danger" onClick={() => handleDelete(deleteId)}>
+              </button>
+              <button
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                onClick={() => handleDelete(deleteId)}
+              >
                 Delete
-              </Button>
-            </Modal.Footer>
-          </Modal> */}
-          <div className="table-container">
+              </button>
+            </div>
+          </Modal>
+
+          <div className="table-container mt-6">
             <SearchBar onSearch={handleSearch} />
             <br />
-            <table className="table table-borderless datatable">
-              <thead className="table-light">
+            <table className="table-auto w-full bg-white shadow-md rounded-lg overflow-hidden">
+              <thead className="bg-gray-100">
                 <tr>
-                  <th scope="col">Image</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Date</th>
-                  <th scope="col">Description</th>
-                  <th>Action</th>
+                  <th className="p-4 text-left">Image</th>
+                  <th className="p-4 text-left">Name</th>
+                  <th className="p-4 text-left">Date</th>
+                  <th className="p-4 text-left">Description</th>
+                  <th className="p-4 text-left">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredDataList.length ? (
                   filteredDataList.map((plant) => (
-                    <tr key={plant._id}>
-                      <td>
+                    <tr key={plant._id} className="border-b">
+                      <td className="p-4">
                         {plant.imageUrl && (
                           <img
                             src={plant.imageUrl}
                             alt="Fruit Image"
-                            style={{ width: "50px", height: "50px" }}
+                            className="w-12 h-12 object-cover rounded-full"
                           />
                         )}
                       </td>
-                      <td>{plant.name}</td>
-                      <td>{plant.date}</td>
-                      <td className="description">{plant.description}</td>
-                      <td>
-                        <div className="buttons">
-                          <button
-                            className="btn btn-edit"
-                            onClick={() => handleEditModalOpen(plant)}
-                          >
-                            <i className="bi bi-pencil-square"></i>
-                          </button>
-                          <button
-                            className="btn btn-delete"
-                            onClick={() => handleShowDeleteModal(plant._id)}
-                          >
-                            <i className="bi bi-trash-fill"></i>
-                          </button>
-                        </div>
+                      <td className="p-4">{plant.name}</td>
+                      <td className="p-4">{plant.date}</td>
+                      <td className="p-4">{plant.description}</td>
+                      <td className="p-4 flex space-x-2">
+                        <button
+                          className="text-blue-500 hover:underline"
+                          onClick={() => handleEditModalOpen(plant)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="text-red-500 hover:underline"
+                          onClick={() => handleShowDeleteModal(plant._id)}
+                        >
+                          Delete
+                        </button>
                       </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="5">No Data</td>
+                    <td colSpan="5" className="p-4 text-center text-gray-500">
+                      No Data
+                    </td>
                   </tr>
                 )}
               </tbody>
@@ -294,7 +291,6 @@ function Plant() {
           </div>
         </div>
       </div>
-      {/* )} */}
       <ToastContainer
         position="top-right"
         autoClose={5000}
