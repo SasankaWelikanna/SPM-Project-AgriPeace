@@ -169,7 +169,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-require("dotenv").config();
+require("dotenv").config(); // Ensure dotenv is configured correctly
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const port = process.env.PORT || 3000;
@@ -224,7 +224,7 @@ const verifyAdmin = async (req, res, next) => {
 
 // Routes
 app.use('/api/costCalculator', require('./routes/CostCalculator/CostCalculatorRoutes'));
-
+app.use("/Plant", require("./routes/PlantManagement/PlantRoute.js"));
 
     app.post("/api/set-token", (req, res) => {
       const user = req.body;
@@ -321,6 +321,7 @@ app.get("/", (req, res) => {
   res.send("Hello Developers!");
 });
 
+// Start server
 app.listen(port, () => {
   console.log(`AgriPeace Server listening on port ${port}`);
 });
