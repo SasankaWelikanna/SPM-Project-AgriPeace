@@ -169,7 +169,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-require("dotenv").config();
+require("dotenv").config(); // Ensure dotenv is configured correctly
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const port = process.env.PORT || 3000;
@@ -201,6 +201,7 @@ const verifyJWT = (req, res, next) => {
   if (!authorization) {
     return res.status(401).send({ error: true, message: "Unauthorized access" });
   }
+  const token = authorization.split(" ")[1];
   const token = authorization.split(" ")[1];
   jwt.verify(token, process.env.ACCESS_SECRET, (err, decoded) => {
     if (err) {
@@ -321,6 +322,7 @@ app.get("/", (req, res) => {
   res.send("Hello Developers!");
 });
 
+// Start server
 app.listen(port, () => {
   console.log(`AgriPeace Server listening on port ${port}`);
 });
