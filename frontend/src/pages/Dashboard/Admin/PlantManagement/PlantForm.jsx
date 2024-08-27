@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-// import storage from "../../../../firebase";
+import storage from "../../../../config/firebase.init";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const PlantForm = ({ handleSubmit, initialData }) => {
