@@ -1,4 +1,5 @@
 const router = require("express").Router();
+
 const PlantCtrl = require("../../controllers/PlantManagement/PlantCtrl");
 
 router.post("/add", PlantCtrl.addPlant);
