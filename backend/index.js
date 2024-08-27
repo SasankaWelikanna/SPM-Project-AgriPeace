@@ -224,7 +224,7 @@ const verifyAdmin = async (req, res, next) => {
 
 // Routes
 app.use('/api/costCalculator', require('./routes/CostCalculator/CostCalculatorRoutes'));
-
+app.use("/Plant", require("./routes/PlantManagement/PlantRoute.js"));
 
     app.post("/api/set-token", (req, res) => {
       const user = req.body;
