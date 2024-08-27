@@ -13,6 +13,7 @@ import AdminHome from "../pages/Dashboard/Admin/AdminHome";
 import ManageUsers from "../pages/Dashboard/Admin/ManageUsers";
 import UpdateUser from "../pages/Dashboard/Admin/UpdateUser";
 import PlantManagement from "../pages/Dashboard/Admin/PlantManagement";
+import CostCalculator from "../pages/CostCalculator/CostCalculator";
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ export const router = createBrowserRouter([
         path: "/register",
         element: <Register />,
       },
+      {
+        path: "/costCalculator",
+        element: <CostCalculator/>
+      }
     ],
   },
   {
