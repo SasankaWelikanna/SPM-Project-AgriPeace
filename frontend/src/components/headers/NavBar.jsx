@@ -7,6 +7,7 @@ import { FaBars } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { AuthContext } from "../../utilities/providers/AuthProvider";
 import Swal from "sweetalert2";
+import useUser from "../../hooks/useUser";
 
 const navLinks = [
   { name: "Home", route: "/" },
@@ -37,7 +38,8 @@ const NavBar = () => {
   const [isFixed, setIsFixed] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [navBg, setNavBg] = useState("bg-[#15151580]");
-  const {logout, user} = useContext(AuthContext)
+  const { logout, user } = useContext(AuthContext);
+  const { currentUser } = useUser();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -56,7 +58,9 @@ const NavBar = () => {
   useEffect(() => {
     setIsHome(location.pathname === "/");
     setIsLogin(location.pathname === "/login");
-    setIsFixed(location.pathname === "/register" || location.pathname === "/login");
+    setIsFixed(
+      location.pathname === "/register" || location.pathname === "/login"
+    );
   }, [location]);
 
   useEffect(() => {
@@ -71,7 +75,9 @@ const NavBar = () => {
   useEffect(() => {
     if (isHome) {
       if (scrollPosition > 100) {
-        setNavBg("bg-white backdrop-filter backdrop-blur-xl bg-opacity-0 text-black dark:text-white");
+        setNavBg(
+          "bg-white backdrop-filter backdrop-blur-xl bg-opacity-0 text-black dark:text-white"
+        );
       } else {
         setNavBg("bg-transparent text-white dark:text-white");
       }
@@ -109,8 +115,12 @@ const NavBar = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
       className={`${
-        isHome ? navBg : "bg-white dark:bg-gray-900 backdrop-blur-2xl text-black dark:text-white"
-      } ${isFixed ? "static" : "fixed"} top-0 transition-colors duration-500 ease-in-out w-full z-10`}
+        isHome
+          ? navBg
+          : "bg-white dark:bg-gray-900 backdrop-blur-2xl text-black dark:text-white"
+      } ${
+        isFixed ? "static" : "fixed"
+      } top-0 transition-colors duration-500 ease-in-out w-full z-10`}
     >
       <div className="lg:w-[95%] mx-auto sm:px-6 lg:px-6">
         <div className="px-4 py-4 flex items-center justify-between">
@@ -151,7 +161,11 @@ const NavBar = () => {
                       style={{ whiteSpace: "nowrap" }}
                       className={({ isActive }) =>
                         `font-bold ${
-                          isActive ? "text-secondary" : navBg.includes("bg-transparent") && isHome ? "text-white" : "text-black dark:text-white"
+                          isActive
+                            ? "text-secondary"
+                            : navBg.includes("bg-transparent") && isHome
+                            ? "text-white"
+                            : "text-black dark:text-white"
                         } hover:text-secondary duration-300`
                       }
                     >
@@ -225,8 +239,8 @@ const NavBar = () => {
                 {user && (
                   <li>
                     <img
-                      src={farmerImg}
-                      alt=""
+                      src={currentUser?.photoUrl || farmerImg}
+                      alt="User Avatar"
                       className="h-[40px] rounded-full w-[40px]"
                     />
                   </li>
