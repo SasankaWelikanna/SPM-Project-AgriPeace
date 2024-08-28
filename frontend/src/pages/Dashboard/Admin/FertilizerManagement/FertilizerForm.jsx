@@ -74,7 +74,7 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "name" && /[^\p{L}\s]/u.test(value)) {
+    if (name === "productName" && /[^\p{L}\s]/u.test(value)) {
       return;
     }
 
@@ -115,10 +115,10 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
         <input
           type="text"
           className="w-full p-2 border border-gray-300 rounded-md"
-          name="name"
+          name="productName"
           placeholder="Fertilizer Name"
           onChange={handleChange}
-          value={formData.name}
+          value={formData.productName}
           required
         />
       </div>
