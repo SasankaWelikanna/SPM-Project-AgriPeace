@@ -1,20 +1,20 @@
 const router = require("express").Router();
 
-const PlantCtrl = require("../../controllers/FertilizerManagement/FertilizerCtrl");
+const FertilizerCtrl = require("../../controllers/FertilizerManagement/FertilizerCtrl");
 
-// Route for adding a new plant
-router.post("/add", PlantCtrl.addPlant);
+// Route for adding a new Fertilizer
+router.post("/add", FertilizerCtrl.addFertilizer);
 
-// Route for getting all plants
-router.get("/", PlantCtrl.getAllPlants);
+// Route for getting all Fertilizers
+router.get("/", FertilizerCtrl.getAllFertilizers);
 
-// Route for getting a specific plant by ID
-router.get("/:id", PlantCtrl.getOnePlant); // Adjusted to match frontend route
+// Route for getting a specific Fertilizer by ID
+router.get("/:id", FertilizerCtrl.getOneFertilizer); // Adjusted to match frontend route
 
-// Route for deleting a plant by ID
-router.delete("/delete/:id", PlantCtrl.deletePlant);
+// Route for deleting a Fertilizer by ID
+router.delete("/delete/:id", FertilizerCtrl.deleteFertilizer);
 
-// Route for updating a plant by ID
-router.put("/update/:id", PlantCtrl.updatePlant);
+// Route for updating a Fertilizer by ID
+router.put("/update/:id", FertilizerCtrl.updateFertilizer);
 
 module.exports = router;

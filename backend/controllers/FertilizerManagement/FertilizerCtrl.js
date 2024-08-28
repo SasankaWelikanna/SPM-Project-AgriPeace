@@ -1,73 +1,77 @@
-const Plant = require("../../models/FertilizerManagement/Fertilizer");
+const Fertilizer = require("../../models/FertilizerManagement/Fertilizer");
 
-const addPlant = async (req, res) => {
-  const { imageUrl, name, date, description } = req.body;
+const addFertilizer = async (req, res) => {
+  const { imageUrl, productName, category, description, quantity, price } = req.body;
   try {
-    const newPlant = await Plant.create({
+    const newFertilizer = await Fertilizer.create({
       imageUrl,
-      name,
-      date,
+      productName,
+      category,
       description,
+      quantity,
+      price,
     });
-    res.json("New Plant Added");
+    res.json("New Fertilizer Added");
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-const getAllPlants = async (req, res) => {
+const getAllFertilizers = async (req, res) => {
   try {
-    const plants = await Plant.find(); // Corrected to Plant.find()
-    res.json(plants);
+    const Fertilizers = await Fertilizer.find(); // Corrected to Fertilizer.find()
+    res.json(Fertilizers);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-const getOnePlant = async (req, res) => {
+const getOneFertilizer = async (req, res) => {
   const id = req.params.id;
   try {
-    const plant = await Plant.findById(id);
-    res.status(200).json(plant);
+    const Fertilizer = await Fertilizer.findById(id);
+    res.status(200).json(Fertilizer);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-const deletePlant = async (req, res) => {
+const deleteFertilizer = async (req, res) => {
   const id = req.params.id;
   try {
-    await Plant.findByIdAndDelete(id);
-    res.status(200).json({ message: "Plant Deleted" }); // Corrected message
+    await Fertilizer.findByIdAndDelete(id);
+    res.status(200).json({ message: "Fertilizer Deleted" }); // Corrected message
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-const updatePlant = async (req, res) => {
+const updateFertilizer = async (req, res) => {
   const id = req.params.id;
-  const { imageUrl, name, date, description } = req.body;
+  const { imageUrl, productName, category, description, quantity, price } = req.body;
   try {
-    await Plant.findByIdAndUpdate(
+    await Fertilizer.findByIdAndUpdate(
       id,
       {
         imageUrl,
-        name,
-        date,
-        description,
+      productName,
+      category,
+      description,
+      quantity,
+      price,
       },
       { new: true }
     ); // Added { new: true } to return updated document
-    res.status(200).json({ message: "Plant Updated" }); // Corrected message
+    res.status(200).json({ message: "Fertilizer Updated" }); // Corrected message
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
 module.exports = {
-  addPlant,
-  getAllPlants,
-  getOnePlant,
-  deletePlant,
-  updatePlant,
+  addFertilizer,
+  getAllFertilizers,
+  getOneFertilizer,
+  deleteFertilizer,
+  updateFertilizer,
 };

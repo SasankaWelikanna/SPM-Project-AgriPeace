@@ -1,14 +1,14 @@
 const mongoose = require("mongoose");
 
-const PlantSchema = new mongoose.Schema({
+const FertilizerSchema = new mongoose.Schema({
   imageUrl: {
     type: String,
   },
-  name: {
+  productName: {
     type: String,
     required: true,
   },
-  date: {
+  category: {
     type: String,
     required: true,
   },
@@ -16,8 +16,16 @@ const PlantSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  quantity: {
+    type: Number,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
 });
 
-const Plant = mongoose.model("Plant", PlantSchema);
+const Fertilizer = mongoose.model("Fertilzer", FertilizerSchema);
 
-module.exports = Plant;
+module.exports = Fertilizer;

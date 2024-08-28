@@ -19,7 +19,7 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
 
   const uploadFile = (file, fileType) => {
     const fileName = new Date().getTime() + file.name;
-    const storageRef = ref(storage, "images/fruits/" + fileName);
+    const storageRef = ref(storage, "images/fertilizers/" + fileName);
     const uploadTask = uploadBytesResumable(storageRef, file);
     setUploading(true); // Start uploading
 

@@ -23,10 +23,10 @@ function Fertilizer() {
   const [deleteId, setDeleteId] = useState(null);
 
   useEffect(() => {
-    fetchPlants();
+    fetchFertilizers();
   }, []);
 
-  const fetchPlants = async () => {
+  const fetchFertilizers = async () => {
     try {
       const response = await axiosFetch.get("/Plant/");
       console.log("Fetched Plants Data:", response.data); // Debug log
@@ -186,9 +186,11 @@ function Fertilizer() {
           <thead className="bg-gray-100">
             <tr>
               <th className="p-4 text-left">Image</th>
-              <th className="p-4 text-left">Name</th>
-              <th className="p-4 text-left">Date</th>
+              <th className="p-4 text-left">Product Name</th>
+              <th className="p-4 text-left">Category</th>
               <th className="p-4 text-left">Description</th>
+              <th className="p-4 text-left">Quantity</th>
+              <th className="p-4 text-left">Price</th>
               <th className="p-4 text-left">Action</th>
             </tr>
           </thead>
