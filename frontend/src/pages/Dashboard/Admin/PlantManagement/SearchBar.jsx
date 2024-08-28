@@ -28,7 +28,7 @@ const SearchBar = ({ onSearch }) => {
         <button
           type="submit"
           title="Search"
-          className="p-3 bg-secondary text-white rounded-r-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-secondary"
+          className="p-3 bg-secondary border-2 border-secondary text-white rounded-r-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-secondary"
         >
           <FaSearch />
         </button>
