@@ -43,9 +43,9 @@ const farmerNavItems = [
     label: "Dashboard",
   },
   {
-    to: "/dashboard/my-crops",
+    to: "/dashboard/location",
     icon: <GiField className="text-2xl" />,
-    label: "My Crops",
+    label: "My Locations",
   },
   {
     to: "/dashboard/user-profile",
