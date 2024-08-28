@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import useAxiosFetch from "../../../../hooks/useAxiosFetch";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { useNavigate } from "react-router-dom";
-import Modal from "./Modal";
+import Modal from "../../../../components/Modal/Modal";
 import PlantForm from "./PlantForm";
 import SearchBar from "./SearchBar";
 import { ToastContainer, toast } from "react-toastify";
+import { MdDelete } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
 
 function Plant() {
   const axiosFetch = useAxiosFetch();
@@ -211,13 +213,13 @@ function Plant() {
                       className="text-blue-500 hover:underline"
                       onClick={() => handleEditModalOpen(plant)}
                     >
-                      Edit
+                      <FaEdit className="text-3xl" />
                     </button>
                     <button
                       className="text-red-500 hover:underline"
                       onClick={() => handleShowDeleteModal(plant._id)}
                     >
-                      Delete
+                      <MdDelete className="text-3xl" />
                     </button>
                   </td>
                 </tr>
