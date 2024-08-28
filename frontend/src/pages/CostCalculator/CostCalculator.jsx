@@ -157,7 +157,7 @@ const CostCalculator = () => {
       ) : (
         <div className="overflow-x-auto mt-4">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-100">
+            <thead className="bg-gray-200 font-bold text-center">
               <tr>
                 {["Crop", "Area (acres)", "Estimated Cost (Rs.)", "Water Resources", "Soil Type", "Fertilizer Needs", "Water Needs"].map((header) => (
                   <th key={header} className="px-4 py-2 text-left text-gray-600 font-medium">{header}</th>
@@ -169,7 +169,7 @@ const CostCalculator = () => {
                 <tr key={index} className="hover:bg-gray-50">
                   <td className="px-4 py-2 text-gray-800">{calc.crop}</td>
                   <td className="px-4 py-2 text-gray-800">{calc.area}</td>
-                  <td className="px-4 py-2 text-gray-800">{calc.estimatedCost}</td>
+                  <td className="px-4 py-2 text-secondary font-bold text-[20px]">Rs. {calc.estimatedCost}</td>
                   <td className="px-4 py-2 text-gray-800">{calc.waterResources}</td>
                   <td className="px-4 py-2 text-gray-800">{calc.soilType}</td>
                   <td className="px-4 py-2 text-gray-800">{calc.fertilizerNeeds}</td>
