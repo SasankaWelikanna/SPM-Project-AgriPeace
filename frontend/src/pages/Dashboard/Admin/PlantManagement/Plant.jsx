@@ -198,35 +198,23 @@ function Plant() {
           <tbody>
             {filteredDataList.length ? (
               filteredDataList.map((plant) => (
-                <tr key={plant._id} className="border-b">
+                <tr
+                  key={plant._id}
+                  className="border-b"
+                  onClick={() => handleViewDiseases(plant._id)}
+                >
                   <td className="p-4">
                     {plant.imageUrl && (
                       <img
                         src={plant.imageUrl}
                         alt="Plant"
                         className="w-12 h-12 object-cover rounded-lg"
-                        onClick={() => handleViewDiseases(plant._id)}
                       />
                     )}
                   </td>
-                  <td
-                    className="p-4"
-                    onClick={() => handleViewDiseases(plant._id)}
-                  >
-                    {plant.name}
-                  </td>
-                  <td
-                    className="p-4"
-                    onClick={() => handleViewDiseases(plant._id)}
-                  >
-                    {plant.date}
-                  </td>
-                  <td
-                    className="p-4"
-                    onClick={() => handleViewDiseases(plant._id)}
-                  >
-                    {plant.description}
-                  </td>
+                  <td className="p-4">{plant.name}</td>
+                  <td className="p-4">{plant.date}</td>
+                  <td className="p-4">{plant.description}</td>
                   <td className="p-4 flex space-x-2">
                     <button
                       className="text-blue-500 hover:underline"
