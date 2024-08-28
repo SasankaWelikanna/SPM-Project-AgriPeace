@@ -108,7 +108,7 @@ function Diseases() {
           </div>
           <div className="flex space-x-4">
             <button
-              className="bg-blue-500 text-white py-2 px-4 rounded-lg"
+              className="bg-secondary hover:scale-105 text-white py-2 px-4 rounded-lg"
               onClick={handleAddModalOpen}
             >
               Add Disease
