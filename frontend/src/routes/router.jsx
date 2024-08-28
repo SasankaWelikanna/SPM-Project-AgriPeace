@@ -15,7 +15,7 @@ import UpdateUser from "../pages/Dashboard/Admin/UpdateUser";
 import PlantManagement from "../pages/Dashboard/Admin/PlantManagement";
 import CostCalculator from "../pages/CostCalculator/CostCalculator";
 import MyCrops from "../pages/Dashboard/Farmer/MyCrops/MyCrops";
-import FertilizerManagementDashboard from "../pages/Dashboard/Admin/FertilizerManagement/FertilizerManagementDashboard";
+import FertilizerManagementDashboard from "../pages/Dashboard/Admin/FertilizerManagementDashboard";
 
 export const router = createBrowserRouter([
   {
