@@ -131,7 +131,7 @@ function Plant() {
               Refresh
             </button>
             <button
-              className="bg-blue-500 text-white py-2 px-4 rounded-lg"
+              className="bg-secondary hover:scale-105 text-white py-2 px-4 rounded-lg"
               onClick={handleAddModalOpen}
             >
               Add Plant
@@ -205,12 +205,28 @@ function Plant() {
                         src={plant.imageUrl}
                         alt="Plant"
                         className="w-12 h-12 object-cover rounded-lg"
+                        onClick={() => handleViewDiseases(plant._id)}
                       />
                     )}
                   </td>
-                  <td className="p-4">{plant.name}</td>
-                  <td className="p-4">{plant.date}</td>
-                  <td className="p-4">{plant.description}</td>
+                  <td
+                    className="p-4"
+                    onClick={() => handleViewDiseases(plant._id)}
+                  >
+                    {plant.name}
+                  </td>
+                  <td
+                    className="p-4"
+                    onClick={() => handleViewDiseases(plant._id)}
+                  >
+                    {plant.date}
+                  </td>
+                  <td
+                    className="p-4"
+                    onClick={() => handleViewDiseases(plant._id)}
+                  >
+                    {plant.description}
+                  </td>
                   <td className="p-4 flex space-x-2">
                     <button
                       className="text-blue-500 hover:underline"
