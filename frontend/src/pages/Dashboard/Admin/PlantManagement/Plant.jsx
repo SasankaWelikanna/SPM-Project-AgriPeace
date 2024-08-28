@@ -27,10 +27,18 @@ function Plant() {
   const fetchPlants = async () => {
     try {
       const response = await axiosFetch.get("/Plant/");
-      setDataList(response.data);
-      setFilteredDataList(response.data);
+      console.log("Fetched Plants Data:", response.data); // Debug log
+      // Verify the data structure
+      if (Array.isArray(response.data)) {
+        setDataList(response.data);
+        setFilteredDataList(response.data);
+      } else {
+        console.error("Unexpected data format:", response.data);
+        toast.error("Unexpected data format from server.");
+      }
     } catch (err) {
       console.error("Error fetching plants:", err);
+      toast.error("Failed to fetch plants.");
     }
   };
 
@@ -59,7 +67,7 @@ function Plant() {
     try {
       await axiosSecure.delete(`/Plant/delete/${id}`);
       toast.success("Successfully Deleted!");
-      fetchPlants();
+      fetchPlants(); // Ensure data is refreshed after deletion
       handleCloseDeleteModal();
     } catch (err) {
       console.error("Error deleting plant:", err);
@@ -72,7 +80,7 @@ function Plant() {
       await axiosSecure.post("/Plant/add", formData);
       toast.success("Plant Added!");
       handleAddModalClose();
-      fetchPlants();
+      fetchPlants(); // Refresh data after adding a plant
     } catch (err) {
       console.error("Error adding plant:", err);
       toast.error("Failed to add plant.");
@@ -84,7 +92,7 @@ function Plant() {
       await axiosSecure.put(`/Plant/update/${formData._id}`, formData);
       toast.success("Plant Updated!");
       handleEditModalClose();
-      fetchPlants();
+      fetchPlants(); // Refresh data after editing a plant
     } catch (err) {
       console.error("Error updating plant:", err);
       toast.error("Failed to update plant.");
@@ -101,7 +109,7 @@ function Plant() {
   };
 
   return (
-    <div className="p-4 bg-gray-50">
+    <div className="mt-10 p-4 bg-gray-50">
       <div className="bg-white shadow-md rounded-lg p-6">
         <div className="flex justify-between items-center mb-4">
           <div>
@@ -191,7 +199,7 @@ function Plant() {
                       <img
                         src={plant.imageUrl}
                         alt="Plant"
-                        className="w-12 h-12 object-cover rounded-full"
+                        className="w-12 h-12 object-cover rounded-lg"
                       />
                     )}
                   </td>
