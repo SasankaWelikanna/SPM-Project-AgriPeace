@@ -3,7 +3,7 @@ start backend -
 cd backend -> npm start
 
 start frontend -
-cd frontend -> npm run dev\
+cd frontend -> npm run dev
 
 🔹 user login
 ▪️email - user@gmail.com
