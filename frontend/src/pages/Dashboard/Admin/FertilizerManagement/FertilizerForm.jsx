@@ -7,9 +7,11 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
   const [imgPerc, setImgPerc] = useState(0);
   const [formData, setFormData] = useState({
     imageUrl: "",
-    name: "",
-    date: "",
+    productName: "",
+    category: "",
     description: "",
+    quantity: "",
+    price: "",
   });
   const [uploading, setUploading] = useState(false); // Track if image is being uploaded
 
@@ -105,16 +107,16 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
       </div>
       <div className="mb-4">
         <label
-          htmlFor="name"
+          htmlFor="productName"
           className="block text-gray-700 font-semibold mb-1"
         >
-          Plant Name
+          Fertilizer Name
         </label>
         <input
           type="text"
           className="w-full p-2 border border-gray-300 rounded-md"
           name="name"
-          placeholder="Plant Name"
+          placeholder="Fertilizer Name"
           onChange={handleChange}
           value={formData.name}
           required
@@ -122,18 +124,18 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
       </div>
       <div className="mb-4">
         <label
-          htmlFor="date"
+          htmlFor="category"
           className="block text-gray-700 font-semibold mb-1"
         >
-          Date
+          Category
         </label>
         <input
-          type="date"
+          type="text"
           className="w-full p-2 border border-gray-300 rounded-md"
-          name="date"
+          name="category"
+          placeholder="Category"
           onChange={handleChange}
-          value={formData.date}
-          min={getCurrentDate()} // Set the min attribute to today's date
+          value={formData.category}
           required
         />
       </div>
@@ -151,6 +153,40 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
           placeholder="Description"
           onChange={handleChange}
           value={formData.description}
+          required
+        />
+      </div>
+      <div className="mb-4">
+        <label
+          htmlFor="quantity"
+          className="block text-gray-700 font-semibold mb-1"
+        >
+          Quantity
+        </label>
+        <input
+          type="text"
+          className="w-full p-2 border border-gray-300 rounded-md"
+          name="quantity"
+          placeholder="Quantity"
+          onChange={handleChange}
+          value={formData.quantity}
+          required
+        />
+      </div>
+      <div className="mb-4">
+        <label
+          htmlFor="price"
+          className="block text-gray-700 font-semibold mb-1"
+        >
+          Price
+        </label>
+        <input
+          type="text"
+          className="w-full p-2 border border-gray-300 rounded-md"
+          name="price"
+          placeholder="Price"
+          onChange={handleChange}
+          value={formData.price}
           required
         />
       </div>

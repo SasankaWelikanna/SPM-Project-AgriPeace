@@ -13,11 +13,11 @@ function Fertilizer() {
   const axiosFetch = useAxiosFetch();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
-  const [plant, setPlant] = useState([]);
+  const [fertilizer, setFertilizer] = useState([]);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [dataList, setDataList] = useState([]);
-  const [selectedPlant, setSelectedPlant] = useState(null);
+  const [selectedFertilizer, setSelectedFertilizer] = useState(null);
   const [filteredDataList, setFilteredDataList] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
@@ -28,8 +28,8 @@ function Fertilizer() {
 
   const fetchFertilizers = async () => {
     try {
-      const response = await axiosFetch.get("/Plant/");
-      console.log("Fetched Plants Data:", response.data); // Debug log
+      const response = await axiosFetch.get("/Fertilizer/");
+      console.log("Fetched Fertilizers Data:", response.data); // Debug log
       // Verify the data structure
       if (Array.isArray(response.data)) {
         setDataList(response.data);
@@ -39,65 +39,65 @@ function Fertilizer() {
         toast.error("Unexpected data format from server.");
       }
     } catch (err) {
-      console.error("Error fetching plants:", err);
-      toast.error("Failed to fetch plants.");
+      console.error("Error fetching fertilizers:", err);
+      toast.error("Failed to fetch fertilizers.");
     }
   };
 
   const handleSearch = (query) => {
-    const filteredList = dataList.filter((plant) => {
-      const fullName = `${plant.name} ${plant.date}`;
+    const filteredList = dataList.filter((fertilizer) => {
+      const fullName = `${fertilizer.name} ${fertilizer.date}`;
       return fullName.toLowerCase().includes(query.toLowerCase());
     });
     setFilteredDataList(filteredList);
   };
 
   const handleRefreshClick = () => {
-    fetchPlants();
+    fetchFertilizers();
   };
 
   const handleAddModalOpen = () => setAddModalOpen(true);
   const handleAddModalClose = () => setAddModalOpen(false);
 
-  const handleEditModalOpen = (plant) => {
-    setSelectedPlant(plant);
+  const handleEditModalOpen = (fertilizer) => {
+    setSelectedFertilizer(fertilizer);
     setEditModalOpen(true);
   };
   const handleEditModalClose = () => setEditModalOpen(false);
 
   const handleDelete = async (id) => {
     try {
-      await axiosSecure.delete(`/Plant/delete/${id}`);
+      await axiosSecure.delete(`/Fertilizer/delete/${id}`);
       toast.success("Successfully Deleted!");
-      fetchPlants(); // Ensure data is refreshed after deletion
+      fetchFertilizers(); // Ensure data is refreshed after deletion
       handleCloseDeleteModal();
     } catch (err) {
-      console.error("Error deleting plant:", err);
-      toast.error("Failed to delete plant.");
+      console.error("Error deleting fertilizer:", err);
+      toast.error("Failed to delete fertilizer.");
     }
   };
 
   const handleAddSubmit = async (formData) => {
     try {
-      await axiosSecure.post("/Plant/add", formData);
-      toast.success("Plant Added!");
+      await axiosSecure.post("/Fertilizer/add", formData);
+      toast.success("Fertilizer Added!");
       handleAddModalClose();
-      fetchPlants(); // Refresh data after adding a plant
+      fetchFertilizers(); // Refresh data after adding a fertilizer
     } catch (err) {
-      console.error("Error adding plant:", err);
-      toast.error("Failed to add plant.");
+      console.error("Error adding fertilizer:", err);
+      toast.error("Failed to add fertilizer.");
     }
   };
 
   const handleEditSubmit = async (formData) => {
     try {
-      await axiosSecure.put(`/Plant/update/${formData._id}`, formData);
-      toast.success("Plant Updated!");
+      await axiosSecure.put(`/Fertilizer/update/${formData._id}`, formData);
+      toast.success("Fertilizer Updated!");
       handleEditModalClose();
-      fetchPlants(); // Refresh data after editing a plant
+      fetchFertilizers(); // Refresh data after editing a fertilizer
     } catch (err) {
-      console.error("Error updating plant:", err);
-      toast.error("Failed to update plant.");
+      console.error("Error updating fertilizer:", err);
+      toast.error("Failed to update fertilizer.");
     }
   };
 
@@ -116,9 +116,9 @@ function Fertilizer() {
         <div className="flex justify-between items-center mb-4">
           <div>
             <h2 className="text-xl font-semibold text-gray-700">
-              Plant Details
+              Fertilizer Details
             </h2>
-            <h6 className="text-sm text-gray-500">Manage plant details</h6>
+            <h6 className="text-sm text-gray-500">Manage fertilizer details</h6>
           </div>
           <div className="flex space-x-4">
             <button
@@ -131,29 +131,29 @@ function Fertilizer() {
               className="bg-blue-500 text-white py-2 px-4 rounded-lg"
               onClick={handleAddModalOpen}
             >
-              Add Plant
+              Add Fertilizer
             </button>
           </div>
         </div>
 
-        {/* Add Plant Modal */}
+        {/* Add Fertilizer Modal */}
         <Modal
           isOpen={addModalOpen}
           onClose={handleAddModalClose}
-          title="Add Plant"
+          title="Add Fertilizer"
         >
           <FertilizerForm handleSubmit={handleAddSubmit} />
         </Modal>
 
-        {/* Edit Plant Modal */}
+        {/* Edit Fertilizer Modal */}
         <Modal
           isOpen={editModalOpen}
           onClose={handleEditModalClose}
-          title="Edit Plant"
+          title="Edit Fertilizer"
         >
           <FertilizerForm
             handleSubmit={handleEditSubmit}
-            initialData={selectedPlant}
+            initialData={selectedFertilizer}
           />
         </Modal>
 
@@ -196,30 +196,33 @@ function Fertilizer() {
           </thead>
           <tbody>
             {filteredDataList.length ? (
-              filteredDataList.map((plant) => (
-                <tr key={plant._id} className="border-b">
+              filteredDataList.map((fertilizer) => (
+                <tr key={fertilizer._id} className="border-b">
                   <td className="p-4">
-                    {plant.imageUrl && (
+                    {fertilizer.imageUrl && (
                       <img
-                        src={plant.imageUrl}
-                        alt="Plant"
+                        src={fertilizer.imageUrl}
+                        alt="Fertilizer"
                         className="w-12 h-12 object-cover rounded-lg"
                       />
                     )}
                   </td>
-                  <td className="p-4">{plant.name}</td>
-                  <td className="p-4">{plant.date}</td>
-                  <td className="p-4">{plant.description}</td>
+                  <td className="p-4">{fertilizer.productName}</td>
+                  <td className="p-4">{fertilizer.category}</td>
+                  <td className="p-4">{fertilizer.description}</td>
+                  <td className="p-4">{fertilizer.quantity}</td>
+                  <td className="p-4">{fertilizer.price}</td>
+
                   <td className="p-4 flex space-x-2">
                     <button
                       className="text-blue-500 hover:underline"
-                      onClick={() => handleEditModalOpen(plant)}
+                      onClick={() => handleEditModalOpen(fertilizer)}
                     >
                       <FaEdit className="text-3xl" />
                     </button>
                     <button
                       className="text-red-500 hover:underline"
-                      onClick={() => handleShowDeleteModal(plant._id)}
+                      onClick={() => handleShowDeleteModal(fertilizer._id)}
                     >
                       <MdDelete className="text-3xl" />
                     </button>
