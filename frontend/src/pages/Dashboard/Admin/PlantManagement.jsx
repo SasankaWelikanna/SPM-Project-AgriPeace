@@ -5,7 +5,7 @@ import React from "react";
 import PlantBody from "./PlantManagement/Plant";
 // import Footer from "../../../components/footer/Footer";
 
-const Coordinator = () => {
+const PlantManagement = () => {
   return (
     <div>
       {/* <Header /> */}
@@ -16,4 +16,4 @@ const Coordinator = () => {
   );
 };
 
-export default Coordinator;
+export default PlantManagement;
