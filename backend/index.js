@@ -24,9 +24,6 @@ mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD
 // User Model
 const User = require('./models/User/User'); // Make sure to define User model correctly
 
-// Controllers
-const { calculateCost, getEstimates } = require('./controllers/CostCalculator/CostCalculatorController');
-
 // Middleware to verify JWT
 const verifyJWT = (req, res, next) => {
   const authorization = req.headers.authorization;
