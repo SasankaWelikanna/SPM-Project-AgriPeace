@@ -14,6 +14,8 @@ import ManageUsers from "../pages/Dashboard/Admin/ManageUsers";
 import UpdateUser from "../pages/Dashboard/Admin/UpdateUser";
 import PlantManagement from "../pages/Dashboard/Admin/PlantManagement";
 import CostCalculator from "../pages/CostCalculator/CostCalculator";
+import MyCrops from "../pages/Dashboard/Farmer/MyCrops/MyCrops";
+import FertilizerManagementDashboard from "../pages/Dashboard/Admin/FertilizerManagement/FertilizerManagementDashboard";
 
 export const router = createBrowserRouter([
   {
@@ -64,6 +66,10 @@ export const router = createBrowserRouter([
         path: "farmer-home",
         element: <FarmerHome />,
       },
+      {
+        path: "my-crops",
+        element: <MyCrops/>,
+      },
 
       // admin routes
       {
@@ -85,6 +91,11 @@ export const router = createBrowserRouter([
       {
         path: "manage-plant",
         element: <PlantManagement />,
+      },
+      //fertilizer management
+      {
+        path: "manage-fertilizers",
+        element: <FertilizerManagementDashboard />,
       },
     ],
   },

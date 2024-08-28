@@ -4,9 +4,11 @@ import useAuth from "../hooks/useAuth";
 import useUser from "../hooks/useUser";
 import logo from "/logo.png";
 import { BiHomeAlt, BiLogInCircle } from "react-icons/bi";
-import { FaRegUserCircle, FaUsers, FaViruses } from "react-icons/fa";
-import { GiFertilizerBag, GiFigurehead } from "react-icons/gi";
+import { FaUsers, FaUserAlt } from "react-icons/fa";
+import { GiFertilizerBag, GiFigurehead, GiField } from "react-icons/gi";
 import { MdOfflineBolt, MdPayments } from "react-icons/md";
+import { RiPlantFill } from "react-icons/ri";
+import { RiDashboardFill } from "react-icons/ri";
 import Swal from "sweetalert2";
 import Scroll from "../hooks/useScroll";
 import Loader from "../components/Loader/Loader";
@@ -14,7 +16,7 @@ import Loader from "../components/Loader/Loader";
 const adminNavItems = [
   {
     to: "/dashboard/admin-home",
-    icon: <BiHomeAlt className="text-2xl" />,
+    icon: <RiDashboardFill className="text-2xl" />,
     label: "Dashboard",
   },
   {
@@ -29,7 +31,7 @@ const adminNavItems = [
   },
   {
     to: "/dashboard/manage-plant",
-    icon: <FaViruses className="text-2xl" />,
+    icon: <RiPlantFill className="text-2xl" />,
     label: "Plant Mangement",
   },
 ];
@@ -37,12 +39,17 @@ const adminNavItems = [
 const farmerNavItems = [
   {
     to: "/dashboard/farmer-home",
-    icon: <BiHomeAlt className="text-2xl" />,
+    icon: <RiDashboardFill className="text-2xl" />,
     label: "Dashboard",
   },
   {
+    to: "/dashboard/my-crops",
+    icon: <GiField className="text-2xl" />,
+    label: "My Crops",
+  },
+  {
     to: "/dashboard/user-profile",
-    icon: <FaRegUserCircle className="text-2xl" />,
+    icon: <FaUserAlt className="text-2xl" />,
     label: "Profile",
   },
   {
