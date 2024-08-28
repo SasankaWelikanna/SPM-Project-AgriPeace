@@ -8,14 +8,10 @@ const Dashboard = () => {
   const role = currentUser?.role;
 
   if (isLoading) {
-    return (
-      <Loader/>
-    );
+    return <Loader />;
   }
 
-  return (
-   <DashboardNavigate/>
-  );
+  return <DashboardNavigate />;
 };
 
 export default Dashboard;
