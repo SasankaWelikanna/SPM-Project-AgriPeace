@@ -131,7 +131,7 @@ function Plant() {
               Refresh
             </button>
             <button
-              className="bg-blue-500 text-white py-2 px-4 rounded-lg"
+              className="bg-secondary hover:scale-105 text-white py-2 px-4 rounded-lg"
               onClick={handleAddModalOpen}
             >
               Add Plant
@@ -198,7 +198,11 @@ function Plant() {
           <tbody>
             {filteredDataList.length ? (
               filteredDataList.map((plant) => (
-                <tr key={plant._id} className="border-b">
+                <tr
+                  key={plant._id}
+                  className="border-b"
+                  onClick={() => handleViewDiseases(plant._id)}
+                >
                   <td className="p-4">
                     {plant.imageUrl && (
                       <img
