@@ -1,12 +1,9 @@
 # SPM-Project
-start backend
+start backend -
 cd backend -> npm start
 
-start frontend
-cd frontend -> npm run dev
-
-To login
-enter url - http://localhost:5173/login
+start frontend -
+cd frontend -> npm run dev\
 
 🔹 user login
 ▪️email - user@gmail.com
