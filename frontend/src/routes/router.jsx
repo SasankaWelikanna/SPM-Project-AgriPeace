@@ -17,6 +17,7 @@ import CostCalculator from "../pages/CostCalculator/CostCalculator";
 import MyCrops from "../pages/Dashboard/Farmer/MyCrops/MyCrops";
 import FertilizerManagementDashboard from "../pages/Dashboard/Admin/FertilizerManagement/FertilizerManagementDashboard";
 import Location from "../pages/Dashboard/Farmer/LocationManagement/Location";
+import Diseases from "../pages/Dashboard/Admin/PlantManagement/Diseases";
 
 export const router = createBrowserRouter([
   {
@@ -49,8 +50,8 @@ export const router = createBrowserRouter([
       },
       {
         path: "/costCalculator",
-        element: <CostCalculator/>
-      }
+        element: <CostCalculator />,
+      },
     ],
   },
   {
@@ -69,11 +70,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "my-crops",
-        element: <MyCrops/>,
+        element: <MyCrops />,
       },
       {
         path: "location",
-        element: <Location/>,
+        element: <Location />,
       },
 
       // admin routes
@@ -92,10 +93,16 @@ export const router = createBrowserRouter([
           fetch(`http://localhost:3000/users/${params.id}`),
       },
 
-      //plant management
+      // plant management
       {
         path: "manage-plant",
         element: <PlantManagement />,
+      },
+      {
+        path: "manage-plant/diseases/:plantId", // Route for plant diseases
+        element: <Diseases />,
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/plants/${params.plantId}/diseases`),
       },
       //fertilizer management
       {

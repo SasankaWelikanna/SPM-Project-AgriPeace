@@ -1,102 +1,87 @@
 import React, { useEffect, useState } from "react";
 import useAxiosFetch from "../../../../hooks/useAxiosFetch";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../../../../components/Modal/Modal";
-import PlantForm from "./PlantForm";
-import SearchBar from "../../../../components/Search/SearchBar";
+import DiseaseForm from "./DiseaseForm";
 import { ToastContainer, toast } from "react-toastify";
 import { MdDelete } from "react-icons/md";
-import { FaEdit, FaDisease } from "react-icons/fa"; // FaDisease for disease management
+import { FaEdit } from "react-icons/fa";
 
-function Plant() {
+function Diseases() {
   const axiosFetch = useAxiosFetch();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
-  const [plant, setPlant] = useState([]);
+  const { plantId } = useParams();
+  const [diseases, setDiseases] = useState([]);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [dataList, setDataList] = useState([]);
-  const [selectedPlant, setSelectedPlant] = useState(null);
-  const [filteredDataList, setFilteredDataList] = useState([]);
+  const [selectedDisease, setSelectedDisease] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
 
   useEffect(() => {
-    fetchPlants();
-  }, []);
+    fetchDiseases();
+  }, [plantId]);
 
-  const fetchPlants = async () => {
+  const fetchDiseases = async () => {
     try {
-      const response = await axiosFetch.get("/Plant/");
-      console.log("Fetched Plants Data:", response.data); // Debug log
+      const response = await axiosFetch.get(`/api/diseases/plant/${plantId}`);
+      console.log("Fetched Diseases Data:", response.data); // Debug log
       if (Array.isArray(response.data)) {
-        setDataList(response.data);
-        setFilteredDataList(response.data);
+        setDiseases(response.data);
       } else {
         console.error("Unexpected data format:", response.data);
         toast.error("Unexpected data format from server.");
       }
     } catch (err) {
-      console.error("Error fetching plants:", err);
-      toast.error("Failed to fetch plants.");
+      console.error("Error fetching diseases:", err);
+      toast.error("Failed to fetch diseases.");
     }
-  };
-
-  const handleSearch = (query) => {
-    const filteredList = dataList.filter((plant) => {
-      const fullName = `${plant.name} ${plant.date}`;
-      return fullName.toLowerCase().includes(query.toLowerCase());
-    });
-    setFilteredDataList(filteredList);
-  };
-
-  const handleRefreshClick = () => {
-    fetchPlants();
   };
 
   const handleAddModalOpen = () => setAddModalOpen(true);
   const handleAddModalClose = () => setAddModalOpen(false);
 
-  const handleEditModalOpen = (plant) => {
-    setSelectedPlant(plant);
+  const handleEditModalOpen = (disease) => {
+    setSelectedDisease(disease);
     setEditModalOpen(true);
   };
   const handleEditModalClose = () => setEditModalOpen(false);
 
   const handleDelete = async (id) => {
     try {
-      await axiosSecure.delete(`/Plant/delete/${id}`);
-      toast.success("Successfully Deleted!");
-      fetchPlants(); // Ensure data is refreshed after deletion
+      await axiosSecure.delete(`/api/diseases/${id}`);
+      toast.success("Disease Deleted!");
+      fetchDiseases(); // Ensure data is refreshed after deletion
       handleCloseDeleteModal();
     } catch (err) {
-      console.error("Error deleting plant:", err);
-      toast.error("Failed to delete plant.");
+      console.error("Error deleting disease:", err);
+      toast.error("Failed to delete disease.");
     }
   };
 
   const handleAddSubmit = async (formData) => {
     try {
-      await axiosSecure.post("/Plant/add", formData);
-      toast.success("Plant Added!");
+      await axiosSecure.post(`/api/diseases`, { ...formData, plantId });
+      toast.success("Disease Added!");
       handleAddModalClose();
-      fetchPlants(); // Refresh data after adding a plant
+      fetchDiseases(); // Refresh data after adding a disease
     } catch (err) {
-      console.error("Error adding plant:", err);
-      toast.error("Failed to add plant.");
+      console.error("Error adding disease:", err);
+      toast.error("Failed to add disease.");
     }
   };
 
   const handleEditSubmit = async (formData) => {
     try {
-      await axiosSecure.put(`/Plant/update/${formData._id}`, formData);
-      toast.success("Plant Updated!");
+      await axiosSecure.put(`/api/diseases/${formData._id}`, formData);
+      toast.success("Disease Updated!");
       handleEditModalClose();
-      fetchPlants(); // Refresh data after editing a plant
+      fetchDiseases(); // Refresh data after editing a disease
     } catch (err) {
-      console.error("Error updating plant:", err);
-      toast.error("Failed to update plant.");
+      console.error("Error updating disease:", err);
+      toast.error("Failed to update disease.");
     }
   };
 
@@ -109,54 +94,46 @@ function Plant() {
     setDeleteId(null);
   };
 
-  const handleViewDiseases = (plantId) => {
-    navigate(`/dashboard/manage-plant/diseases/${plantId}`);
-  };
-
   return (
     <div className="mt-10 p-4 bg-gray-50">
       <div className="bg-white shadow-md rounded-lg p-6">
         <div className="flex justify-between items-center mb-4">
           <div>
             <h2 className="text-xl font-semibold text-gray-700">
-              Plant Details
+              Plant Diseases
             </h2>
-            <h6 className="text-sm text-gray-500">Manage plant details</h6>
+            <h6 className="text-sm text-gray-500">
+              Manage diseases for this plant
+            </h6>
           </div>
           <div className="flex space-x-4">
-            <button
-              className="text-blue-500 hover:underline"
-              onClick={handleRefreshClick}
-            >
-              Refresh
-            </button>
             <button
               className="bg-blue-500 text-white py-2 px-4 rounded-lg"
               onClick={handleAddModalOpen}
             >
-              Add Plant
+              Add Disease
             </button>
           </div>
         </div>
 
-        {/* Add Plant Modal */}
+        {/* Add Disease Modal */}
         <Modal
           isOpen={addModalOpen}
           onClose={handleAddModalClose}
-          title="Add Plant"
+          title="Add Disease"
         >
-          <PlantForm handleSubmit={handleAddSubmit} />
+          <DiseaseForm handleSubmit={handleAddSubmit} />
         </Modal>
 
-        {/* Edit Plant Modal */}
+        {/* Edit Disease Modal */}
         <Modal
           isOpen={editModalOpen}
           onClose={handleEditModalClose}
-          title="Edit Plant"
+          title="Edit Disease"
         >
-          <PlantForm
+          <DiseaseForm
             handleSubmit={handleEditSubmit}
-            initialData={selectedPlant}
+            initialData={selectedDisease}
           />
         </Modal>
 
@@ -166,7 +143,7 @@ function Plant() {
           onClose={handleCloseDeleteModal}
           title="Confirm Delete"
         >
-          <p>Are you sure you want to delete this record?</p>
+          <p>Are you sure you want to delete this disease?</p>
           <div className="mt-6 flex justify-end">
             <button
               className="px-4 py-2 mr-4 bg-gray-300 rounded hover:bg-gray-400"
@@ -183,59 +160,39 @@ function Plant() {
           </div>
         </Modal>
 
-        <SearchBar onSearch={handleSearch} />
-
         <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden">
           <thead className="bg-gray-100">
             <tr>
-              <th className="p-4 text-left">Image</th>
               <th className="p-4 text-left">Name</th>
-              <th className="p-4 text-left">Date</th>
               <th className="p-4 text-left">Description</th>
               <th className="p-4 text-left">Action</th>
             </tr>
           </thead>
           <tbody>
-            {filteredDataList.length ? (
-              filteredDataList.map((plant) => (
-                <tr key={plant._id} className="border-b">
-                  <td className="p-4">
-                    {plant.imageUrl && (
-                      <img
-                        src={plant.imageUrl}
-                        alt="Plant"
-                        className="w-12 h-12 object-cover rounded-lg"
-                      />
-                    )}
-                  </td>
-                  <td className="p-4">{plant.name}</td>
-                  <td className="p-4">{plant.date}</td>
-                  <td className="p-4">{plant.description}</td>
+            {diseases.length ? (
+              diseases.map((disease) => (
+                <tr key={disease._id} className="border-b">
+                  <td className="p-4">{disease.name}</td>
+                  <td className="p-4">{disease.description}</td>
                   <td className="p-4 flex space-x-2">
                     <button
                       className="text-blue-500 hover:underline"
-                      onClick={() => handleEditModalOpen(plant)}
+                      onClick={() => handleEditModalOpen(disease)}
                     >
                       <FaEdit className="text-3xl" />
                     </button>
                     <button
                       className="text-red-500 hover:underline"
-                      onClick={() => handleShowDeleteModal(plant._id)}
+                      onClick={() => handleShowDeleteModal(disease._id)}
                     >
                       <MdDelete className="text-3xl" />
-                    </button>
-                    <button
-                      className="text-green-500 hover:underline"
-                      onClick={() => handleViewDiseases(plant._id)}
-                    >
-                      <FaDisease className="text-3xl" />
                     </button>
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="5" className="p-4 text-center text-gray-500">
+                <td colSpan="3" className="p-4 text-center text-gray-500">
                   No Data
                 </td>
               </tr>
@@ -259,4 +216,4 @@ function Plant() {
   );
 }
 
-export default Plant;
+export default Diseases;
