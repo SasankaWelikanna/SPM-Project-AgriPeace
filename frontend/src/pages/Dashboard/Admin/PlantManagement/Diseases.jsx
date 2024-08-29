@@ -5,8 +5,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../../../../components/Modal/Modal";
 import DiseaseForm from "./DiseaseForm";
 import { ToastContainer, toast } from "react-toastify";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdOutlineArrowBackIosNew } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 function Diseases() {
   const axiosFetch = useAxiosFetch();
@@ -97,6 +98,9 @@ function Diseases() {
   return (
     <div className="mt-10 p-4 bg-gray-50">
       <div className="bg-white shadow-md rounded-lg p-6">
+        <Link to="/dashboard/manage-plant">
+          <MdOutlineArrowBackIosNew className="text-3xl mb-3 " />
+        </Link>
         <div className="flex justify-between items-center mb-4">
           <div>
             <h2 className="text-xl font-semibold text-gray-700">
