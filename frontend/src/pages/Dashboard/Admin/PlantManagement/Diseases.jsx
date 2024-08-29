@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import useAxiosFetch from "../../../../hooks/useAxiosFetch";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { useNavigate, useParams } from "react-router-dom";
-import Modal from "../../../../components/Modal/Modal";
+import Modal from "../../../../components/Modal/LargeModel";
 import DiseaseForm from "./DiseaseForm";
 import { ToastContainer, toast } from "react-toastify";
 import { MdDelete, MdOutlineArrowBackIosNew } from "react-icons/md";
@@ -15,6 +15,7 @@ function Diseases() {
   const navigate = useNavigate();
   const { plantId } = useParams();
   const [diseases, setDiseases] = useState([]);
+  const [plantName, setPlantName] = useState(""); // State for plant name
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedDisease, setSelectedDisease] = useState(null);
@@ -23,12 +24,13 @@ function Diseases() {
 
   useEffect(() => {
     fetchDiseases();
+    fetchPlantName(); // Fetch the plant name
   }, [plantId]);
 
   const fetchDiseases = async () => {
     try {
       const response = await axiosFetch.get(`/api/diseases/plant/${plantId}`);
-      console.log("Fetched Diseases Data:", response.data); // Debug log
+      console.log("Fetched Diseases Data:", response.data);
       if (Array.isArray(response.data)) {
         setDiseases(response.data);
       } else {
@@ -38,6 +40,21 @@ function Diseases() {
     } catch (err) {
       console.error("Error fetching diseases:", err);
       toast.error("Failed to fetch diseases.");
+    }
+  };
+
+  const fetchPlantName = async () => {
+    try {
+      const response = await axiosFetch.get(`/Plant/${plantId}`);
+      if (response.data && response.data.name) {
+        setPlantName(response.data.name);
+      } else {
+        console.error("Plant name not found:", response.data);
+        toast.error("Failed to fetch plant name.");
+      }
+    } catch (err) {
+      console.error("Error fetching plant details:", err);
+      toast.error("Failed to fetch plant details.");
     }
   };
 
@@ -99,12 +116,12 @@ function Diseases() {
     <div className="mt-10 p-4 bg-gray-50">
       <div className="bg-white shadow-md rounded-lg p-6">
         <Link to="/dashboard/manage-plant">
-          <MdOutlineArrowBackIosNew className="text-3xl mb-3 " />
+          <MdOutlineArrowBackIosNew className="text-3xl mb-3" />
         </Link>
         <div className="flex justify-between items-center mb-4">
           <div>
             <h2 className="text-xl font-semibold text-gray-700">
-              Plant Diseases
+              Plant Diseases - {plantName}
             </h2>
             <h6 className="text-sm text-gray-500">
               Manage diseases for this plant
@@ -168,7 +185,11 @@ function Diseases() {
           <thead className="bg-gray-100">
             <tr>
               <th className="p-4 text-left">Name</th>
-              <th className="p-4 text-left">Description</th>
+              <th className="p-4 text-left">Causal Agent</th>
+              <th className="p-4 text-left">Disease Transmission</th>
+              <th className="p-4 text-left">Disease Symptoms</th>
+              <th className="p-4 text-left">Control</th>
+              <th className="p-4 text-left">Fertilizers</th>
               <th className="p-4 text-left">Action</th>
             </tr>
           </thead>
@@ -177,7 +198,11 @@ function Diseases() {
               diseases.map((disease) => (
                 <tr key={disease._id} className="border-b">
                   <td className="p-4">{disease.name}</td>
-                  <td className="p-4">{disease.description}</td>
+                  <td className="p-4">{disease.causalAgent}</td>
+                  <td className="p-4">{disease.diseaseTransmission}</td>
+                  <td className="p-4">{disease.diseaseSymptoms}</td>
+                  <td className="p-4">{disease.control}</td>
+                  <td className="p-4">{disease.fertilizers}</td>
                   <td className="p-4 flex space-x-2">
                     <button
                       className="text-blue-500 hover:underline"
@@ -196,7 +221,7 @@ function Diseases() {
               ))
             ) : (
               <tr>
-                <td colSpan="3" className="p-4 text-center text-gray-500">
+                <td colSpan="7" className="p-4 text-center text-gray-500">
                   No Data
                 </td>
               </tr>

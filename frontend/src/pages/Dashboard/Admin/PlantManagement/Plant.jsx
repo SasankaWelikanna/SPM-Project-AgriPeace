@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import useAxiosFetch from "../../../../hooks/useAxiosFetch";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { useNavigate } from "react-router-dom";
-import Modal from "../../../../components/Modal/Modal";
+import Modal from "../../../../components/Modal/LargeModel";
 import SearchBar from "../../../../components/Search/SearchBar";
 import { ToastContainer, toast } from "react-toastify";
 import { MdDelete } from "react-icons/md";
@@ -248,7 +248,6 @@ function Plant() {
             <tr>
               <th className="p-4 text-left">Image</th>
               <th className="p-4 text-left">Name</th>
-              <th className="p-4 text-left">Date</th>
               <th className="p-4 text-left">Description</th>
               <th className="p-4 text-left">Climate</th>
               <th className="p-4 text-left">Soil pH</th>
@@ -261,7 +260,7 @@ function Plant() {
             {currentPlants.length ? (
               currentPlants.map((plant) => (
                 <React.Fragment key={plant._id}>
-                  <tr className="border-b cursor-pointer">
+                  <tr className="border-b">
                     <td className="p-4">
                       {plant.imageUrl && (
                         <img
@@ -272,7 +271,6 @@ function Plant() {
                       )}
                     </td>
                     <td className="p-4">{plant.name}</td>
-                    <td className="p-4">{plant.date}</td>
                     <td className="p-4">{plant.description}</td>
                     <td className="p-4">{plant.climate}</td>
                     <td className="p-4">{plant.soilPh}</td>

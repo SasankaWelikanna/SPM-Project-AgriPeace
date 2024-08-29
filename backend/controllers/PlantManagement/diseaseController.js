@@ -3,8 +3,26 @@ const Disease = require("../../models/PlantManagement/Disease");
 // Create a new disease
 exports.createDisease = async (req, res) => {
   try {
-    const { name, description, plantId } = req.body;
-    const newDisease = new Disease({ name, description, plantId });
+    const {
+      imageUrl,
+      name,
+      causalAgent,
+      diseaseTransmission,
+      diseaseSymptoms,
+      control,
+      fertilizers,
+      plantId,
+    } = req.body;
+    const newDisease = new Disease({
+      imageUrl,
+      name,
+      causalAgent,
+      diseaseTransmission,
+      diseaseSymptoms,
+      control,
+      fertilizers,
+      plantId,
+    });
     await newDisease.save();
     res.status(201).json(newDisease);
   } catch (err) {
@@ -39,10 +57,26 @@ exports.getDiseaseById = async (req, res) => {
 exports.updateDisease = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, description } = req.body;
+    const {
+      imageUrl,
+      name,
+      causalAgent,
+      diseaseTransmission,
+      diseaseSymptoms,
+      control,
+      fertilizers,
+    } = req.body;
     const disease = await Disease.findByIdAndUpdate(
       id,
-      { name, description },
+      {
+        imageUrl,
+        name,
+        causalAgent,
+        diseaseTransmission,
+        diseaseSymptoms,
+        control,
+        fertilizers,
+      },
       { new: true }
     );
     if (!disease) return res.status(404).json({ message: "Disease not found" });
