@@ -3,11 +3,18 @@ import useAxiosFetch from "../../../../hooks/useAxiosFetch";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { useNavigate } from "react-router-dom";
 import Modal from "../../../../components/Modal/Modal";
-import SearchBar from "./SearchBar";
+import SearchBar from"../../../../components/Search/SearchBar";
 import { ToastContainer, toast } from "react-toastify";
 import { MdDelete } from "react-icons/md";
-import { FaEdit } from "react-icons/fa";
+import * as XLSX from "xlsx";
+import { writeFile } from "xlsx";
+import { FaEdit, FaFilePdf, FaFileExcel } from "react-icons/fa";
+import { HiRefresh } from "react-icons/hi";
 import FertilizerForm from "./FertilizerForm";
+import FertilizerReport from "./FertilizerReport";
+import { BlobProvider } from "@react-pdf/renderer";
+import Pagination from "../../../../components/Pagination/Pagination"; // Import the Pagination component
+
 
 function Fertilizer() {
   const axiosFetch = useAxiosFetch();
@@ -21,6 +28,10 @@ function Fertilizer() {
   const [filteredDataList, setFilteredDataList] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+
+   // Pagination state
+   const [currentPage, setCurrentPage] = useState(1);
+   const [fertilizersPerPage] = useState(3); // Adjust as needed
 
   useEffect(() => {
     fetchFertilizers();
@@ -46,14 +57,34 @@ function Fertilizer() {
 
   const handleSearch = (query) => {
     const filteredList = dataList.filter((fertilizer) => {
-      const fullName = `${fertilizer.name} ${fertilizer.date}`;
+      const fullName = `${fertilizer.productName} ${fertilizer.category}`;
       return fullName.toLowerCase().includes(query.toLowerCase());
     });
     setFilteredDataList(filteredList);
   };
 
+  const generateExcelFile = () => {
+    const rearrangedDataList = dataList.map((fertilizer) => ({
+      Product_Name: fertilizer.productName,
+      Category: fertilizer.category,
+      Description: fertilizer.description,
+      Quantity: fertilizer.quantity,
+      Price: fertilizer.price,
+    }));
+  
+    const ws = XLSX.utils.json_to_sheet(rearrangedDataList);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Fertilizer Report");
+    writeFile(wb, "fertilizer_report.xlsx");
+  };
+  
+
+
   const handleRefreshClick = () => {
     fetchFertilizers();
+  };
+  const handleButtonClick = () => {
+    generateExcelFile();
   };
 
   const handleAddModalOpen = () => setAddModalOpen(true);
@@ -110,6 +141,15 @@ function Fertilizer() {
     setDeleteId(null);
   };
 
+  // Pagination calculations
+  const indexOfLastFertilizer = currentPage * fertilizersPerPage;
+  const indexOfFirstFertilizer = indexOfLastFertilizer - fertilizersPerPage;
+  const currentFertilizers = filteredDataList.slice(
+    indexOfFirstFertilizer,
+    indexOfLastFertilizer
+  );
+  const totalPages = Math.ceil(filteredDataList.length / fertilizersPerPage);
+
   return (
     <div className="mt-10 p-4 bg-gray-50">
       <div className="bg-white shadow-md rounded-lg p-6">
@@ -121,14 +161,36 @@ function Fertilizer() {
             <h6 className="text-sm text-gray-500">Manage fertilizer details</h6>
           </div>
           <div className="flex space-x-4">
+            <BlobProvider
+              document={<FertilizerReport dataList={dataList} />}
+              fileName="FertilizerReport.pdf"
+            >
+              {({ url, blob }) => (
+                <li className="flex items-center">
+                  <a href={url} target="_blank" className="flex items-center">
+                    <FaFilePdf className="text-3xl text-red-600" />
+                  </a>
+                </li>
+              )}
+            </BlobProvider>
+            <li className="flex items-center">
+              <a
+                href="#"
+                onClick={handleButtonClick}
+                className="flex items-center"
+              >
+                <FaFileExcel className="text-3xl text-green-600" />
+              </a>
+            </li>
+
             <button
               className="text-blue-500 hover:underline"
               onClick={handleRefreshClick}
             >
-              Refresh
+              <HiRefresh className="text-3xl" />
             </button>
             <button
-              className="bg-blue-500 text-white py-2 px-4 rounded-lg"
+              className="bg-secondary hover:scale-105 text-white py-2 px-4 rounded-lg"
               onClick={handleAddModalOpen}
             >
               Add Fertilizer
@@ -189,14 +251,14 @@ function Fertilizer() {
               <th className="p-4 text-left">Product Name</th>
               <th className="p-4 text-left">Category</th>
               <th className="p-4 text-left">Description</th>
-              <th className="p-4 text-left">Quantity</th>
-              <th className="p-4 text-left">Price</th>
+              <th className="p-4 text-left">Quantity (kg)</th>
+              <th className="p-4 text-left">Price (Rs)</th>
               <th className="p-4 text-left">Action</th>
             </tr>
           </thead>
           <tbody>
-            {filteredDataList.length ? (
-              filteredDataList.map((fertilizer) => (
+            {currentFertilizers.length ? (
+              currentFertilizers.map((fertilizer) => (
                 <tr key={fertilizer._id} className="border-b">
                   <td className="p-4">
                     {fertilizer.imageUrl && (
@@ -238,6 +300,12 @@ function Fertilizer() {
             )}
           </tbody>
         </table>
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
       <ToastContainer
         position="top-right"
