@@ -26,6 +26,6 @@ const FertilizerSchema = new mongoose.Schema({
   },
 });
 
-const Fertilizer = mongoose.model("Fertilzer", FertilizerSchema);
+const Fertilizer = mongoose.model("Fertilizer", FertilizerSchema);
 
 module.exports = Fertilizer;
