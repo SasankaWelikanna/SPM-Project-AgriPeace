@@ -3,7 +3,7 @@ import useAxiosFetch from "../../../../hooks/useAxiosFetch";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { useNavigate } from "react-router-dom";
 import Modal from "../../../../components/Modal/Modal";
-import SearchBar from "./SearchBar";
+import SearchBar from"../../../../components/Search/SearchBar";
 import { ToastContainer, toast } from "react-toastify";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
@@ -46,7 +46,7 @@ function Fertilizer() {
 
   const handleSearch = (query) => {
     const filteredList = dataList.filter((fertilizer) => {
-      const fullName = `${fertilizer.name} ${fertilizer.date}`;
+      const fullName = `${fertilizer.productName} ${fertilizer.category}`;
       return fullName.toLowerCase().includes(query.toLowerCase());
     });
     setFilteredDataList(filteredList);
