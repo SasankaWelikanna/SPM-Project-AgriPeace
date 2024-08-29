@@ -1,13 +1,26 @@
 const Plant = require("../../models/PlantManagement/plant");
 
 const addPlant = async (req, res) => {
-  const { imageUrl, name, date, description } = req.body;
+  const {
+    imageUrl,
+    name,
+    date,
+    description,
+    climate,
+    soilPh,
+    landPreparation,
+    fertilizers,
+  } = req.body;
   try {
     const newPlant = await Plant.create({
       imageUrl,
       name,
       date,
       description,
+      climate,
+      soilPh,
+      landPreparation,
+      fertilizers,
     });
     res.json("New Plant Added");
   } catch (err) {
@@ -17,7 +30,7 @@ const addPlant = async (req, res) => {
 
 const getAllPlants = async (req, res) => {
   try {
-    const plants = await Plant.find(); // Corrected to Plant.find()
+    const plants = await Plant.find();
     res.json(plants);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -38,7 +51,7 @@ const deletePlant = async (req, res) => {
   const id = req.params.id;
   try {
     await Plant.findByIdAndDelete(id);
-    res.status(200).json({ message: "Plant Deleted" }); // Corrected message
+    res.status(200).json({ message: "Plant Deleted" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -46,7 +59,16 @@ const deletePlant = async (req, res) => {
 
 const updatePlant = async (req, res) => {
   const id = req.params.id;
-  const { imageUrl, name, date, description } = req.body;
+  const {
+    imageUrl,
+    name,
+    date,
+    description,
+    climate,
+    soilPh,
+    landPreparation,
+    fertilizers,
+  } = req.body;
   try {
     await Plant.findByIdAndUpdate(
       id,
@@ -55,10 +77,14 @@ const updatePlant = async (req, res) => {
         name,
         date,
         description,
+        climate,
+        soilPh,
+        landPreparation,
+        fertilizers,
       },
       { new: true }
-    ); // Added { new: true } to return updated document
-    res.status(200).json({ message: "Plant Updated" }); // Corrected message
+    );
+    res.status(200).json({ message: "Plant Updated" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
