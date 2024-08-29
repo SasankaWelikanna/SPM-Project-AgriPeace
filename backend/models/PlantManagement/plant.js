@@ -1,9 +1,6 @@
 const mongoose = require("mongoose");
 
 const PlantSchema = new mongoose.Schema({
-  imageUrl: {
-    type: String,
-  },
   name: {
     type: String,
     required: true,
@@ -16,8 +13,32 @@ const PlantSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  imageUrl: {
+    type: String,
+  },
+  climate: {
+    type: String,
+    required: true,
+  },
+  soilPh: {
+    type: String,
+    required: true,
+  },
+  landPreparation: {
+    type: String,
+    required: true,
+  },
+  fertilizers: [
+    {
+      type: String,
+    },
+  ],
+  diseases: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Disease",
+    },
+  ],
 });
 
-const Plant = mongoose.model("Plant", PlantSchema);
-
-module.exports = Plant;
+module.exports = mongoose.model("Plant", PlantSchema);
