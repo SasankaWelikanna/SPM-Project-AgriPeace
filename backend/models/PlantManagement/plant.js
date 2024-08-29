@@ -16,6 +16,23 @@ const PlantSchema = new mongoose.Schema({
   imageUrl: {
     type: String,
   },
+  climate: {
+    type: String,
+    required: true,
+  },
+  soilPh: {
+    type: String,
+    required: true,
+  },
+  landPreparation: {
+    type: String,
+    required: true,
+  },
+  fertilizers: [
+    {
+      type: String,
+    },
+  ],
   diseases: [
     {
       type: mongoose.Schema.Types.ObjectId,
