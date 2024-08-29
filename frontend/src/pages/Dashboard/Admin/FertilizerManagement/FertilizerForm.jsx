@@ -146,7 +146,7 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
         >
           Description
         </label>
-        <input
+        <textarea
           type="text"
           className="w-full p-2 border border-gray-300 rounded-md"
           name="description"
