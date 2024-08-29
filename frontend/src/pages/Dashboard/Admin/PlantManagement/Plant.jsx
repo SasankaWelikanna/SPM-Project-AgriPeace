@@ -3,11 +3,17 @@ import useAxiosFetch from "../../../../hooks/useAxiosFetch";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { useNavigate } from "react-router-dom";
 import Modal from "../../../../components/Modal/Modal";
-import PlantForm from "./PlantForm";
 import SearchBar from "../../../../components/Search/SearchBar";
 import { ToastContainer, toast } from "react-toastify";
 import { MdDelete } from "react-icons/md";
-import { FaEdit, FaDisease } from "react-icons/fa";
+import { FaEdit, FaDisease, FaFilePdf, FaFileExcel } from "react-icons/fa";
+import { HiRefresh } from "react-icons/hi";
+import * as XLSX from "xlsx";
+import { writeFile } from "xlsx";
+import PlantForm from "./PlantForm";
+import PlantReport from "./PlantReport";
+import { BlobProvider } from "@react-pdf/renderer";
+import Pagination from "../../../../components/Pagination/Pagination"; // Import the Pagination component
 
 function Plant() {
   const axiosFetch = useAxiosFetch();
@@ -21,6 +27,10 @@ function Plant() {
   const [filteredDataList, setFilteredDataList] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [plantsPerPage] = useState(2); // Adjust as needed
 
   useEffect(() => {
     fetchPlants();
@@ -51,8 +61,28 @@ function Plant() {
     setFilteredDataList(filteredList);
   };
 
+  const generateExcelFile = () => {
+    const rearrangedDataList = dataList.map((plant) => ({
+      Plant_Name: plant.name,
+      Date: plant.date,
+      Description: plant.description,
+      Climate: plant.climate,
+      Soil_pH: plant.soilPh,
+      Land_Preparation: plant.landPreparation,
+      Fertilizers: plant.fertilizers,
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(rearrangedDataList);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Plant Report");
+    writeFile(wb, "plant_report.xlsx");
+  };
+
   const handleRefreshClick = () => {
     fetchPlants();
+  };
+  const handleButtonClick = () => {
+    generateExcelFile();
   };
 
   const handleAddModalOpen = () => setAddModalOpen(true);
@@ -113,6 +143,15 @@ function Plant() {
     navigate(`/dashboard/manage-plant/diseases/${plantId}`);
   };
 
+  // Pagination calculations
+  const indexOfLastPlant = currentPage * plantsPerPage;
+  const indexOfFirstPlant = indexOfLastPlant - plantsPerPage;
+  const currentPlants = filteredDataList.slice(
+    indexOfFirstPlant,
+    indexOfLastPlant
+  );
+  const totalPages = Math.ceil(filteredDataList.length / plantsPerPage);
+
   return (
     <div className="mt-10 p-4 bg-gray-50">
       <div className="bg-white shadow-md rounded-lg p-6">
@@ -124,11 +163,33 @@ function Plant() {
             <h6 className="text-sm text-gray-500">Manage plant details</h6>
           </div>
           <div className="flex space-x-4">
+            <BlobProvider
+              document={<PlantReport dataList={dataList} />}
+              fileName="FruitReport.pdf"
+            >
+              {({ url, blob }) => (
+                <li className="flex items-center">
+                  <a href={url} target="_blank" className="flex items-center">
+                    <FaFilePdf className="text-3xl text-red-600" />
+                  </a>
+                </li>
+              )}
+            </BlobProvider>
+            <li className="flex items-center">
+              <a
+                href="#"
+                onClick={handleButtonClick}
+                className="flex items-center"
+              >
+                <FaFileExcel className="text-3xl text-green-600" />
+              </a>
+            </li>
+
             <button
               className="text-blue-500 hover:underline"
               onClick={handleRefreshClick}
             >
-              Refresh
+              <HiRefresh className="text-3xl" />
             </button>
             <button
               className="bg-secondary hover:scale-105 text-white py-2 px-4 rounded-lg"
@@ -197,55 +258,60 @@ function Plant() {
             </tr>
           </thead>
           <tbody>
-            {filteredDataList.length ? (
-              filteredDataList.map((plant) => (
-                <tr
-                  key={plant._id}
-                  className="border-b"
-                  onClick={() => handleViewDiseases(plant._id)}
-                >
-                  <td className="p-4">
-                    {plant.imageUrl && (
-                      <img
-                        src={plant.imageUrl}
-                        alt="Plant"
-                        className="w-12 h-12 object-cover rounded-lg"
-                      />
-                    )}
-                  </td>
-                  <td className="p-4">{plant.name}</td>
-                  <td className="p-4">{plant.date}</td>
-                  <td className="p-4">{plant.description}</td>
-                  <td className="p-4">{plant.climate}</td>
-                  <td className="p-4">{plant.soilPh}</td>
-                  <td className="p-4">{plant.landPreparation}</td>
-                  <td className="p-4">
-                    <ul>
-                      {plant.fertilizers.map((fertilizer, index) => (
-                        <li key={index}>{fertilizer}</li>
-                      ))}
-                    </ul>
-                  </td>
-                  <td className="p-4">
-                    <div className="flex space-x-2">
-                      <button
-                        className="text-blue-600 hover:text-blue-800"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEditModalOpen(plant);
-                        }}
-                      >
-                        <FaEdit />
-                      </button>
-                      <button
-                        className="text-red-600 hover:text-red-800"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleShowDeleteModal(plant._id);
-                        }}
-                      >
-                        <MdDelete />
-                      </button>
+            {currentPlants.length ? (
+              currentPlants.map((plant) => (
+                <React.Fragment key={plant._id}>
+                  <tr className="border-b cursor-pointer">
+                    <td className="p-4">
+                      {plant.imageUrl && (
+                        <img
+                          src={plant.imageUrl}
+                          alt="Plant"
+                          className="w-12 h-12 object-cover rounded-lg"
+                        />
+                      )}
+                    </td>
+                    <td className="p-4">{plant.name}</td>
+                    <td className="p-4">{plant.date}</td>
+                    <td className="p-4">{plant.description}</td>
+                    <td className="p-4">{plant.climate}</td>
+                    <td className="p-4">{plant.soilPh}</td>
+                    <td className="p-4">{plant.landPreparation}</td>
+                    <td className="p-4">
+                      <ul>
+                        {plant.fertilizers.map((fertilizer, index) => (
+                          <li key={index}>{fertilizer}</li>
+                        ))}
+                      </ul>
+                    </td>
+                    <td className="p-4">
+                      <div className="flex space-x-2">
+                        <button
+                          className="text-3xl text-blue-600 hover:text-blue-800"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEditModalOpen(plant);
+                          }}
+                        >
+                          <FaEdit />
+                        </button>
+                        <button
+                          className="text-3xl text-red-600 hover:text-red-800"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleShowDeleteModal(plant._id);
+                          }}
+                        >
+                          <MdDelete />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr onClick={() => handleViewDiseases(plant._id)}>
+                    <td
+                      colSpan="9"
+                      className=" border-b-2 border-gray-500 text-center hover:bg-secondary hover:animate-pulse"
+                    >
                       <button
                         className="text-green-600 hover:text-green-800"
                         onClick={(e) => {
@@ -253,11 +319,14 @@ function Plant() {
                           handleViewDiseases(plant._id);
                         }}
                       >
-                        <FaDisease />
+                        <p>
+                          Diseases{" "}
+                          <span className="animate-bounce">&gt;&gt;</span>{" "}
+                        </p>
                       </button>
-                    </div>
-                  </td>
-                </tr>
+                    </td>
+                  </tr>
+                </React.Fragment>
               ))
             ) : (
               <tr>
@@ -268,6 +337,12 @@ function Plant() {
             )}
           </tbody>
         </table>
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
       <ToastContainer
         position="top-right"
