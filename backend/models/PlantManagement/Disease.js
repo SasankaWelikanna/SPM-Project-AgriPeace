@@ -27,7 +27,7 @@ const diseaseSchema = new mongoose.Schema(
       required: true,
     },
     fertilizers: {
-      type: String,
+      type: [String], // Changed to an array of strings
       required: true,
     },
     plantId: {
