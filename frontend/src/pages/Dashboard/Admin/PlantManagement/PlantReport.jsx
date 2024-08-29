@@ -163,16 +163,22 @@ const FruitTypeReport = ({ dataList }) => {
           <View style={styles.header}>
             <View style={styles.headerTextContainer}>
               {/* <Image src={logo} style={styles.logo} /> */}
-              <Text style={styles.headerText}>FreshRoute</Text>
+              <Text style={styles.headerText}>AgriPeace</Text>
             </View>
             <Text style={styles.reportDateTime}>{reportDateTime}</Text>
           </View>
-          <Text style={styles.heading}>- Plant Details</Text>
+          <Text style={styles.heading}>Plant Details</Text>
           <View style={styles.table}>
             <View style={styles.tableRow}>
-              <Text style={styles.tableColHeader}>Name</Text>
+              <Text style={styles.tableColHeader}>Plant Name</Text>
               <Text style={styles.tableColHeader}>Date</Text>
               <Text style={styles.tableColHeaderDescription}>Description</Text>
+              <Text style={styles.tableColHeaderDescription}>Climate</Text>
+              <Text style={styles.tableColHeaderDescription}>Soil pH</Text>
+              <Text style={styles.tableColHeaderDescription}>
+                Land Preparation
+              </Text>
+              <Text style={styles.tableColHeaderDescription}>Fertilizers</Text>
             </View>
             {dataList.map((plant, index) => (
               <View key={index} style={styles.tableRow}>
@@ -181,6 +187,11 @@ const FruitTypeReport = ({ dataList }) => {
                 <Text style={styles.tableColDescription}>
                   {plant.description}
                 </Text>
+
+                <Text style={styles.tableCol}>{plant.climate}</Text>
+                <Text style={styles.tableCol}>{plant.soilPh}</Text>
+                <Text style={styles.tableCol}>{plant.landPreparation}</Text>
+                <Text style={styles.tableCol}>{plant.fertilizers}</Text>
               </View>
             ))}
           </View>
