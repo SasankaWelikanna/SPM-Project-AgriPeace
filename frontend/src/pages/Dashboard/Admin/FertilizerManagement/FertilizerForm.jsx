@@ -2,20 +2,18 @@ import React, { useState, useEffect } from "react";
 import storage from "../../../../config/firebase.init";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
-const PlantForm = ({ handleSubmit, initialData }) => {
+const FertilizerForm = ({ handleSubmit, initialData }) => {
   const [img, setImg] = useState(undefined);
   const [imgPerc, setImgPerc] = useState(0);
   const [formData, setFormData] = useState({
     imageUrl: "",
-    name: "",
-    date: "",
+    productName: "",
+    category: "",
     description: "",
-    climate: "",
-    soilPh: "",
-    landPreparation: "",
-    fertilizers: [],
+    quantity: "",
+    price: "",
   });
-  const [uploading, setUploading] = useState(false);
+  const [uploading, setUploading] = useState(false); // Track if image is being uploaded
 
   useEffect(() => {
     img && uploadFile(img, "imageUrl");
@@ -23,9 +21,9 @@ const PlantForm = ({ handleSubmit, initialData }) => {
 
   const uploadFile = (file, fileType) => {
     const fileName = new Date().getTime() + file.name;
-    const storageRef = ref(storage, "images/plants/" + fileName);
+    const storageRef = ref(storage, "images/fertilizers/" + fileName);
     const uploadTask = uploadBytesResumable(storageRef, file);
-    setUploading(true);
+    setUploading(true); // Start uploading
 
     uploadTask.on(
       "state_changed",
@@ -36,15 +34,16 @@ const PlantForm = ({ handleSubmit, initialData }) => {
       },
       (error) => {
         console.log(error);
-        setUploading(false);
+        setUploading(false); // Stop uploading on error
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log("DownloadURL - ", downloadURL);
           setFormData((prev) => ({
             ...prev,
             [fileType]: downloadURL,
           }));
-          setUploading(false);
+          setUploading(false); // Stop uploading after successful upload
         });
       }
     );
@@ -56,27 +55,32 @@ const PlantForm = ({ handleSubmit, initialData }) => {
     }
   }, [initialData]);
 
+  const getCurrentDate = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
+  useEffect(() => {
+    const currentDate = getCurrentDate();
+    setFormData((prevState) => ({
+      ...prevState,
+      date: currentDate,
+    }));
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    if (name === "productName" && /[^\p{L}\s]/u.test(value)) {
+      return;
+    }
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }));
-  };
-
-  const handleFertilizersChange = (e, index) => {
-    const newFertilizers = [...formData.fertilizers];
-    newFertilizers[index] = e.target.value;
-    setFormData((prev) => ({
-      ...prev,
-      fertilizers: newFertilizers,
-    }));
-  };
-
-  const handleAddFertilizer = () => {
-    setFormData((prev) => ({
-      ...prev,
-      fertilizers: [...prev.fertilizers, ""],
     }));
   };
 
@@ -103,34 +107,35 @@ const PlantForm = ({ handleSubmit, initialData }) => {
       </div>
       <div className="mb-4">
         <label
-          htmlFor="name"
+          htmlFor="productName"
           className="block text-gray-700 font-semibold mb-1"
         >
-          Plant Name
+          Fertilizer Name
         </label>
         <input
           type="text"
           className="w-full p-2 border border-gray-300 rounded-md"
-          name="name"
-          placeholder="Plant Name"
+          name="productName"
+          placeholder="Fertilizer Name"
           onChange={handleChange}
-          value={formData.name}
+          value={formData.productName}
           required
         />
       </div>
       <div className="mb-4">
         <label
-          htmlFor="date"
+          htmlFor="category"
           className="block text-gray-700 font-semibold mb-1"
         >
-          Date
+          Category
         </label>
         <input
-          type="date"
+          type="text"
           className="w-full p-2 border border-gray-300 rounded-md"
-          name="date"
+          name="category"
+          placeholder="Category"
           onChange={handleChange}
-          value={formData.date}
+          value={formData.category}
           required
         />
       </div>
@@ -153,89 +158,47 @@ const PlantForm = ({ handleSubmit, initialData }) => {
       </div>
       <div className="mb-4">
         <label
-          htmlFor="climate"
+          htmlFor="quantity"
           className="block text-gray-700 font-semibold mb-1"
         >
-          Climate
+          Quantity
         </label>
         <input
           type="text"
           className="w-full p-2 border border-gray-300 rounded-md"
-          name="climate"
-          placeholder="Climate"
+          name="quantity"
+          placeholder="Quantity"
           onChange={handleChange}
-          value={formData.climate}
+          value={formData.quantity}
           required
         />
       </div>
       <div className="mb-4">
         <label
-          htmlFor="soilPh"
+          htmlFor="price"
           className="block text-gray-700 font-semibold mb-1"
         >
-          Soil pH
+          Price
         </label>
         <input
           type="text"
           className="w-full p-2 border border-gray-300 rounded-md"
-          name="soilPh"
-          placeholder="Soil pH"
+          name="price"
+          placeholder="Price"
           onChange={handleChange}
-          value={formData.soilPh}
+          value={formData.price}
           required
         />
       </div>
-      <div className="mb-4">
-        <label
-          htmlFor="landPreparation"
-          className="block text-gray-700 font-semibold mb-1"
-        >
-          Land Preparation
-        </label>
-        <input
-          type="text"
-          className="w-full p-2 border border-gray-300 rounded-md"
-          name="landPreparation"
-          placeholder="Land Preparation"
-          onChange={handleChange}
-          value={formData.landPreparation}
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-gray-700 font-semibold mb-1">
-          Fertilizers
-        </label>
-        {formData.fertilizers.map((fertilizer, index) => (
-          <input
-            key={index}
-            type="text"
-            className="w-full p-2 border border-gray-300 rounded-md mt-2"
-            name="fertilizers"
-            placeholder="Fertilizer"
-            value={fertilizer}
-            onChange={(e) => handleFertilizersChange(e, index)}
-          />
-        ))}
-        <button
-          type="button"
-          onClick={handleAddFertilizer}
-          className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Add Fertilizer
-        </button>
-      </div>
-      <div className="flex justify-end">
-        <button
-          type="submit"
-          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-          disabled={uploading}
-        >
-          Submit
-        </button>
-      </div>
+
+      <button
+        type="submit"
+        className="w-full py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600"
+      >
+        Submit
+      </button>
     </form>
   );
 };
 
-export default PlantForm;
+export default FertilizerForm;

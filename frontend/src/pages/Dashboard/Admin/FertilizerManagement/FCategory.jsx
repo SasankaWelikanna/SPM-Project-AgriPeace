@@ -4,10 +4,10 @@ import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { useNavigate } from "react-router-dom";
 import Modal from "../../../../components/Modal/Modal";
 import PlantForm from "./PlantForm";
-import SearchBar from "../../../../components/Search/SearchBar";
+import SearchBar from "./SearchBar";
 import { ToastContainer, toast } from "react-toastify";
 import { MdDelete } from "react-icons/md";
-import { FaEdit, FaDisease } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
 
 function Plant() {
   const axiosFetch = useAxiosFetch();
@@ -29,7 +29,8 @@ function Plant() {
   const fetchPlants = async () => {
     try {
       const response = await axiosFetch.get("/Plant/");
-      console.log("Fetched Plants Data:", response.data);
+      console.log("Fetched Plants Data:", response.data); // Debug log
+      // Verify the data structure
       if (Array.isArray(response.data)) {
         setDataList(response.data);
         setFilteredDataList(response.data);
@@ -68,7 +69,7 @@ function Plant() {
     try {
       await axiosSecure.delete(`/Plant/delete/${id}`);
       toast.success("Successfully Deleted!");
-      fetchPlants();
+      fetchPlants(); // Ensure data is refreshed after deletion
       handleCloseDeleteModal();
     } catch (err) {
       console.error("Error deleting plant:", err);
@@ -81,7 +82,7 @@ function Plant() {
       await axiosSecure.post("/Plant/add", formData);
       toast.success("Plant Added!");
       handleAddModalClose();
-      fetchPlants();
+      fetchPlants(); // Refresh data after adding a plant
     } catch (err) {
       console.error("Error adding plant:", err);
       toast.error("Failed to add plant.");
@@ -93,7 +94,7 @@ function Plant() {
       await axiosSecure.put(`/Plant/update/${formData._id}`, formData);
       toast.success("Plant Updated!");
       handleEditModalClose();
-      fetchPlants();
+      fetchPlants(); // Refresh data after editing a plant
     } catch (err) {
       console.error("Error updating plant:", err);
       toast.error("Failed to update plant.");
@@ -107,10 +108,6 @@ function Plant() {
   const handleCloseDeleteModal = () => {
     setShowDeleteModal(false);
     setDeleteId(null);
-  };
-
-  const handleViewDiseases = (plantId) => {
-    navigate(`/dashboard/manage-plant/diseases/${plantId}`);
   };
 
   return (
@@ -131,7 +128,7 @@ function Plant() {
               Refresh
             </button>
             <button
-              className="bg-secondary hover:scale-105 text-white py-2 px-4 rounded-lg"
+              className="bg-blue-500 text-white py-2 px-4 rounded-lg"
               onClick={handleAddModalOpen}
             >
               Add Plant
@@ -139,6 +136,7 @@ function Plant() {
           </div>
         </div>
 
+        {/* Add Plant Modal */}
         <Modal
           isOpen={addModalOpen}
           onClose={handleAddModalClose}
@@ -147,6 +145,7 @@ function Plant() {
           <PlantForm handleSubmit={handleAddSubmit} />
         </Modal>
 
+        {/* Edit Plant Modal */}
         <Modal
           isOpen={editModalOpen}
           onClose={handleEditModalClose}
@@ -158,6 +157,7 @@ function Plant() {
           />
         </Modal>
 
+        {/* Delete Confirmation Modal */}
         <Modal
           isOpen={showDeleteModal}
           onClose={handleCloseDeleteModal}
@@ -189,21 +189,13 @@ function Plant() {
               <th className="p-4 text-left">Name</th>
               <th className="p-4 text-left">Date</th>
               <th className="p-4 text-left">Description</th>
-              <th className="p-4 text-left">Climate</th>
-              <th className="p-4 text-left">Soil pH</th>
-              <th className="p-4 text-left">Land Preparation</th>
-              <th className="p-4 text-left">Fertilizers</th>
               <th className="p-4 text-left">Action</th>
             </tr>
           </thead>
           <tbody>
             {filteredDataList.length ? (
               filteredDataList.map((plant) => (
-                <tr
-                  key={plant._id}
-                  className="border-b"
-                  onClick={() => handleViewDiseases(plant._id)}
-                >
+                <tr key={plant._id} className="border-b">
                   <td className="p-4">
                     {plant.imageUrl && (
                       <img
@@ -216,53 +208,26 @@ function Plant() {
                   <td className="p-4">{plant.name}</td>
                   <td className="p-4">{plant.date}</td>
                   <td className="p-4">{plant.description}</td>
-                  <td className="p-4">{plant.climate}</td>
-                  <td className="p-4">{plant.soilPh}</td>
-                  <td className="p-4">{plant.landPreparation}</td>
-                  <td className="p-4">
-                    <ul>
-                      {plant.fertilizers.map((fertilizer, index) => (
-                        <li key={index}>{fertilizer}</li>
-                      ))}
-                    </ul>
-                  </td>
-                  <td className="p-4">
-                    <div className="flex space-x-2">
-                      <button
-                        className="text-blue-600 hover:text-blue-800"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEditModalOpen(plant);
-                        }}
-                      >
-                        <FaEdit />
-                      </button>
-                      <button
-                        className="text-red-600 hover:text-red-800"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleShowDeleteModal(plant._id);
-                        }}
-                      >
-                        <MdDelete />
-                      </button>
-                      <button
-                        className="text-green-600 hover:text-green-800"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleViewDiseases(plant._id);
-                        }}
-                      >
-                        <FaDisease />
-                      </button>
-                    </div>
+                  <td className="p-4 flex space-x-2">
+                    <button
+                      className="text-blue-500 hover:underline"
+                      onClick={() => handleEditModalOpen(plant)}
+                    >
+                      <FaEdit className="text-3xl" />
+                    </button>
+                    <button
+                      className="text-red-500 hover:underline"
+                      onClick={() => handleShowDeleteModal(plant._id)}
+                    >
+                      <MdDelete className="text-3xl" />
+                    </button>
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="9" className="text-center p-4">
-                  No plants found.
+                <td colSpan="5" className="p-4 text-center text-gray-500">
+                  No Data
                 </td>
               </tr>
             )}
