@@ -87,143 +87,133 @@ const PlantForm = ({ handleSubmit, initialData }) => {
 
   return (
     <form onSubmit={handleFormSubmit} className="space-y-4">
-      <div className="mb-4">
-        <label
-          htmlFor="imageUrl"
-          className="block text-gray-700 font-semibold mb-1"
-        >
-          {uploading ? `Uploading: ${imgPerc}%` : "Image"}
-        </label>
-        <input
-          type="file"
-          className="w-full p-2 border border-gray-300 rounded-md"
-          name="imageUrl"
-          onChange={(e) => setImg(e.target.files[0])}
-        />
-      </div>
-      <div className="mb-4">
-        <label
-          htmlFor="name"
-          className="block text-gray-700 font-semibold mb-1"
-        >
-          Plant Name
-        </label>
-        <input
-          type="text"
-          className="w-full p-2 border border-gray-300 rounded-md"
-          name="name"
-          placeholder="Plant Name"
-          onChange={handleChange}
-          value={formData.name}
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <label
-          htmlFor="date"
-          className="block text-gray-700 font-semibold mb-1"
-        >
-          Date
-        </label>
-        <input
-          type="date"
-          className="w-full p-2 border border-gray-300 rounded-md"
-          name="date"
-          onChange={handleChange}
-          value={formData.date}
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <label
-          htmlFor="description"
-          className="block text-gray-700 font-semibold mb-1"
-        >
-          Description
-        </label>
-        <input
-          type="text"
-          className="w-full p-2 border border-gray-300 rounded-md"
-          name="description"
-          placeholder="Description"
-          onChange={handleChange}
-          value={formData.description}
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <label
-          htmlFor="climate"
-          className="block text-gray-700 font-semibold mb-1"
-        >
-          Climate
-        </label>
-        <input
-          type="text"
-          className="w-full p-2 border border-gray-300 rounded-md"
-          name="climate"
-          placeholder="Climate"
-          onChange={handleChange}
-          value={formData.climate}
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <label
-          htmlFor="soilPh"
-          className="block text-gray-700 font-semibold mb-1"
-        >
-          Soil pH
-        </label>
-        <input
-          type="text"
-          className="w-full p-2 border border-gray-300 rounded-md"
-          name="soilPh"
-          placeholder="Soil pH"
-          onChange={handleChange}
-          value={formData.soilPh}
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <label
-          htmlFor="landPreparation"
-          className="block text-gray-700 font-semibold mb-1"
-        >
-          Land Preparation
-        </label>
-        <input
-          type="text"
-          className="w-full p-2 border border-gray-300 rounded-md"
-          name="landPreparation"
-          placeholder="Land Preparation"
-          onChange={handleChange}
-          value={formData.landPreparation}
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-gray-700 font-semibold mb-1">
-          Fertilizers
-        </label>
-        {formData.fertilizers.map((fertilizer, index) => (
-          <input
-            key={index}
-            type="text"
-            className="w-full p-2 border border-gray-300 rounded-md mt-2"
-            name="fertilizers"
-            placeholder="Fertilizer"
-            value={fertilizer}
-            onChange={(e) => handleFertilizersChange(e, index)}
-          />
-        ))}
-        <button
-          type="button"
-          onClick={handleAddFertilizer}
-          className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Add Fertilizer
-        </button>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <div className="mb-4">
+            <label
+              htmlFor="imageUrl"
+              className="block text-gray-700 font-semibold mb-1"
+            >
+              {uploading ? `Uploading: ${imgPerc}%` : "Image"}
+            </label>
+            <input
+              type="file"
+              className="w-full p-2 border border-gray-300 rounded-md"
+              name="imageUrl"
+              onChange={(e) => setImg(e.target.files[0])}
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="name"
+              className="block text-gray-700 font-semibold mb-1"
+            >
+              Plant Name
+            </label>
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-md"
+              name="name"
+              placeholder="Plant Name"
+              onChange={handleChange}
+              value={formData.name}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="description"
+              className="block text-gray-700 font-semibold mb-1"
+            >
+              Description
+            </label>
+            <textarea
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-md"
+              name="description"
+              placeholder="Description"
+              onChange={handleChange}
+              value={formData.description}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="climate"
+              className="block text-gray-700 font-semibold mb-1"
+            >
+              Climate
+            </label>
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-md"
+              name="climate"
+              placeholder="Climate"
+              onChange={handleChange}
+              value={formData.climate}
+              required
+            />
+          </div>
+        </div>
+        <div>
+          <div className="mb-4">
+            <label
+              htmlFor="soilPh"
+              className="block text-gray-700 font-semibold mb-1"
+            >
+              Soil pH
+            </label>
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-md"
+              name="soilPh"
+              placeholder="Soil pH"
+              onChange={handleChange}
+              value={formData.soilPh}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="landPreparation"
+              className="block text-gray-700 font-semibold mb-1"
+            >
+              Land Preparation
+            </label>
+            <textarea
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-md"
+              name="landPreparation"
+              placeholder="Land Preparation"
+              onChange={handleChange}
+              value={formData.landPreparation}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 font-semibold mb-1">
+              Fertilizers
+            </label>
+            {formData.fertilizers.map((fertilizer, index) => (
+              <input
+                key={index}
+                type="text"
+                className="w-full p-2 border border-gray-300 rounded-md mt-2"
+                name="fertilizers"
+                placeholder="Fertilizer"
+                value={fertilizer}
+                onChange={(e) => handleFertilizersChange(e, index)}
+              />
+            ))}
+            <button
+              type="button"
+              onClick={handleAddFertilizer}
+              className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              Add Fertilizer
+            </button>
+          </div>
+        </div>
       </div>
       <div className="flex justify-end">
         <button

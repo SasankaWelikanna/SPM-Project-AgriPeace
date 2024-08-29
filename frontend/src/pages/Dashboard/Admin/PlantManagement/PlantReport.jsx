@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Image,
 } from "@react-pdf/renderer";
+import logo from "../../../../../public/logo.png";
 
 const styles = StyleSheet.create({
   page: {
@@ -21,12 +22,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     marginBottom: 10,
   },
-  // headerText: {
-  //   fontSize: 20,
-  //   color: "green",
-  //   fontWeight: "bold",
-  // },
-
   headerText: {
     fontSize: 20,
     color: "green",
@@ -58,67 +53,56 @@ const styles = StyleSheet.create({
   },
   table: {
     width: "100%",
-    borderBottom: 0,
-    borderRight: 0,
-    borderLeft: 1,
+    borderBottomWidth: 1,
+    borderRightWidth: 1,
+    borderLeftWidth: 1,
+    borderColor: "#DEDEDE",
   },
   tableRow: {
     flexDirection: "row",
   },
   tableColHeader: {
-    borderLeftWidth: 0,
     borderTopWidth: 1,
     borderRightWidth: 1,
     borderBottomWidth: 1,
-    paddingLeft: 0,
-    paddingRight: 0,
-    paddingTop: 8,
-    paddingBottom: 8,
+    borderLeftWidth: 1,
+    padding: 8,
     fontSize: 10,
     fontWeight: "bold",
-    width: "16.666%",
+    width: "20%",
     textAlign: "center",
     backgroundColor: "#DEDEDE",
   },
   tableCol: {
     borderBottomWidth: 1,
     borderRightWidth: 1,
-    paddingLeft: 0,
-    paddingRight: 0,
-    paddingTop: 8,
-    paddingBottom: 8,
+    borderLeftWidth: 1,
+    padding: 8,
     fontSize: 8,
-    width: "16.666%",
+    width: "20%",
     textAlign: "center",
   },
-
   tableColHeaderDescription: {
-    borderLeftWidth: 0,
     borderTopWidth: 1,
     borderRightWidth: 1,
     borderBottomWidth: 1,
-    paddingLeft: 0,
-    paddingRight: 0,
-    paddingTop: 8,
-    paddingBottom: 8,
+    borderLeftWidth: 1,
+    padding: 8,
     fontSize: 10,
     fontWeight: "bold",
-    width: "80%",
+    width: "70%",
     textAlign: "center",
     backgroundColor: "#DEDEDE",
   },
   tableColDescription: {
     borderBottomWidth: 1,
     borderRightWidth: 1,
-    paddingLeft: 0,
-    paddingRight: 0,
-    paddingTop: 8,
-    paddingBottom: 8,
+    borderLeftWidth: 1,
+    padding: 8,
     fontSize: 8,
-    width: "80%",
+    width: "70%",
     textAlign: "center",
   },
-  tbody2: { flex: 2, borderRightWidth: 1 },
   logo: {
     width: 100,
     height: 100,
@@ -127,13 +111,6 @@ const styles = StyleSheet.create({
     marginTop: 40,
     flexDirection: "column",
     alignItems: "center",
-    marginRight: 20,
-  },
-  signatureContainer: {
-    marginTop: 40,
-    flexDirection: "column",
-    alignItems: "flex-end",
-    marginRight: 20,
   },
   signatureLine: {
     width: 200,
@@ -149,32 +126,34 @@ const styles = StyleSheet.create({
 });
 
 const Footer = () => (
-  <Text style={styles.footer}>© 2024 .lk copyright all right reserved.</Text>
+  <Text style={styles.footer}>
+    © 2024 www.agripeace.lk copyright all right reserved.
+  </Text>
 );
 
-const FruitTypeReport = ({ dataList }) => {
+const PlantReport = ({ dataList }) => {
   const reportDateTime = new Date().toLocaleString("en-US", {
     timeZone: "Asia/Colombo",
   });
+
   return (
     <Document>
-      <Page size="Letter" style={styles.page}>
+      <Page size="Letter" orientation="landscape" style={styles.page}>
         <View style={styles.section}>
           <View style={styles.header}>
             <View style={styles.headerTextContainer}>
-              {/* <Image src={logo} style={styles.logo} /> */}
-              <Text style={styles.headerText}>AgriPeace</Text>
+              <Image src={logo} style={styles.logo} />
             </View>
-            <Text style={styles.reportDateTime}>{reportDateTime}</Text>
+            <Text style={styles.headerText}>{reportDateTime}</Text>
           </View>
           <Text style={styles.heading}>Plant Details</Text>
           <View style={styles.table}>
             <View style={styles.tableRow}>
               <Text style={styles.tableColHeader}>Plant Name</Text>
-              <Text style={styles.tableColHeader}>Date</Text>
+
               <Text style={styles.tableColHeaderDescription}>Description</Text>
-              <Text style={styles.tableColHeaderDescription}>Climate</Text>
-              <Text style={styles.tableColHeaderDescription}>Soil pH</Text>
+              <Text style={styles.tableColHeader}>Climate</Text>
+              <Text style={styles.tableColHeader}>Soil pH</Text>
               <Text style={styles.tableColHeaderDescription}>
                 Land Preparation
               </Text>
@@ -183,23 +162,24 @@ const FruitTypeReport = ({ dataList }) => {
             {dataList.map((plant, index) => (
               <View key={index} style={styles.tableRow}>
                 <Text style={styles.tableCol}>{plant.name}</Text>
-                <Text style={styles.tableCol}>{formatDate(plant.date)}</Text>
+
                 <Text style={styles.tableColDescription}>
                   {plant.description}
                 </Text>
-
                 <Text style={styles.tableCol}>{plant.climate}</Text>
                 <Text style={styles.tableCol}>{plant.soilPh}</Text>
-                <Text style={styles.tableCol}>{plant.landPreparation}</Text>
-                <Text style={styles.tableCol}>{plant.fertilizers}</Text>
+                <Text style={styles.tableColDescription}>
+                  {plant.landPreparation}
+                </Text>
+                <Text style={styles.tableColDescription}>
+                  {plant.fertilizers}
+                </Text>
               </View>
             ))}
           </View>
-          <View style={styles.signatureContainer}>
-            <View style={styles.signatureContainerCenter}>
-              <View style={styles.signatureLine} />
-              <Text style={styles.signatureText}>Signature</Text>
-            </View>
+          <View style={styles.signatureContainerCenter}>
+            <View style={styles.signatureLine} />
+            <Text style={styles.signatureText}>Signature</Text>
           </View>
         </View>
         <Footer />
@@ -209,12 +189,12 @@ const FruitTypeReport = ({ dataList }) => {
 };
 
 // Function to format date
-const formatDate = (date) => {
-  return new Date(date).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-};
+// const formatDate = (date) => {
+//   return new Date(date).toLocaleDateString("en-US", {
+//     year: "numeric",
+//     month: "long",
+//     day: "numeric",
+//   });
+// };
 
-export default FruitTypeReport;
+export default PlantReport;

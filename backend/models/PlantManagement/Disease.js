@@ -2,11 +2,31 @@ const mongoose = require("mongoose");
 
 const diseaseSchema = new mongoose.Schema(
   {
+    imageUrl: {
+      type: String,
+      required: false, // Assuming imageUrl is not required
+    },
     name: {
       type: String,
       required: true,
     },
-    description: {
+    causalAgent: {
+      type: String,
+      required: true,
+    },
+    diseaseTransmission: {
+      type: String,
+      required: true,
+    },
+    diseaseSymptoms: {
+      type: String,
+      required: true,
+    },
+    control: {
+      type: String,
+      required: true,
+    },
+    fertilizers: {
       type: String,
       required: true,
     },
