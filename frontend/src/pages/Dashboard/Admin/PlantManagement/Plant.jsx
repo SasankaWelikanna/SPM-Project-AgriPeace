@@ -7,20 +7,20 @@ import Modal from "../../../../components/Modal/Modal";
 import SearchBar from "../../../../components/Search/SearchBar";
 import { ToastContainer, toast } from "react-toastify";
 import { MdDelete } from "react-icons/md";
-import { FaEdit, FaDisease, FaFilePdf, FaFileExcel } from "react-icons/fa";
+import { FaEdit, FaFilePdf, FaFileExcel } from "react-icons/fa";
 import { HiRefresh } from "react-icons/hi";
 import * as XLSX from "xlsx";
 import { writeFile } from "xlsx";
 import PlantForm from "./PlantForm";
 import PlantReport from "./PlantReport";
 import { BlobProvider } from "@react-pdf/renderer";
-import Pagination from "../../../../components/Pagination/Pagination"; // Import the Pagination component
+import Pagination from "../../../../components/Pagination/Pagination";
 
 function Plant() {
   const axiosFetch = useAxiosFetch();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
-  const [plant, setPlant] = useState([]);
+
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [dataList, setDataList] = useState([]);
@@ -56,7 +56,7 @@ function Plant() {
 
   const handleSearch = (query) => {
     const filteredList = dataList.filter((plant) => {
-      const fullName = `${plant.name} ${plant.date}`;
+      const fullName = `${plant.name} `;
       return fullName.toLowerCase().includes(query.toLowerCase());
     });
     setFilteredDataList(filteredList);
@@ -65,7 +65,6 @@ function Plant() {
   const generateExcelFile = () => {
     const rearrangedDataList = dataList.map((plant) => ({
       Plant_Name: plant.name,
-      Date: plant.date,
       Description: plant.description,
       Climate: plant.climate,
       Soil_pH: plant.soilPh,
@@ -329,7 +328,10 @@ function Plant() {
               ))
             ) : (
               <tr>
-                <td colSpan="9" className="text-center p-4">
+                <td
+                  colSpan="9"
+                  className="text-center  p-4 text-gray-500 font-semibold"
+                >
                   No plants found.
                 </td>
               </tr>

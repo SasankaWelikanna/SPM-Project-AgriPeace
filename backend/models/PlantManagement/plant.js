@@ -7,22 +7,18 @@ const PlantSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: true,
   },
   imageUrl: {
     type: String,
   },
   climate: {
     type: String,
-    required: true,
   },
   soilPh: {
     type: String,
-    required: true,
   },
   landPreparation: {
     type: String,
-    required: true,
   },
   fertilizers: [
     {

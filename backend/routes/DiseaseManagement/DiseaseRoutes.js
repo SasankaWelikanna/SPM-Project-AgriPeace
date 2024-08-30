@@ -1,26 +1,20 @@
 const express = require("express");
 const router = express.Router();
-const {
-  createDisease,
-  getDiseasesByPlantId,
-  getDiseaseById,
-  updateDisease,
-  deleteDisease,
-} = require("../../controllers/PlantManagement/diseaseController");
+const diseaseController = require("../../controllers/PlantManagement/diseaseController");
 
-// Create a new disease
-router.post("/", createDisease);
+// Get all diseases by plant ID
+router.get("/plant/:plantId", diseaseController.getDiseasesByPlantId);
 
-// Get all diseases for a specific plant
-router.get("/plant/:plantId", getDiseasesByPlantId);
+// Get a single disease by ID
+router.get("/:id", diseaseController.getDiseaseById);
 
-// Get a specific disease by ID
-router.get("/:id", getDiseaseById);
+// Add a new disease
+router.post("/", diseaseController.createDisease);
 
-// Update a disease
-router.put("/:id", updateDisease);
+// Update a disease by ID
+router.put("/:id", diseaseController.updateDisease);
 
-// Delete a disease
-router.delete("/:id", deleteDisease);
+// Delete a disease by ID
+router.delete("/:id", diseaseController.deleteDisease);
 
 module.exports = router;
