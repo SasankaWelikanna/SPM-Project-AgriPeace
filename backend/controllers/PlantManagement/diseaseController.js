@@ -13,6 +13,12 @@ exports.createDisease = async (req, res) => {
       fertilizers,
       plantId,
     } = req.body;
+
+    // Ensure fertilizers is an array
+    const formattedFertilizers = Array.isArray(fertilizers)
+      ? fertilizers
+      : [fertilizers];
+
     const newDisease = new Disease({
       imageUrl,
       name,
@@ -20,7 +26,7 @@ exports.createDisease = async (req, res) => {
       diseaseTransmission,
       diseaseSymptoms,
       control,
-      fertilizers,
+      fertilizers: formattedFertilizers,
       plantId,
     });
     await newDisease.save();
@@ -66,6 +72,12 @@ exports.updateDisease = async (req, res) => {
       control,
       fertilizers,
     } = req.body;
+
+    // Ensure fertilizers is an array
+    const formattedFertilizers = Array.isArray(fertilizers)
+      ? fertilizers
+      : [fertilizers];
+
     const disease = await Disease.findByIdAndUpdate(
       id,
       {
@@ -75,7 +87,7 @@ exports.updateDisease = async (req, res) => {
         diseaseTransmission,
         diseaseSymptoms,
         control,
-        fertilizers,
+        fertilizers: formattedFertilizers,
       },
       { new: true }
     );

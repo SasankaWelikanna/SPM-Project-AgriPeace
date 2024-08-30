@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import useAxiosFetch from "../../../../hooks/useAxiosFetch";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { useNavigate } from "react-router-dom";
-import Modal from "../../../../components/Modal/LargeModel";
+import LargeModal from "../../../../components/Modal/LargeModal";
+import Modal from "../../../../components/Modal/Modal";
 import SearchBar from "../../../../components/Search/SearchBar";
 import { ToastContainer, toast } from "react-toastify";
 import { MdDelete } from "react-icons/md";
@@ -200,15 +201,15 @@ function Plant() {
           </div>
         </div>
 
-        <Modal
+        <LargeModal
           isOpen={addModalOpen}
           onClose={handleAddModalClose}
           title="Add Plant"
         >
           <PlantForm handleSubmit={handleAddSubmit} />
-        </Modal>
+        </LargeModal>
 
-        <Modal
+        <LargeModal
           isOpen={editModalOpen}
           onClose={handleEditModalClose}
           title="Edit Plant"
@@ -217,7 +218,7 @@ function Plant() {
             handleSubmit={handleEditSubmit}
             initialData={selectedPlant}
           />
-        </Modal>
+        </LargeModal>
 
         <Modal
           isOpen={showDeleteModal}

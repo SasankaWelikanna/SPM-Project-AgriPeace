@@ -4,6 +4,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 function DiseaseForm({ handleSubmit, initialData = {} }) {
   const [img, setImg] = useState(undefined);
+  const [imgPreview, setImgPreview] = useState(null);
   const [imgPerc, setImgPerc] = useState(0);
   const [formData, setFormData] = useState({
     imageUrl: "",
@@ -12,13 +13,15 @@ function DiseaseForm({ handleSubmit, initialData = {} }) {
     diseaseTransmission: "",
     diseaseSymptoms: "",
     control: "",
-    fertilizers: "",
+    fertilizers: [], // Ensure this is always an array
     plantId: "",
   });
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
-    img && uploadFile(img, "imageUrl");
+    if (img) {
+      uploadFile(img, "imageUrl");
+    }
   }, [img]);
 
   const uploadFile = (file, fileType) => {
@@ -52,19 +55,45 @@ function DiseaseForm({ handleSubmit, initialData = {} }) {
 
   useEffect(() => {
     if (initialData) {
-      setFormData(initialData);
+      setFormData((prev) => ({
+        ...prev,
+        ...initialData,
+        fertilizers: initialData.fertilizers || [], // Ensure fertilizers is an array
+      }));
+      if (initialData.imageUrl) {
+        setImgPreview(initialData.imageUrl);
+      }
     }
   }, [initialData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(`Field ${name} changed to ${value}`); // Debug log
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleFertilizerChange = (index, value) => {
+    const newFertilizers = [...formData.fertilizers];
+    newFertilizers[index] = value;
+    setFormData((prev) => ({ ...prev, fertilizers: newFertilizers }));
+  };
+
+  const handleAddFertilizer = () => {
+    setFormData((prev) => ({
+      ...prev,
+      fertilizers: [...prev.fertilizers, ""],
+    }));
+  };
+
+  const handleRemoveFertilizer = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      fertilizers: prev.fertilizers.filter((_, i) => i !== index),
+    }));
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log("Submitting form with data:", formData); // Debug log
+    console.log("Submitting form with data:", formData);
     handleSubmit(formData);
   };
 
@@ -84,8 +113,23 @@ function DiseaseForm({ handleSubmit, initialData = {} }) {
               type="file"
               className="w-full p-2 border border-gray-300 rounded-md"
               name="imageUrl"
-              onChange={(e) => setImg(e.target.files[0])}
+              onChange={(e) => {
+                const file = e.target.files[0];
+                setImg(file);
+                if (file) {
+                  const reader = new FileReader();
+                  reader.onloadend = () => setImgPreview(reader.result);
+                  reader.readAsDataURL(file);
+                }
+              }}
             />
+            {imgPreview && (
+              <img
+                src={imgPreview}
+                alt="Image preview"
+                className="mt-2 max-w-full h-auto"
+              />
+            )}
           </div>
           <div className="mb-4">
             <label htmlFor="name" className="block text-gray-700 mb-2">
@@ -171,15 +215,32 @@ function DiseaseForm({ handleSubmit, initialData = {} }) {
             <label htmlFor="fertilizers" className="block text-gray-700 mb-2">
               Fertilizers
             </label>
-            <textarea
-              id="fertilizers"
-              name="fertilizers"
-              value={formData.fertilizers}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-lg"
-              rows="3"
-              required
-            />
+            {formData.fertilizers.map((fertilizer, index) => (
+              <div key={index} className="flex items-center mb-2">
+                <input
+                  type="text"
+                  value={fertilizer}
+                  onChange={(e) =>
+                    handleFertilizerChange(index, e.target.value)
+                  }
+                  className="w-full p-2 border border-gray-300 rounded-lg mr-2"
+                />
+                <button
+                  type="button"
+                  onClick={() => handleRemoveFertilizer(index)}
+                  className="bg-red-500 text-white px-2 py-1 rounded"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={handleAddFertilizer}
+              className="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              Add Fertilizer
+            </button>
           </div>
         </div>
       </div>

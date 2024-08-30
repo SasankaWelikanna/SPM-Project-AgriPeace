@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import useAxiosFetch from "../../../../hooks/useAxiosFetch";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { useNavigate, useParams } from "react-router-dom";
-import Modal from "../../../../components/Modal/LargeModel";
+import LargeModal from "../../../../components/Modal/LargeModal";
+import Modal from "../../../../components/Modal/Modal";
 import DiseaseForm from "./DiseaseForm";
 import { ToastContainer, toast } from "react-toastify";
 import { MdDelete, MdOutlineArrowBackIosNew } from "react-icons/md";
@@ -138,16 +139,16 @@ function Diseases() {
         </div>
 
         {/* Add Disease Modal */}
-        <Modal
+        <LargeModal
           isOpen={addModalOpen}
           onClose={handleAddModalClose}
           title="Add Disease"
         >
           <DiseaseForm handleSubmit={handleAddSubmit} />
-        </Modal>
+        </LargeModal>
 
         {/* Edit Disease Modal */}
-        <Modal
+        <LargeModal
           isOpen={editModalOpen}
           onClose={handleEditModalClose}
           title="Edit Disease"
@@ -156,7 +157,7 @@ function Diseases() {
             handleSubmit={handleEditSubmit}
             initialData={selectedDisease}
           />
-        </Modal>
+        </LargeModal>
 
         {/* Delete Confirmation Modal */}
         <Modal

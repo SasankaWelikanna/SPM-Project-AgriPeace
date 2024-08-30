@@ -18,7 +18,9 @@ const PlantForm = ({ handleSubmit, initialData }) => {
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
-    img && uploadFile(img, "imageUrl");
+    if (img) {
+      uploadFile(img, "imageUrl");
+    }
   }, [img]);
 
   const uploadFile = (file, fileType) => {
@@ -52,7 +54,11 @@ const PlantForm = ({ handleSubmit, initialData }) => {
 
   useEffect(() => {
     if (initialData) {
-      setFormData(initialData);
+      setFormData((prev) => ({
+        ...prev,
+        ...initialData,
+        fertilizers: initialData.fertilizers || [], // Ensure fertilizers is an array
+      }));
     }
   }, [initialData]);
 
@@ -80,6 +86,13 @@ const PlantForm = ({ handleSubmit, initialData }) => {
     }));
   };
 
+  const handleRemoveFertilizer = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      fertilizers: prev.fertilizers.filter((_, i) => i !== index),
+    }));
+  };
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
     handleSubmit(formData);
@@ -102,6 +115,15 @@ const PlantForm = ({ handleSubmit, initialData }) => {
               name="imageUrl"
               onChange={(e) => setImg(e.target.files[0])}
             />
+            {formData.imageUrl && !uploading && (
+              <div className="mt-4">
+                <img
+                  src={formData.imageUrl}
+                  alt="Uploaded Preview"
+                  className="max-w-lg h-auto rounded-md border border-gray-300"
+                />
+              </div>
+            )}
           </div>
           <div className="mb-4">
             <label
@@ -128,7 +150,6 @@ const PlantForm = ({ handleSubmit, initialData }) => {
               Description
             </label>
             <textarea
-              type="text"
               className="w-full p-2 border border-gray-300 rounded-md"
               name="description"
               placeholder="Description"
@@ -181,7 +202,6 @@ const PlantForm = ({ handleSubmit, initialData }) => {
               Land Preparation
             </label>
             <textarea
-              type="text"
               className="w-full p-2 border border-gray-300 rounded-md"
               name="landPreparation"
               placeholder="Land Preparation"
@@ -195,15 +215,22 @@ const PlantForm = ({ handleSubmit, initialData }) => {
               Fertilizers
             </label>
             {formData.fertilizers.map((fertilizer, index) => (
-              <input
-                key={index}
-                type="text"
-                className="w-full p-2 border border-gray-300 rounded-md mt-2"
-                name="fertilizers"
-                placeholder="Fertilizer"
-                value={fertilizer}
-                onChange={(e) => handleFertilizersChange(e, index)}
-              />
+              <div key={index} className="flex items-center mb-2">
+                <input
+                  type="text"
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                  placeholder="Fertilizer"
+                  value={fertilizer}
+                  onChange={(e) => handleFertilizersChange(e, index)}
+                />
+                <button
+                  type="button"
+                  onClick={() => handleRemoveFertilizer(index)}
+                  className="ml-2 px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                >
+                  Remove
+                </button>
+              </div>
             ))}
             <button
               type="button"
