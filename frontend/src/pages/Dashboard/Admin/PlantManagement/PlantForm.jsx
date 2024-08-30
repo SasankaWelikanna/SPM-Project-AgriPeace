@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import storage from "../../../../config/firebase.init";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { MdClose } from "react-icons/md";
 
 const PlantForm = ({ handleSubmit, initialData }) => {
   const [img, setImg] = useState(undefined);
@@ -120,7 +121,7 @@ const PlantForm = ({ handleSubmit, initialData }) => {
                 <img
                   src={formData.imageUrl}
                   alt="Uploaded Preview"
-                  className="max-w-lg h-auto rounded-md border border-gray-300"
+                  className="w-40 h-40 rounded-md border border-gray-300"
                 />
               </div>
             )}
@@ -226,16 +227,16 @@ const PlantForm = ({ handleSubmit, initialData }) => {
                 <button
                   type="button"
                   onClick={() => handleRemoveFertilizer(index)}
-                  className="ml-2 px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                  className="ml-2 px-2 py-2 border border-red-500 text-red-500 rounded hover:bg-red-600  hover:text-white"
                 >
-                  Remove
+                  <MdClose />
                 </button>
               </div>
             ))}
             <button
               type="button"
               onClick={handleAddFertilizer}
-              className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              className="mt-2 px-4 py-2 border border-secondary  text-secondary rounded hover:text-white  hover:bg-green-600"
             >
               Add Fertilizer
             </button>
@@ -245,7 +246,7 @@ const PlantForm = ({ handleSubmit, initialData }) => {
       <div className="flex justify-end">
         <button
           type="submit"
-          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+          className="px-4 py-2 bg-secondary text-white rounded hover:bg-green-600"
           disabled={uploading}
         >
           Submit
