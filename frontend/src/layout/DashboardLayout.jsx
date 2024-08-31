@@ -48,11 +48,6 @@ const farmerNavItems = [
     label: "My Locations",
   },
   {
-    to: "/dashboard/user-profile",
-    icon: <FaUserAlt className="text-2xl" />,
-    label: "Profile",
-  },
-  {
     to: "/dashboard/my-payments",
     icon: <MdPayments className="text-2xl" />,
     label: "Payment History",
@@ -61,6 +56,11 @@ const farmerNavItems = [
 
 const lastMenuItems = [
   { to: "/", icon: <BiHomeAlt className="text-2xl" />, label: "Main Home" },
+  {
+    to: "/dashboard/user-profile",
+    icon: <FaUserAlt className="text-xl" />,
+    label: "Profile",
+  },
 ];
 
 const DashboardLayout = () => {
