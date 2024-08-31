@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import useAxiosFetch from "../../../../hooks/useAxiosFetch";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { useNavigate } from "react-router-dom";
-import Modal from "../../../../components/Modal/Modal";
+import Modal from "../../../../components/Modal/LargeModal";
 import SearchBar from"../../../../components/Search/SearchBar";
 import { ToastContainer, toast } from "react-toastify";
 import { MdDelete } from "react-icons/md";
@@ -275,19 +275,27 @@ function Fertilizer() {
                   <td className="p-4">{fertilizer.quantity}</td>
                   <td className="p-4">{fertilizer.price}</td>
 
-                  <td className="p-4 flex space-x-2">
-                    <button
-                      className="text-blue-500 hover:underline"
-                      onClick={() => handleEditModalOpen(fertilizer)}
-                    >
-                      <FaEdit className="text-3xl" />
-                    </button>
-                    <button
-                      className="text-red-500 hover:underline"
-                      onClick={() => handleShowDeleteModal(fertilizer._id)}
-                    >
-                      <MdDelete className="text-3xl" />
-                    </button>
+                  <td className="p-4">
+                  <div className="flex space-x-2">
+                        <button
+                          className="text-3xl text-blue-600 hover:text-blue-800"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEditModalOpen(fertilizer);
+                          }}
+                        >
+                          <FaEdit />
+                        </button>
+                        <button
+                          className="text-3xl text-red-600 hover:text-red-800"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleShowDeleteModal(fertilizer._id);
+                          }}
+                        >
+                          <MdDelete />
+                        </button>
+                      </div>
                   </td>
                 </tr>
               ))
