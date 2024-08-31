@@ -8,11 +8,13 @@ import SearchBar from "../../../../components/Search/SearchBar";
 import { ToastContainer, toast } from "react-toastify";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
+import Pagination from "../../../../components/Pagination/Pagination";
 
 function Location() {
   const axiosFetch = useAxiosFetch();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
+  
   const [location, setLocation] = useState([]);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -21,6 +23,10 @@ function Location() {
   const [filteredDataList, setFilteredDataList] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [locationsPerPage] = useState(2); // Adjust as needed
 
   useEffect(() => {
     fetchLocations();
@@ -46,8 +52,8 @@ function Location() {
 
   const handleSearch = (query) => {
     const filteredList = dataList.filter((location) => {
-      const fullName = `${location.name} ${location.date}`;
-      return fullName.toLowerCase().includes(query.toLowerCase());
+      const city = `${location.city}`;
+      return city.toLowerCase().includes(query.toLowerCase());
     });
     setFilteredDataList(filteredList);
   };
@@ -110,6 +116,19 @@ function Location() {
     setDeleteId(null);
   };
 
+  const handleViewCrops = (locationId) => {
+    navigate(`/dashboard/location/crops/${locationId}`);
+  };
+
+  // Pagination calculations
+  const indexOfLastLocation = currentPage * locationsPerPage;
+  const indexOfFirstLocation = indexOfLastLocation - locationsPerPage;
+  const currentLocation = filteredDataList.slice(
+    indexOfFirstLocation,
+    indexOfLastLocation
+  );
+  const totalPages = Math.ceil(filteredDataList.length / locationsPerPage);
+  
   return (
     <div className="mt-10 p-4 bg-gray-50">
       <div className="bg-white shadow-md rounded-lg p-6">
@@ -185,30 +204,39 @@ function Location() {
         <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden">
           <thead className="bg-gray-100">
             <tr>
-              <th className="p-4 text-left">Image</th>
-              <th className="p-4 text-left">Name</th>
-              <th className="p-4 text-left">Date</th>
-              <th className="p-4 text-left">Description</th>
+              <th className="p-4 text-left">Province</th>
+              <th className="p-4 text-left">District</th>
+              <th className="p-4 text-left">City</th>
+              <th className="p-4 text-left">Latitude</th>
+              <th className="p-4 text-left">Longitude</th>
+              <th className="p-4 text-left">Area Size</th>
+              <th className="p-4 text-left">Soil Type</th>
+              <th className="p-4 text-left">Irrigation Type</th>
               <th className="p-4 text-left">Action</th>
             </tr>
           </thead>
           <tbody>
-            {filteredDataList.length ? (
-              filteredDataList.map((location) => (
+            {currentLocation.length ? (
+              currentLocation.map((location) => (
                 <tr key={location._id} className="border-b">
-                  <td className="p-4">
-                    {location.imageUrl && (
-                      <img
-                        src={location.imageUrl}
-                        alt="Location"
-                        className="w-12 h-12 object-cover rounded-lg"
-                      />
-                    )}
-                  </td>
-                  <td className="p-4">{location.name}</td>
-                  <td className="p-4">{location.date}</td>
-                  <td className="p-4">{location.description}</td>
+                  <td className="p-4">{location.province}</td>
+                  <td className="p-4">{location.district}</td>
+                  <td className="p-4">{location.city}</td>
+                  <td className="p-4">{location.latitude}</td>
+                  <td className="p-4">{location.longitude}</td>
+                  <td className="p-4">{location.areaSize}</td>
+                  <td className="p-4">{location.soilType}</td>
+                  <td className="p-4">{location.irrigationType}</td>
                   <td className="p-4 flex space-x-2">
+                    <button
+                      className="text-green-500 hover:underline"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleViewCrops(location._id);
+                      }}
+                    >
+                      View Crops
+                    </button>
                     <button
                       className="text-blue-500 hover:underline"
                       onClick={() => handleEditModalOpen(location)}
@@ -226,13 +254,19 @@ function Location() {
               ))
             ) : (
               <tr>
-                <td colSpan="5" className="p-4 text-center text-gray-500">
+                <td colSpan="9" className="p-4 text-center text-gray-500">
                   No Data
                 </td>
               </tr>
             )}
           </tbody>
         </table>
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
       <ToastContainer
         position="top-right"

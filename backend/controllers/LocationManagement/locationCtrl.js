@@ -1,13 +1,17 @@
 const Location = require("../../models/LocationManagement/location");
 
 const addLocation = async (req, res) => {
-  const { imageUrl, name, date, description } = req.body;
+  const { province, district, city, latitude, longitude, areaSize, soilType, irrigationType } = req.body;
   try {
     const newLocation = await Location.create({
-      imageUrl,
-      name,
-      date,
-      description,
+      province,
+      district,
+      city,
+      latitude,
+      longitude,
+      areaSize,
+      soilType,
+      irrigationType,
     });
     res.json("New Location Added");
   } catch (err) {
@@ -46,15 +50,19 @@ const deleteLocation = async (req, res) => {
 
 const updateLocation = async (req, res) => {
   const id = req.params.id;
-  const { imageUrl, name, date, description } = req.body;
+  const { province, district, city, latitude, longitude, areaSize, soilType, irrigationType } = req.body;
   try {
     await Location.findByIdAndUpdate(
       id,
       {
-        imageUrl,
-        name,
-        date,
-        description,
+        province,
+        district,
+        city,
+        latitude,
+        longitude,
+        areaSize,
+        soilType,
+        irrigationType,
       },
       { new: true }
     ); // Added { new: true } to return updated document
