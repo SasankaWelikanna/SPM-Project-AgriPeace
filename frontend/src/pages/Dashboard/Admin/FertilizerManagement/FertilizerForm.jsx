@@ -13,7 +13,7 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
     quantity: "",
     price: "",
   });
-  const [uploading, setUploading] = useState(false); // Track if image is being uploaded
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     img && uploadFile(img, "imageUrl");
@@ -23,7 +23,7 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
     const fileName = new Date().getTime() + file.name;
     const storageRef = ref(storage, "images/fertilizers/" + fileName);
     const uploadTask = uploadBytesResumable(storageRef, file);
-    setUploading(true); // Start uploading
+    setUploading(true);
 
     uploadTask.on(
       "state_changed",
@@ -34,7 +34,7 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
       },
       (error) => {
         console.log(error);
-        setUploading(false); // Stop uploading on error
+        setUploading(false);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -43,7 +43,7 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
             ...prev,
             [fileType]: downloadURL,
           }));
-          setUploading(false); // Stop uploading after successful upload
+          setUploading(false);
         });
       }
     );
@@ -91,112 +91,145 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
 
   return (
     <form onSubmit={handleFormSubmit} className="space-y-4">
-      <div className="mb-4">
-        <label
-          htmlFor="imageUrl"
-          className="block text-gray-700 font-semibold mb-1"
-        >
-          {uploading ? `Uploading: ${imgPerc}%` : "Image"}
-        </label>
-        <input
-          type="file"
-          className="w-full p-2 border border-gray-300 rounded-md"
-          name="imageUrl"
-          onChange={(e) => setImg(e.target.files[0])}
-        />
-      </div>
-      <div className="mb-4">
-        <label
-          htmlFor="productName"
-          className="block text-gray-700 font-semibold mb-1"
-        >
-          Fertilizer Name
-        </label>
-        <input
-          type="text"
-          className="w-full p-2 border border-gray-300 rounded-md"
-          name="productName"
-          placeholder="Fertilizer Name"
-          onChange={handleChange}
-          value={formData.productName}
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <label
-          htmlFor="category"
-          className="block text-gray-700 font-semibold mb-1"
-        >
-          Category
-        </label>
-        <input
-          type="text"
-          className="w-full p-2 border border-gray-300 rounded-md"
-          name="category"
-          placeholder="Category"
-          onChange={handleChange}
-          value={formData.category}
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <label
-          htmlFor="description"
-          className="block text-gray-700 font-semibold mb-1"
-        >
-          Description
-        </label>
-        <textarea
-          type="text"
-          className="w-full p-2 border border-gray-300 rounded-md"
-          name="description"
-          placeholder="Description"
-          onChange={handleChange}
-          value={formData.description}
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <label
-          htmlFor="quantity"
-          className="block text-gray-700 font-semibold mb-1"
-        >
-          Quantity
-        </label>
-        <input
-          type="text"
-          className="w-full p-2 border border-gray-300 rounded-md"
-          name="quantity"
-          placeholder="Quantity"
-          onChange={handleChange}
-          value={formData.quantity}
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <label
-          htmlFor="price"
-          className="block text-gray-700 font-semibold mb-1"
-        >
-          Price
-        </label>
-        <input
-          type="text"
-          className="w-full p-2 border border-gray-300 rounded-md"
-          name="price"
-          placeholder="Price"
-          onChange={handleChange}
-          value={formData.price}
-          required
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-4">
+          <div className="mb-4">
+            <label
+              htmlFor="imageUrl"
+              className="block text-gray-700 font-semibold mb-1"
+            >
+              {uploading ? `Uploading: ${imgPerc}%` : "Image"}
+            </label>
+            <input
+              type="file"
+              className="w-full p-2 border border-gray-300 rounded-md"
+              name="imageUrl"
+              onChange={(e) => setImg(e.target.files[0])}
+            />
+            {img ? (
+              <div className="mt-2">
+                <img
+                  src={URL.createObjectURL(img)}
+                  alt="Selected"
+                  className="w-32 h-32 object-cover rounded-md"
+                />
+              </div>
+            ) : (
+              formData.imageUrl && (
+                <div className="mt-2">
+                  <img
+                    src={formData.imageUrl}
+                    alt="Uploaded"
+                    className="w-32 h-32 object-cover rounded-md"
+                  />
+                </div>
+              )
+            )}
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="productName"
+              className="block text-gray-700 font-semibold mb-1"
+            >
+              Fertilizer Name
+            </label>
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-md"
+              name="productName"
+              placeholder="Fertilizer Name"
+              onChange={handleChange}
+              value={formData.productName}
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="category"
+              className="block text-gray-700 font-semibold mb-1"
+            >
+              Category
+            </label>
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-md"
+              name="category"
+              placeholder="Category"
+              onChange={handleChange}
+              value={formData.category}
+              required
+            />
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <div className="mb-4">
+            <label
+              htmlFor="description"
+              className="block text-gray-700 font-semibold mb-1"
+            >
+              Description
+            </label>
+            <textarea
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-md"
+              name="description"
+              placeholder="Description"
+              onChange={handleChange}
+              value={formData.description}
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="quantity"
+              className="block text-gray-700 font-semibold mb-1"
+            >
+              Quantity
+            </label>
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-md"
+              name="quantity"
+              placeholder="Quantity"
+              onChange={handleChange}
+              value={formData.quantity}
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="price"
+              className="block text-gray-700 font-semibold mb-1"
+            >
+              Price
+            </label>
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-md"
+              name="price"
+              placeholder="Price"
+              onChange={handleChange}
+              value={formData.price}
+              required
+            />
+          </div>
+        </div>
       </div>
 
-      <button
-        type="submit"
-        className="w-full py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600"
-      >
-        Submit
-      </button>
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          className="px-4 py-2 bg-secondary text-white rounded hover:bg-green-600"
+          disabled={uploading}
+        >
+          Submit
+        </button>
+      </div>
     </form>
   );
 };
