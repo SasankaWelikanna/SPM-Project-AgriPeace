@@ -233,6 +233,7 @@ const DashboardLayout = () => {
             </button>
           </li>
         </ul>
+        
         {/* User Info Section */}
         {currentUser && (
           <div className="absolute bottom-5 px-4 flex items-center gap-x-4">
