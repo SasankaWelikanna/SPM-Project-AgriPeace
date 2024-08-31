@@ -131,7 +131,7 @@ const Footer = () => (
   </Text>
 );
 
-const PlantReport = ({ dataList }) => {
+const DiseaseReport = ({ dataList }) => {
   const reportDateTime = new Date().toLocaleString("en-US", {
     timeZone: "Asia/Colombo",
   });
@@ -146,33 +146,35 @@ const PlantReport = ({ dataList }) => {
             </View>
             <Text style={styles.headerText}>{reportDateTime}</Text>
           </View>
-          <Text style={styles.heading}>Plant Details</Text>
+          <Text style={styles.heading}>Disease Details</Text>
           <View style={styles.table}>
             <View style={styles.tableRow}>
-              <Text style={styles.tableColHeader}>Plant Name</Text>
+              <Text style={styles.tableColHeader}>Disease Name</Text>
 
-              <Text style={styles.tableColHeaderDescription}>Description</Text>
-              <Text style={styles.tableColHeader}>Climate</Text>
-              <Text style={styles.tableColHeader}>Soil pH</Text>
+              <Text style={styles.tableColHeaderDescription}>Causal Agent</Text>
+              <Text style={styles.tableColHeader}>Disease Transmission</Text>
+              <Text style={styles.tableColHeader}>Disease Symptoms</Text>
               <Text style={styles.tableColHeaderDescription}>
-                Land Preparation
+                Control Measures
               </Text>
               <Text style={styles.tableColHeaderDescription}>Fertilizers</Text>
             </View>
-            {dataList.map((plant, index) => (
+            {dataList.map((disease, index) => (
               <View key={index} style={styles.tableRow}>
-                <Text style={styles.tableCol}>{plant.name}</Text>
+                <Text style={styles.tableCol}>{disease.name}</Text>
 
                 <Text style={styles.tableColDescription}>
-                  {plant.description}
+                  {disease.causalAgent}
                 </Text>
-                <Text style={styles.tableCol}>{plant.climate}</Text>
-                <Text style={styles.tableCol}>{plant.soilPh}</Text>
+                <Text style={styles.tableCol}>
+                  {disease.diseaseTransmission}
+                </Text>
+                <Text style={styles.tableCol}>{disease.diseaseSymptoms}</Text>
                 <Text style={styles.tableColDescription}>
-                  {plant.landPreparation}
+                  {disease.control}
                 </Text>
                 <Text style={styles.tableColDescription}>
-                  {plant.fertilizers}
+                  {disease.fertilizers}
                 </Text>
               </View>
             ))}
@@ -197,4 +199,4 @@ const PlantReport = ({ dataList }) => {
 //   });
 // };
 
-export default PlantReport;
+export default DiseaseReport;

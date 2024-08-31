@@ -131,7 +131,7 @@ const Footer = () => (
   </Text>
 );
 
-const PlantReport = ({ dataList }) => {
+const FertilizerReport = ({ dataList }) => {
   const reportDateTime = new Date().toLocaleString("en-US", {
     timeZone: "Asia/Colombo",
   });
@@ -146,40 +146,30 @@ const PlantReport = ({ dataList }) => {
             </View>
             <Text style={styles.headerText}>{reportDateTime}</Text>
           </View>
-          <Text style={styles.heading}>Plant Details</Text>
+          <Text style={styles.heading}>Fertilizer Details</Text>
           <View style={styles.table}>
             <View style={styles.tableRow}>
-              <Text style={styles.tableColHeader}>Plant Name</Text>
-
+              <Text style={styles.tableColHeader}>Product Name</Text>
+              <Text style={styles.tableColHeader}>Category</Text>
               <Text style={styles.tableColHeaderDescription}>Description</Text>
-              <Text style={styles.tableColHeader}>Climate</Text>
-              <Text style={styles.tableColHeader}>Soil pH</Text>
-              <Text style={styles.tableColHeaderDescription}>
-                Land Preparation
-              </Text>
-              <Text style={styles.tableColHeaderDescription}>Fertilizers</Text>
+              <Text style={styles.tableColHeader}>Quantity (kg)</Text>
+              <Text style={styles.tableColHeader}>Price (Rs)</Text>
             </View>
-            {dataList.map((plant, index) => (
+            {dataList.map((fertilizer, index) => (
               <View key={index} style={styles.tableRow}>
-                <Text style={styles.tableCol}>{plant.name}</Text>
-
-                <Text style={styles.tableColDescription}>
-                  {plant.description}
-                </Text>
-                <Text style={styles.tableCol}>{plant.climate}</Text>
-                <Text style={styles.tableCol}>{plant.soilPh}</Text>
-                <Text style={styles.tableColDescription}>
-                  {plant.landPreparation}
-                </Text>
-                <Text style={styles.tableColDescription}>
-                  {plant.fertilizers}
-                </Text>
+                <Text style={styles.tableCol}>{fertilizer.productName}</Text>
+                <Text style={styles.tableCol}>{fertilizer.category}</Text>
+                <Text style={styles.tableColDescription}>{fertilizer.description}</Text>
+                <Text style={styles.tableCol}>{fertilizer.quantity}</Text>
+                <Text style={styles.tableCol}>{fertilizer.price}</Text>
               </View>
             ))}
           </View>
-          <View style={styles.signatureContainerCenter}>
-            <View style={styles.signatureLine} />
-            <Text style={styles.signatureText}>Signature</Text>
+          <View style={styles.signatureContainer}>
+            <View style={styles.signatureContainerCenter}>
+              <View style={styles.signatureLine} />
+              <Text style={styles.signatureText}>Signature</Text>
+            </View>
           </View>
         </View>
         <Footer />
@@ -189,12 +179,12 @@ const PlantReport = ({ dataList }) => {
 };
 
 // Function to format date
-// const formatDate = (date) => {
-//   return new Date(date).toLocaleDateString("en-US", {
-//     year: "numeric",
-//     month: "long",
-//     day: "numeric",
-//   });
-// };
+const formatDate = (date) => {
+  return new Date(date).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
 
-export default PlantReport;
+export default FertilizerReport;

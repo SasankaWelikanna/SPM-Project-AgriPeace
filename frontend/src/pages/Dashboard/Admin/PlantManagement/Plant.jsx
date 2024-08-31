@@ -2,24 +2,25 @@ import React, { useEffect, useState } from "react";
 import useAxiosFetch from "../../../../hooks/useAxiosFetch";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { useNavigate } from "react-router-dom";
+import LargeModal from "../../../../components/Modal/LargeModal";
 import Modal from "../../../../components/Modal/Modal";
 import SearchBar from "../../../../components/Search/SearchBar";
 import { ToastContainer, toast } from "react-toastify";
 import { MdDelete } from "react-icons/md";
-import { FaEdit, FaDisease, FaFilePdf, FaFileExcel } from "react-icons/fa";
+import { FaEdit, FaFilePdf, FaFileExcel } from "react-icons/fa";
 import { HiRefresh } from "react-icons/hi";
 import * as XLSX from "xlsx";
 import { writeFile } from "xlsx";
 import PlantForm from "./PlantForm";
 import PlantReport from "./PlantReport";
 import { BlobProvider } from "@react-pdf/renderer";
-import Pagination from "../../../../components/Pagination/Pagination"; // Import the Pagination component
+import Pagination from "../../../../components/Pagination/Pagination";
 
 function Plant() {
   const axiosFetch = useAxiosFetch();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
-  const [plant, setPlant] = useState([]);
+
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [dataList, setDataList] = useState([]);
@@ -55,7 +56,7 @@ function Plant() {
 
   const handleSearch = (query) => {
     const filteredList = dataList.filter((plant) => {
-      const fullName = `${plant.name} ${plant.date}`;
+      const fullName = `${plant.name} `;
       return fullName.toLowerCase().includes(query.toLowerCase());
     });
     setFilteredDataList(filteredList);
@@ -64,7 +65,6 @@ function Plant() {
   const generateExcelFile = () => {
     const rearrangedDataList = dataList.map((plant) => ({
       Plant_Name: plant.name,
-      Date: plant.date,
       Description: plant.description,
       Climate: plant.climate,
       Soil_pH: plant.soilPh,
@@ -200,15 +200,15 @@ function Plant() {
           </div>
         </div>
 
-        <Modal
+        <LargeModal
           isOpen={addModalOpen}
           onClose={handleAddModalClose}
           title="Add Plant"
         >
           <PlantForm handleSubmit={handleAddSubmit} />
-        </Modal>
+        </LargeModal>
 
-        <Modal
+        <LargeModal
           isOpen={editModalOpen}
           onClose={handleEditModalClose}
           title="Edit Plant"
@@ -217,7 +217,7 @@ function Plant() {
             handleSubmit={handleEditSubmit}
             initialData={selectedPlant}
           />
-        </Modal>
+        </LargeModal>
 
         <Modal
           isOpen={showDeleteModal}
@@ -248,7 +248,6 @@ function Plant() {
             <tr>
               <th className="p-4 text-left">Image</th>
               <th className="p-4 text-left">Name</th>
-              <th className="p-4 text-left">Date</th>
               <th className="p-4 text-left">Description</th>
               <th className="p-4 text-left">Climate</th>
               <th className="p-4 text-left">Soil pH</th>
@@ -261,7 +260,7 @@ function Plant() {
             {currentPlants.length ? (
               currentPlants.map((plant) => (
                 <React.Fragment key={plant._id}>
-                  <tr className="border-b cursor-pointer">
+                  <tr className="border-b">
                     <td className="p-4">
                       {plant.imageUrl && (
                         <img
@@ -272,7 +271,6 @@ function Plant() {
                       )}
                     </td>
                     <td className="p-4">{plant.name}</td>
-                    <td className="p-4">{plant.date}</td>
                     <td className="p-4">{plant.description}</td>
                     <td className="p-4">{plant.climate}</td>
                     <td className="p-4">{plant.soilPh}</td>
@@ -330,7 +328,10 @@ function Plant() {
               ))
             ) : (
               <tr>
-                <td colSpan="9" className="text-center p-4">
+                <td
+                  colSpan="9"
+                  className="text-center  p-4 text-gray-500 font-semibold"
+                >
                   No plants found.
                 </td>
               </tr>
