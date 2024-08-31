@@ -2,11 +2,10 @@ const CostCalculator = require("../../models/CostCalculator/costCalculator");
 
 const getBaseCostPerAcre = (crop) => {
       const baseCosts = {
-          'Corn': 150,
-          'Wheat': 120,
-          'Rice': 200,
-          'Soybeans': 180,
-          'Barley': 110,
+          'Gotukola': 150,
+          'Carrot': 120,
+          'Pumpkin': 200,
+          'Leeks': 180,
       };
       return baseCosts[crop] || 100; // Default base cost if crop is not found
    };

@@ -1,4 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination, Navigation } from "swiper";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 import Scroll from "../../hooks/useScroll";
 import useUser from "../../hooks/useUser";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
@@ -21,19 +26,21 @@ const CostCalculator = () => {
   useEffect(() => {
     const fetchPreviousCalculations = async () => {
       try {
-        const response = await axiosSecure.get("/api/costCalculator/userCalculations", {
-          params: { userId: currentUser._id },  // Pass userId as a query parameter
-        });
+        const response = await axiosSecure.get(
+          "/api/costCalculator/userCalculations",
+          {
+            params: { userId: currentUser._id }, // Pass userId as a query parameter
+          }
+        );
         setPreviousCalculations(response.data);
       } catch (error) {
         console.error("Error fetching previous calculations:", error);
       }
     };
-
+  
     const fetchPlants = async () => {
       try {
         const response = await axiosFetch.get("/Plant/");
-        console.log("Fetched Plants Data:", response.data);
         if (Array.isArray(response.data)) {
           setPlants(response.data); // Store plants data in state
         } else {
@@ -43,12 +50,14 @@ const CostCalculator = () => {
         console.error("Error fetching plants:", err);
       }
     };
-
-    if (currentUser && currentUser._id) {
+  
+    if (currentUser) {
       fetchPreviousCalculations();
-      fetchPlants(); // Fetch plants when component mounts
     }
+  
+    fetchPlants(); // Fetch plants when component mounts
   }, [currentUser, axiosSecure, axiosFetch]);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -77,28 +86,71 @@ const CostCalculator = () => {
     <>
       <div className="mt-20 mx-auto max-w-4xl p-6 bg-white shadow-lg rounded-lg">
         <Scroll />
-        <h1 className="text-4xl font-bold mb-6 text-gray-800 text-center">Cost Calculator</h1>
+        <h1 className="text-4xl font-bold mb-6 text-gray-800 text-center">
+          Cost Calculator
+        </h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-lg font-semibold text-gray-700">Crop:</label>
-            <div className="flex flex-wrap gap-4 mt-2">
+            <label className="block text-lg font-semibold text-gray-700">
+              Crop:
+            </label>
+            <Swiper
+              slidesPerView={4}
+              spaceBetween={30}
+              centeredSlides={false}
+              pagination={{
+                clickable: true,
+              }}
+              navigation={true}
+              modules={[Autoplay, Pagination, Navigation]}
+              className="mySwiper mt-4"
+              style={{
+                "--swiper-navigation-size": "50px",
+                "--swiper-navigation-color": "#333",
+                "--swiper-navigation-sides-offset": "0px",
+                "--swiper-pagination-bottom": "-5px",
+              }}
+            >
               {plants.map((plant) => (
-                <label key={plant._id} className="flex items-center">
-                  <input
-                    type="radio"
-                    value={plant.name}
-                    checked={crop === plant.name}
-                    onChange={(e) => setCrop(e.target.value)}
-                    className="mr-2"
-                  />
-                  {plant.name}
-                </label>
+                <SwiperSlide key={plant._id}>
+                  <label
+                    className={`flex flex-col items-center p-4 border-2 rounded-lg cursor-pointer hover:scale-105 transform transition-all duration-200 ${
+                      crop === plant.name ? "bg-secondary" : "border-gray-300"
+                    }`}
+                    style={{ zIndex: crop === plant.name ? 10 : "auto" }} // Set z-index on hover
+                    onMouseEnter={(e) =>
+                      e.currentTarget.style.zIndex = 10
+                    }
+                    onMouseLeave={(e) =>
+                      e.currentTarget.style.zIndex = "auto"
+                    }
+                  >
+                    <img
+                      src={plant.imageUrl}
+                      alt={plant.name}
+                      className="w-full h-36 rounded-md mb-2"
+                      style={{ objectFit: "cover" }}
+                    />
+                    <input
+                      type="radio"
+                      value={plant.name}
+                      checked={crop === plant.name}
+                      onChange={(e) => setCrop(e.target.value)}
+                      className="hidden" // Hide the default radio input
+                    />
+                    <span className="text-center font-semibold text-gray-700">
+                      {plant.name}
+                    </span>
+                  </label>
+                </SwiperSlide>
               ))}
-            </div>
+            </Swiper>
           </div>
 
           <div>
-            <label className="block text-lg font-semibold text-gray-700">Area (in acres):</label>
+            <label className="block text-lg font-semibold text-gray-700">
+              Area (in acres):
+            </label>
             <input
               type="number"
               className="mt-2 p-2 bg-gray-100 border border-gray-300 rounded-md w-full"
@@ -109,38 +161,46 @@ const CostCalculator = () => {
           </div>
 
           <div>
-            <label className="block text-lg font-semibold text-gray-700">Water Resources:</label>
+            <label className="block text-lg font-semibold text-gray-700">
+              Water Resources:
+            </label>
             <div className="flex flex-wrap gap-4 mt-2">
-              {["Abundant", "Moderate", "Scarce", "Limited"].map(waterOption => (
-                <label key={waterOption} className="flex items-center">
-                  <input
-                    type="radio"
-                    value={waterOption}
-                    checked={waterResources === waterOption}
-                    onChange={(e) => setWaterResources(e.target.value)}
-                    className="mr-2"
-                  />
-                  {waterOption}
-                </label>
-              ))}
+              {["Abundant", "Moderate", "Scarce", "Limited"].map(
+                (waterOption) => (
+                  <label key={waterOption} className="flex items-center">
+                    <input
+                      type="radio"
+                      value={waterOption}
+                      checked={waterResources === waterOption}
+                      onChange={(e) => setWaterResources(e.target.value)}
+                      className="mr-2"
+                    />
+                    {waterOption}
+                  </label>
+                )
+              )}
             </div>
           </div>
 
           <div>
-            <label className="block text-lg font-semibold text-gray-700">Soil Type:</label>
+            <label className="block text-lg font-semibold text-gray-700">
+              Soil Type:
+            </label>
             <div className="flex flex-wrap gap-4 mt-2">
-              {["Fertile", "Moderately Fertile", "Poor", "Sandy", "Rich"].map(soilOption => (
-                <label key={soilOption} className="flex items-center">
-                  <input
-                    type="radio"
-                    value={soilOption}
-                    checked={soilType === soilOption}
-                    onChange={(e) => setSoilType(e.target.value)}
-                    className="mr-2"
-                  />
-                  {soilOption}
-                </label>
-              ))}
+              {["Fertile", "Moderately Fertile", "Poor", "Sandy", "Rich"].map(
+                (soilOption) => (
+                  <label key={soilOption} className="flex items-center">
+                    <input
+                      type="radio"
+                      value={soilOption}
+                      checked={soilType === soilOption}
+                      onChange={(e) => setSoilType(e.target.value)}
+                      className="mr-2"
+                    />
+                    {soilOption}
+                  </label>
+                )
+              )}
             </div>
           </div>
 
@@ -156,20 +216,37 @@ const CostCalculator = () => {
         {error && <p className="text-red-500 mt-4">{error}</p>}
         {result && (
           <div className="mt-8 p-4 border border-gray-300 rounded-md">
-            <h2 className="text-2xl font-semibold text-gray-800">Estimated Cost</h2>
-            <p className="mt-2">Crop: <span className="font-medium">{result.crop}</span></p>
-            <p>Area: <span className="font-medium">{result.area} acres</span></p>
-            <p className="font-bold text-lg mt-2">
-              Estimated Cost: <span className="text-secondary text-3xl">Rs. {result.estimatedCost.toFixed(2)}</span>
+            <h2 className="text-2xl font-semibold text-gray-800">
+              Estimated Cost
+            </h2>
+            <p className="mt-2">
+              Crop: <span className="font-medium">{result.crop}</span>
             </p>
-            <p>Fertilizer Needs: <span className="font-medium">{result.fertilizerNeeds}</span></p>
-            <p>Water Needs: <span className="font-medium">{result.waterNeeds}</span></p>
+            <p>
+              Area: <span className="font-medium">{result.area} acres</span>
+            </p>
+            <p className="font-bold text-lg mt-2">
+              Estimated Cost:{" "}
+              <span className="text-secondary text-3xl">
+                Rs. {result.estimatedCost.toFixed(2)}
+              </span>
+            </p>
+            <p>
+              Fertilizer Needs:{" "}
+              <span className="font-medium">{result.fertilizerNeeds}</span>
+            </p>
+            <p>
+              Water Needs:{" "}
+              <span className="font-medium">{result.waterNeeds}</span>
+            </p>
           </div>
         )}
       </div>
 
       <div className="mt-16">
-        <h2 className="text-2xl font-semibold text-gray-800">Your Previous Calculations</h2>
+        <h2 className="text-2xl font-semibold text-gray-800">
+          Your Previous Calculations
+        </h2>
         {previousCalculations.length === 0 ? (
           <p className="mt-4 text-gray-600">No previous calculations found.</p>
         ) : (
@@ -177,21 +254,38 @@ const CostCalculator = () => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-200 font-bold text-center">
                 <tr>
-                  {["Crop", "Area (acres)", "Estimated Cost (Rs.)", "Water Resources", "Soil Type", "Fertilizer Needs", "Water Needs"].map((header) => (
-                    <th key={header} className="px-4 py-2 text-left text-gray-600 font-medium">{header}</th>
+                  {[
+                    "Crop",
+                    "Area (acres)",
+                    "Estimated Cost (Rs.)",
+                    "Fertilizer Needs",
+                    "Water Needs",
+                    "Date",
+                  ].map((header) => (
+                    <th
+                      key={header}
+                      className="px-4 py-2 text-gray-700 font-semibold"
+                    >
+                      {header}
+                    </th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
-                {previousCalculations.map((calc, index) => (
-                  <tr key={index} className="hover:bg-gray-50">
-                    <td className="px-4 py-2 text-gray-800">{calc.crop}</td>
-                    <td className="px-4 py-2 text-gray-800">{calc.area}</td>
-                    <td className="px-4 py-2 text-secondary font-bold text-[20px]">Rs. {calc.estimatedCost}</td>
-                    <td className="px-4 py-2 text-gray-800">{calc.waterResources}</td>
-                    <td className="px-4 py-2 text-gray-800">{calc.soilType}</td>
-                    <td className="px-4 py-2 text-gray-800">{calc.fertilizerNeeds}</td>
-                    <td className="px-4 py-2 text-gray-800">{calc.waterNeeds}</td>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {previousCalculations.map((calculation, index) => (
+                  <tr key={index} className="text-center">
+                    <td className="px-4 py-2">{calculation.crop}</td>
+                    <td className="px-4 py-2">{calculation.area}</td>
+                    <td className="px-4 py-2">
+                      Rs. {calculation.estimatedCost.toFixed(2)}
+                    </td>
+                    <td className="px-4 py-2">
+                      {calculation.fertilizerNeeds}
+                    </td>
+                    <td className="px-4 py-2">{calculation.waterNeeds}</td>
+                    <td className="px-4 py-2">
+                      {new Date(calculation.createdAt).toLocaleDateString()}
+                    </td>
                   </tr>
                 ))}
               </tbody>
