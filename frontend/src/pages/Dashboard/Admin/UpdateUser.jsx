@@ -16,10 +16,8 @@ const UpdateUser = () => {
    const formData = new FormData(e.target);
    const updatedData = Object.fromEntries(formData);
    axiosSecure.put(`/update-user/${userCredentials._id}`, updatedData).then(res => {
-      if (res.data.modifiedCount > 0) {
          alert("User updated successfully !");
          navigate(`/dashboard/manage-users`);
-      }
    }).catch(err => console.log(err));
 }
 
@@ -62,7 +60,6 @@ const UpdateUser = () => {
                     className="w-full p-3 mt-3 text-sm border rounded-lg outline-none border-secondary"
                     placeholder="Email Address"
                     type="email"
-                    disabled
                     required
                     defaultValue={userCredentials?.email}
                     id="email"
@@ -129,7 +126,7 @@ const UpdateUser = () => {
                       userCredentials?.role === "user" ? true : false
                     }
                     tabIndex="-1"
-                    name="option"
+                    name="role"
                   />
                   <label
                     htmlFor="option1"
@@ -149,7 +146,7 @@ const UpdateUser = () => {
                       userCredentials?.role === "admin" ? true : false
                     }
                     tabIndex="-1"
-                    name="option"
+                    name="role"
                   />
                   <label
                     htmlFor="option2"
