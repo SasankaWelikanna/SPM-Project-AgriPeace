@@ -123,6 +123,11 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: "#333333",
   },
+  bulletPoint: {
+    fontSize: 8,
+    textAlign: "left",
+    marginLeft: 5,
+  },
 });
 
 const Footer = () => (
@@ -150,32 +155,36 @@ const DiseaseReport = ({ dataList }) => {
           <View style={styles.table}>
             <View style={styles.tableRow}>
               <Text style={styles.tableColHeader}>Disease Name</Text>
-
-              <Text style={styles.tableColHeaderDescription}>Causal Agent</Text>
+              <Text style={styles.tableColHeader}>Causal Agent</Text>
               <Text style={styles.tableColHeader}>Disease Transmission</Text>
-              <Text style={styles.tableColHeader}>Disease Symptoms</Text>
+              <Text style={styles.tableColHeaderDescription}>
+                Disease Symptoms
+              </Text>
               <Text style={styles.tableColHeaderDescription}>
                 Control Measures
               </Text>
-              <Text style={styles.tableColHeaderDescription}>Fertilizers</Text>
+              <Text style={styles.tableColHeader}>Fertilizers</Text>
             </View>
             {dataList.map((disease, index) => (
               <View key={index} style={styles.tableRow}>
                 <Text style={styles.tableCol}>{disease.name}</Text>
-
-                <Text style={styles.tableColDescription}>
-                  {disease.causalAgent}
-                </Text>
+                <Text style={styles.tableCol}>{disease.causalAgent}</Text>
                 <Text style={styles.tableCol}>
                   {disease.diseaseTransmission}
                 </Text>
-                <Text style={styles.tableCol}>{disease.diseaseSymptoms}</Text>
+                <Text style={styles.tableColDescription}>
+                  {disease.diseaseSymptoms}
+                </Text>
                 <Text style={styles.tableColDescription}>
                   {disease.control}
                 </Text>
-                <Text style={styles.tableColDescription}>
-                  {disease.fertilizers}
-                </Text>
+                <View style={styles.tableCol}>
+                  {disease.fertilizers.map((fertilizer, idx) => (
+                    <Text key={idx} style={styles.bulletPoint}>
+                      • {fertilizer}
+                    </Text>
+                  ))}
+                </View>
               </View>
             ))}
           </View>
@@ -189,14 +198,5 @@ const DiseaseReport = ({ dataList }) => {
     </Document>
   );
 };
-
-// Function to format date
-// const formatDate = (date) => {
-//   return new Date(date).toLocaleDateString("en-US", {
-//     year: "numeric",
-//     month: "long",
-//     day: "numeric",
-//   });
-// };
 
 export default DiseaseReport;

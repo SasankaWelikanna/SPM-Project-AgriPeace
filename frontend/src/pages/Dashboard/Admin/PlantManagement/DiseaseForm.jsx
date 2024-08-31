@@ -101,143 +101,152 @@ const DiseaseForm = ({ handleSubmit, initialData }) => {
   return (
     <form onSubmit={handleFormSubmit} className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="mb-4">
-          <label
-            htmlFor="imageUrl"
-            className="block text-gray-700 font-semibold mb-1"
-          >
-            {uploading ? `Uploading: ${imgPerc}%` : "Image"}
-          </label>
-          <input
-            type="file"
-            className="w-full p-2 border border-gray-300 rounded-md"
-            name="imageUrl"
-            onChange={(e) => setImg(e.target.files[0])}
-          />
-          {formData.imageUrl && !uploading && (
-            <div className="mt-4">
-              <img
-                src={formData.imageUrl}
-                alt="Uploaded Preview"
-                className="w-40 h-40 rounded-md border border-gray-300"
-              />
-            </div>
-          )}
+        {/* Left Section */}
+        <div>
+          <div className="mb-4">
+            <label
+              htmlFor="imageUrl"
+              className="block text-gray-700 font-semibold mb-1"
+            >
+              {uploading ? `Uploading: ${imgPerc}%` : "Image"}
+            </label>
+            <input
+              type="file"
+              className="w-full p-2 border border-gray-300 rounded-md"
+              name="imageUrl"
+              onChange={(e) => setImg(e.target.files[0])}
+            />
+            {formData.imageUrl && !uploading && (
+              <div className="mt-4">
+                <img
+                  src={formData.imageUrl}
+                  alt="Uploaded Preview"
+                  className="w-40 h-40 rounded-md border border-gray-300"
+                />
+              </div>
+            )}
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="name"
+              className="block text-gray-700 font-semibold mb-1"
+            >
+              Disease Name
+            </label>
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-md"
+              name="name"
+              placeholder="Disease Name"
+              onChange={handleChange}
+              value={formData.name}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="causalAgent"
+              className="block text-gray-700 font-semibold mb-1"
+            >
+              Causal Agent
+            </label>
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-md"
+              name="causalAgent"
+              placeholder="Causal Agent"
+              onChange={handleChange}
+              value={formData.causalAgent}
+              required
+            />
+          </div>
         </div>
-        <div className="mb-4">
-          <label
-            htmlFor="name"
-            className="block text-gray-700 font-semibold mb-1"
-          >
-            Disease Name
-          </label>
-          <input
-            type="text"
-            className="w-full p-2 border border-gray-300 rounded-md"
-            name="name"
-            placeholder="Disease Name"
-            onChange={handleChange}
-            value={formData.name}
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="causalAgent"
-            className="block text-gray-700 font-semibold mb-1"
-          >
-            Causal Agent
-          </label>
-          <input
-            type="text"
-            className="w-full p-2 border border-gray-300 rounded-md"
-            name="causalAgent"
-            placeholder="Causal Agent"
-            onChange={handleChange}
-            value={formData.causalAgent}
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="diseaseTransmission"
-            className="block text-gray-700 font-semibold mb-1"
-          >
-            Disease Transmission
-          </label>
-          <input
-            type="text"
-            className="w-full p-2 border border-gray-300 rounded-md"
-            name="diseaseTransmission"
-            placeholder="Disease Transmission"
-            onChange={handleChange}
-            value={formData.diseaseTransmission}
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="diseaseSymptoms"
-            className="block text-gray-700 font-semibold mb-1"
-          >
-            Disease Symptoms
-          </label>
-          <textarea
-            className="w-full p-2 border border-gray-300 rounded-md"
-            name="diseaseSymptoms"
-            placeholder="Disease Symptoms"
-            onChange={handleChange}
-            value={formData.diseaseSymptoms}
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="control"
-            className="block text-gray-700 font-semibold mb-1"
-          >
-            Control Measures
-          </label>
-          <textarea
-            className="w-full p-2 border border-gray-300 rounded-md"
-            name="control"
-            placeholder="Control Measures"
-            onChange={handleChange}
-            value={formData.control}
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 font-semibold mb-1">
-            Fertilizers
-          </label>
-          {formData.fertilizers.map((fertilizer, index) => (
-            <div key={index} className="flex items-center mb-2">
-              <input
-                type="text"
-                className="w-full p-2 border border-gray-300 rounded-md"
-                placeholder="Fertilizer"
-                value={fertilizer}
-                onChange={(e) => handleFertilizersChange(e, index)}
-              />
-              <button
-                type="button"
-                onClick={() => handleRemoveFertilizer(index)}
-                className="ml-2 px-2 py-2 border border-red-500 text-red-500 rounded hover:bg-red-600  hover:text-white"
-              >
-                <MdClose />
-              </button>
-            </div>
-          ))}
-          <button
-            type="button"
-            onClick={handleAddFertilizer}
-            className="mt-2 px-4 py-2 border border-secondary  text-secondary rounded hover:text-white  hover:bg-green-600"
-          >
-            Add Fertilizer
-          </button>
+
+        {/* Right Section */}
+        <div>
+          <div className="mb-4">
+            <label
+              htmlFor="diseaseTransmission"
+              className="block text-gray-700 font-semibold mb-1"
+            >
+              Disease Transmission
+            </label>
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-md"
+              name="diseaseTransmission"
+              placeholder="Disease Transmission"
+              onChange={handleChange}
+              value={formData.diseaseTransmission}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="diseaseSymptoms"
+              className="block text-gray-700 font-semibold mb-1"
+            >
+              Disease Symptoms
+            </label>
+            <textarea
+              className="w-full p-2 border border-gray-300 rounded-md"
+              name="diseaseSymptoms"
+              placeholder="Disease Symptoms"
+              onChange={handleChange}
+              value={formData.diseaseSymptoms}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="control"
+              className="block text-gray-700 font-semibold mb-1"
+            >
+              Control Measures
+            </label>
+            <textarea
+              className="w-full p-2 border border-gray-300 rounded-md"
+              name="control"
+              placeholder="Control Measures"
+              onChange={handleChange}
+              value={formData.control}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 font-semibold mb-1">
+              Fertilizers
+            </label>
+            {formData.fertilizers.map((fertilizer, index) => (
+              <div key={index} className="flex items-center mb-2">
+                <input
+                  type="text"
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                  placeholder="Fertilizer"
+                  value={fertilizer}
+                  onChange={(e) => handleFertilizersChange(e, index)}
+                />
+                <button
+                  type="button"
+                  onClick={() => handleRemoveFertilizer(index)}
+                  className="ml-2 px-2 py-2 border border-red-500 text-red-500 rounded hover:bg-red-600  hover:text-white"
+                >
+                  <MdClose />
+                </button>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={handleAddFertilizer}
+              className="mt-2 px-4 py-2 border border-secondary  text-secondary rounded hover:text-white  hover:bg-green-600"
+            >
+              Add Fertilizer
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* Submit Button */}
       <div className="flex justify-end">
         <button
           type="submit"
