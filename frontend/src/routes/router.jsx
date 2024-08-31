@@ -18,6 +18,7 @@ import MyCrops from "../pages/Dashboard/Farmer/MyCrops/MyCrops";
 import FertilizerManagementDashboard from "../pages/Dashboard/Admin/FertilizerManagementDashboard";
 import Location from "../pages/Dashboard/Farmer/LocationManagement/Location";
 import Diseases from "../pages/Dashboard/Admin/PlantManagement/Diseases";
+import Crops from "../pages/Dashboard/Farmer/LocationManagement/Crop";
 
 export const router = createBrowserRouter([
   {
@@ -75,6 +76,12 @@ export const router = createBrowserRouter([
       {
         path: "location",
         element: <Location />,
+      },
+      {
+        path: "location/crops/:locationId", // Route for crops
+        element: <Crops />,
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/locations/${params.locationId}/crops`),
       },
 
       // admin routes

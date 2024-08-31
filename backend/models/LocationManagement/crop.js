@@ -1,46 +1,41 @@
 const mongoose = require("mongoose");
 
-const LocationSchema = new mongoose.Schema({
-  province: {
+const CropSchema = new mongoose.Schema({
+  cropName: {
     type: String,
     required: true,
   },
-  district: {
+  cropType: {
     type: String,
     required: true,
   },
-  city: {
+  landSize: {
     type: String,
     required: true,
   },
-  latitude: {
+  plantingQuantity: {
     type: String,
     required: true,
   },
-  longitude: {
+  expectedQuantity: {
     type: String,
     required: true,
   },
-  areaSize: {
+  plantingDate: {
     type: String,
     required: true,
   },
-  soilType: {
+  expectedDate: {
     type: String,
     required: true,
   },
-  irrigationType: {
-    type: String,
+  locationId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Location",
     required: true,
   },
-  crops: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Crop",
-    },
-  ],
 });
 
-const Location = mongoose.model("Location", LocationSchema);
+const Crop = mongoose.model("Crop", CropSchema);
 
-module.exports = Location;
+module.exports = Crop;

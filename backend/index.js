@@ -70,6 +70,7 @@ app.use("/Plant", require("./routes/PlantManagement/PlantRoute"));
 app.use("/Fertilizer", require("./routes/FertilizerManagement/FertilizerRoute.js"));
 app.use("/api/diseases", require("./routes/DiseaseManagement/DiseaseRoutes"));
 app.use("/Location", require("./routes/LocationManagement/LocationRoute.js"));
+app.use("/api/crops", require("./routes/LocationManagement/CropRoute"));
 
 app.post("/api/set-token", (req, res) => {
   const user = req.body;
