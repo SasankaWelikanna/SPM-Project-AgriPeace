@@ -6,8 +6,9 @@ import Modal from "../../../../components/Modal/Modal";
 import CropForm from "./CropForm";
 import SearchBar from "../../../../components/Search/SearchBar";
 import { ToastContainer, toast } from "react-toastify";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdOutlineArrowBackIosNew } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 function Crop() {
   const axiosFetch = useAxiosFetch();
@@ -75,11 +76,11 @@ function Crop() {
 
   const handleSearch = (query) => {
     const filteredList = dataList.filter((crop) => {
-      const city = `${crop.city}`;
-      return city.toLowerCase().includes(query.toLowerCase());
+      const cropName = `${crop.cropName}`;
+      return cropName.toLowerCase().includes(query.toLowerCase());
     });
-    setFilteredDataList(filteredList);
-  };
+    setFilteredCrops(filteredList);
+  };  
 
   const handleRefreshClick = () => {
     fetchCrops();
@@ -154,10 +155,13 @@ function Crop() {
   return (
     <div className="mt-10 p-4 bg-gray-50">
       <div className="bg-white shadow-md rounded-lg p-6">
+        <Link to="/dashboard/location">
+          <MdOutlineArrowBackIosNew className="text-3xl mb-3" />
+        </Link>
         <div className="flex justify-between items-center mb-4">
           <div>
             <h2 className="text-xl font-semibold text-gray-700">
-              Crop Details
+              Crop Details - {location}
             </h2>
             <h6 className="text-sm text-gray-500">Manage crop details</h6>
           </div>
