@@ -231,7 +231,7 @@ function Diseases() {
         <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden">
           <thead className="bg-gray-100">
             <tr>
-              <th className="p-4 text-left">Image</th>{" "}
+              <th className="p-4 text-left">Image</th>
               <th className="p-4 text-left">Name</th>
               <th className="p-4 text-left">Causal Agent</th>
               <th className="p-4 text-left">Disease Transmission</th>
@@ -261,21 +261,33 @@ function Diseases() {
                   <td className="p-4">{disease.diseaseTransmission}</td>
                   <td className="p-4">{disease.diseaseSymptoms}</td>
                   <td className="p-4">{disease.control}</td>
-                  <td className="p-4">{disease.fertilizers}</td>
+                  <td className="p-4 w-40">
+                    <ul className="list-disc list-inside">
+                      {disease.fertilizers.map((fertilizer, index) => (
+                        <li key={index}>{fertilizer}</li>
+                      ))}
+                    </ul>
+                  </td>
 
-                  <td className="p-4 flex space-x-2">
-                    <button
-                      className="text-blue-500 hover:underline"
-                      onClick={() => handleEditModalOpen(disease)}
-                    >
-                      <FaEdit className="text-3xl" />
-                    </button>
-                    <button
-                      className="text-red-500 hover:underline"
-                      onClick={() => handleShowDeleteModal(disease._id)}
-                    >
-                      <MdDelete className="text-3xl" />
-                    </button>
+                  <td className="p-4">
+                    <div className="flex space-x-2">
+                      <button
+                        className="text-3xl text-blue-600 hover:text-blue-800"
+                        onClick={(e) => {
+                          handleEditModalOpen(disease);
+                        }}
+                      >
+                        <FaEdit />
+                      </button>
+                      <button
+                        className="text-3xl text-red-600 hover:text-red-800"
+                        onClick={(e) => {
+                          handleShowDeleteModal(disease._id);
+                        }}
+                      >
+                        <MdDelete />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))
