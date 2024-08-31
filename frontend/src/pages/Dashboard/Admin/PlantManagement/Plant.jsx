@@ -31,7 +31,7 @@ function Plant() {
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const [plantsPerPage] = useState(2); // Adjust as needed
+  const [plantsPerPage] = useState(3); // Adjust as needed
 
   useEffect(() => {
     fetchPlants();
@@ -275,8 +275,8 @@ function Plant() {
                     <td className="p-4">{plant.climate}</td>
                     <td className="p-4">{plant.soilPh}</td>
                     <td className="p-4">{plant.landPreparation}</td>
-                    <td className="p-4">
-                      <ul>
+                    <td className="p-4 w-40">
+                      <ul className="list-disc list-inside">
                         {plant.fertilizers.map((fertilizer, index) => (
                           <li key={index}>{fertilizer}</li>
                         ))}

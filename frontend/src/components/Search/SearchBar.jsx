@@ -10,9 +10,14 @@ const SearchBar = ({ onSearch }) => {
     onSearch(newQuery); // Call onSearch in real-time
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault(); // Prevent page refresh
+    onSearch(query); // Perform search action
+  };
+
   return (
     <div className="flex">
-      <form className="flex items-center p-2">
+      <form onSubmit={handleSubmit} className="flex items-center p-2">
         <input
           type="text"
           name="query"
@@ -23,7 +28,7 @@ const SearchBar = ({ onSearch }) => {
           className="flex-1 p-2 border-2 border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-secondary"
         />
         <button
-          type="button"
+          type="submit"
           title="Search"
           className="p-3 bg-secondary text-white rounded-r-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-secondary"
         >

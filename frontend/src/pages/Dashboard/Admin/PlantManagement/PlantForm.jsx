@@ -106,7 +106,7 @@ const PlantForm = ({ handleSubmit, initialData }) => {
           <div className="mb-4">
             <label
               htmlFor="imageUrl"
-              className="block text-gray-700 font-semibold mb-1"
+              className="block  text-gray-700 font-semibold mb-1"
             >
               {uploading ? `Uploading: ${imgPerc}%` : "Image"}
             </label>

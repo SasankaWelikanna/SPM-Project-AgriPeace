@@ -5,8 +5,8 @@ import useUser from "../hooks/useUser";
 import logo from "/logo.png";
 import { BiHomeAlt, BiLogInCircle } from "react-icons/bi";
 import { FaUsers, FaUserAlt } from "react-icons/fa";
-import { GiFertilizerBag, GiFigurehead, GiField } from "react-icons/gi";
-import { MdOfflineBolt, MdPayments } from "react-icons/md";
+import { GiFertilizerBag, GiField } from "react-icons/gi";
+import { MdPayments } from "react-icons/md";
 import { RiPlantFill } from "react-icons/ri";
 import { RiDashboardFill } from "react-icons/ri";
 import Swal from "sweetalert2";
@@ -27,7 +27,7 @@ const adminNavItems = [
   {
     to: "/dashboard/manage-fertilizers",
     icon: <GiFertilizerBag className="text-2xl" />,
-    label: "Manage Fertilizers",
+    label: "Fertilizer Management",
   },
   {
     to: "/dashboard/manage-plant",
@@ -61,16 +61,6 @@ const farmerNavItems = [
 
 const lastMenuItems = [
   { to: "/", icon: <BiHomeAlt className="text-2xl" />, label: "Main Home" },
-  {
-    to: "/trending",
-    icon: <MdOfflineBolt className="text-2xl" />,
-    label: "Trending",
-  },
-  {
-    to: "/following",
-    icon: <GiFigurehead className="text-2xl" />,
-    label: "Following",
-  },
 ];
 
 const DashboardLayout = () => {
@@ -153,7 +143,7 @@ const DashboardLayout = () => {
                     className={({ isActive }) =>
                       `flex ${
                         isActive ? "bg-secondary text-white" : "text-[#413F44]"
-                      } duration-150 rounded-md p-2 cursor-pointer hover:bg-red-500 hover:text-white font-bold text-sm items-center gap-x-4`
+                      } duration-150 rounded-md p-2 cursor-pointer hover:scale-105 hover:shadow-md font-bold text-sm items-center gap-x-4`
                     }
                   >
                     {menuItem.icon}
@@ -188,7 +178,7 @@ const DashboardLayout = () => {
                     className={({ isActive }) =>
                       `flex ${
                         isActive ? "bg-secondary text-white" : "text-[#413F44]"
-                      } duration-150 rounded-md p-2 cursor-pointer hover:bg-red-500 hover:text-white font-bold text-sm items-center gap-x-4`
+                      } duration-150 rounded-md p-2 cursor-pointer hover:scale-105 hover:shadow-md font-bold text-sm items-center gap-x-4`
                     }
                   >
                     {menuItem.icon}
@@ -218,7 +208,7 @@ const DashboardLayout = () => {
                 className={({ isActive }) =>
                   `flex ${
                     isActive ? "bg-secondary text-white" : "text-[#413F44]"
-                  } duration-150 rounded-md p-2 cursor-pointer hover:bg-red-500 hover:text-white font-bold text-sm items-center gap-x-4`
+                  } duration-150 rounded-md p-2 cursor-pointer hover:scale-105 hover:shadow-md font-bold text-sm items-center gap-x-4`
                 }
               >
                 {menuItem.icon}
@@ -234,7 +224,7 @@ const DashboardLayout = () => {
           <li>
             <button
               onClick={handleLogout}
-              className={`flex w-full text-[#413F44] duration-150 rounded-md p-2 cursor-pointer hover:bg-red-500 hover:text-white font-bold text-sm items-center gap-x-4`}
+              className={`flex w-full text-[#413F44] duration-150 rounded-md p-2 cursor-pointer hover:shadow-md hover:text-red-500 font-bold text-sm items-center gap-x-4`}
             >
               <BiLogInCircle className="text-2xl" />
               <span className={`${!open && "hidden"} origin-left duration-200`}>
