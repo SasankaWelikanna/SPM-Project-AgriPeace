@@ -42,12 +42,24 @@ const ManageUsers = () => {
               <table className="min-w-full text-left text-sm font-light">
                 <thead className="border-b font-medium dark:border-neutral-500">
                   <tr>
-                    <th scope="col" className="px-6 py-4">#</th>
-                    <th scope="col" className="px-6 py-4">PHOTO</th>
-                    <th scope="col" className="px-6 py-4">NAME</th>
-                    <th scope="col" className="px-6 py-4">ROLE</th>
-                    <th scope="col" className="px-6 py-4">UPDATE</th>
-                    <th scope="col" className="px-6 py-4">DELETE</th>
+                    <th scope="col" className="px-6 py-4">
+                      #
+                    </th>
+                    <th scope="col" className="px-6 py-4">
+                      PHOTO
+                    </th>
+                    <th scope="col" className="px-6 py-4">
+                      NAME
+                    </th>
+                    <th scope="col" className="px-6 py-4">
+                      ROLE
+                    </th>
+                    <th scope="col" className="px-6 py-4">
+                      UPDATE
+                    </th>
+                    <th scope="col" className="px-6 py-4">
+                      DELETE
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -56,9 +68,15 @@ const ManageUsers = () => {
                       key={user._id}
                       className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600"
                     >
-                      <td className="whitespace-nowrap px-6 py-4 font-medium">{idx + 1}</td>
+                      <td className="whitespace-nowrap px-6 py-4 font-medium">
+                        {idx + 1}
+                      </td>
                       <td className="whitespace-nowrap px-6 py-4">
-                        <img src={user?.photoUrl} alt="" className="h-[35px] w-[35px]" />
+                        <img
+                          src={user?.photoUrl}
+                          alt=""
+                          className="h-[35px] w-[35px]"
+                        />
                       </td>
                       <td className="whitespace-nowrap px-6 py-4">
                         {user?.name}{" "}
@@ -68,10 +86,14 @@ const ManageUsers = () => {
                           </span>
                         )}
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4">{user?.role}</td>
+                      <td className="whitespace-nowrap px-6 py-4">
+                        {user?.role}
+                      </td>
                       <td className="whitespace-nowrap px-6 py-4">
                         <span
-                          onClick={() => navigate(`/dashboard/update-user/${user._id}`)}
+                          onClick={() =>
+                            navigate(`/dashboard/update-user/${user._id}`)
+                          }
                           className="inline-flex items-center gap-2 cursor-pointer bg-green-500 py-1 rounded-md px-2 text-white"
                         >
                           Update <GrUpdate className="text-white" />
