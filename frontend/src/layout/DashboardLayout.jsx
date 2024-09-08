@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import useUser from "../hooks/useUser";
 import logo from "/logo.png";
@@ -237,11 +237,13 @@ const DashboardLayout = () => {
         {/* User Info Section */}
         {currentUser && (
           <div className="absolute bottom-5 px-4 flex items-center gap-x-4">
+            <Link to={`/dashboard/user-profile`}>
             <img
               src={currentUser?.photoUrl}
               alt={currentUser?.name}
               className="w-12 h-12 rounded-full object-cover border-2"
             />
+            </Link>
             <span
               className={`${
                 !open && "hidden"

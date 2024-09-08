@@ -19,6 +19,7 @@ import FertilizerManagementDashboard from "../pages/Dashboard/Admin/FertilizerMa
 import Location from "../pages/Dashboard/Farmer/LocationManagement/Location";
 import Diseases from "../pages/Dashboard/Admin/PlantManagement/Diseases";
 import Crops from "../pages/Dashboard/Farmer/LocationManagement/Crop";
+import Profile from "../pages/Dashboard/Profile/Profile";
 
 export const router = createBrowserRouter([
   {
@@ -62,6 +63,10 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <Dashboard />,
+      },
+      {
+        path: "user-profile",
+        element: <Profile/>
       },
 
       // farmer routes
