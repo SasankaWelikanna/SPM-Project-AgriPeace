@@ -128,7 +128,7 @@ app.delete("/delete-user/:id", verifyJWT, verifyAdmin, async (req, res) => {
   }
 });
 
-app.put("/update-user/:id", verifyJWT, verifyAdmin, async (req, res) => {
+app.put("/update-user/:id", verifyJWT, async (req, res) => {
   try {
     const id = req.params.id;
     const updatedUser = req.body;

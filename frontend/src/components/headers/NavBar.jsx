@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Switch } from "@mui/material";
 import farmerImg from "../../assets/farmer.jpg";
@@ -238,11 +238,13 @@ const NavBar = () => {
 
                 {user && (
                   <li>
+                    <Link to={`/dashboard/user-profile`}>
                     <img
                       src={currentUser?.photoUrl || farmerImg}
                       alt="User Avatar"
                       className="h-[40px] rounded-full w-[40px]"
                     />
+                    </Link>
                   </li>
                 )}
 
