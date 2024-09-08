@@ -3,23 +3,28 @@ import useAuth from "../../../hooks/useAuth";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import useAxiosFetch from "../../../hooks/useAxiosFetch";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useUser from "../../../hooks/useUser";
 
 const UpdateUser = () => {
   const { user } = useAuth();
   const userCredentials = useLoaderData();
   const axiosFetch = useAxiosFetch();
   const axiosSecure = useAxiosSecure();
+  const { currentUser } = useUser();
   const navigate = useNavigate();
 
   const handleFormSubmit = (e) => {
-   e.preventDefault();
-   const formData = new FormData(e.target);
-   const updatedData = Object.fromEntries(formData);
-   axiosSecure.put(`/update-user/${userCredentials._id}`, updatedData).then(res => {
-         alert("User updated successfully !");
-         navigate(`/dashboard/manage-users`);
-   }).catch(err => console.log(err));
-}
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const updatedData = Object.fromEntries(formData);
+    axiosSecure
+      .put(`/update-user/${userCredentials._id}`, updatedData)
+      .then((res) => {
+        alert("User updated successfully !");
+        navigate(`/dashboard/manage-users`);
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div>
@@ -31,8 +36,16 @@ const UpdateUser = () => {
         <span className="font-bold text-red-400">{userCredentials?.name}</span>
       </p>
 
+      <div>
+        {currentUser?._id === userCredentials?._id && (
+          <h1 className="text-center text-lg font-semibold text-red-500 bg-green-100 p-2 rounded-md shadow-md mt-10 mx-4 mb-4">
+            This is you
+          </h1>
+        )}
+      </div>
+
       <section className="">
-        <div className="px-4 py-16 mx-auto sm:px-6 lg:px-8">
+        <div className="px-4 pb-16 mx-auto sm:px-6 lg:px-8">
           <div className="p-8 bg-white rounded-lg shadow-lg lg:p-12">
             <form className="space-y-4" onSubmit={handleFormSubmit}>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -66,25 +79,25 @@ const UpdateUser = () => {
                     name="email"
                   />
                 </div>
-                
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div>
-                  <label className="ml-2" htmlFor="phone">
-                    Phone
-                  </label>
-                  <input
-                    className="w-full p-3 mt-3 text-sm border rounded-lg outline-none border-secondary"
-                    placeholder="Phone Number"
-                    type="tel"
-                    required
-                    defaultValue={
-                      userCredentials?.phone ? userCredentials?.phone : ""
-                    }
-                    id="phone"
-                    name="phone"
-                  />
+
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="ml-2" htmlFor="phone">
+                      Phone
+                    </label>
+                    <input
+                      className="w-full p-3 mt-3 text-sm border rounded-lg outline-none border-secondary"
+                      placeholder="Phone Number"
+                      type="tel"
+                      required
+                      defaultValue={
+                        userCredentials?.phone ? userCredentials?.phone : ""
+                      }
+                      id="phone"
+                      name="phone"
+                    />
+                  </div>
                 </div>
-              </div>
               </div>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
