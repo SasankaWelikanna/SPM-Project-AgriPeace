@@ -26,7 +26,7 @@ function Location() {
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const [locationsPerPage] = useState(2); // Adjust as needed
+  const [locationsPerPage] = useState(5); // Adjust as needed
 
   useEffect(() => {
     fetchLocations();
@@ -228,7 +228,7 @@ function Location() {
                   <td className="p-4">{location.irrigationType}</td>
                   <td className="p-4 flex space-x-2">
                     <button
-                      className="text-green-500 hover:underline"
+                      className="bg-secondary hover:scale-105 text-white py-2 px-4 rounded-lg"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleViewCrops(location._id);
