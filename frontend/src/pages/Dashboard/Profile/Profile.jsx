@@ -24,11 +24,10 @@ const Profile = () => {
   return (
     <div>
       <h1 className="mt-5 text-4xl font-bold text-center">
-        Update : <span className="text-secondary">{userCredentials?.name}</span>
+        Update <span className="text-secondary">Profile</span>
       </h1>
       <p className="text-center">
-        Change details about{" "}
-        <span className="font-bold text-red-400">{userCredentials?.name}</span>
+        Change your details
       </p>
 
       <section className="">
@@ -59,6 +58,7 @@ const Profile = () => {
                   <input
                     className="w-full p-3 mt-3 text-sm border rounded-lg outline-none border-secondary"
                     placeholder="Email Address"
+                    disabled
                     type="email"
                     required
                     defaultValue={userCredentials?.email}
@@ -115,18 +115,7 @@ const Profile = () => {
                 </div>
               </div>
               
-              <div>
-                <label className="sr-only" htmlFor="message">
-                  About
-                </label>
-                <textarea
-                  className="w-full p-3 text-sm border rounded-lg outline-none resize-none border-secondary"
-                  placeholder="About user"
-                  name=""
-                  id=""
-                ></textarea>
-              </div>
-
+              
               <div className="flex justify-center">
                 <button
                   className="px-10 py-5 text-white rounded-lg bg-secondary hover:bg-red-500 hover:shadow-lg hover:outline-black"
