@@ -4,6 +4,7 @@ const addPlant = async (req, res) => {
   const {
     imageUrl,
     name,
+    category,
     description,
     climate,
     soilPh,
@@ -14,6 +15,7 @@ const addPlant = async (req, res) => {
     const newPlant = await Plant.create({
       imageUrl,
       name,
+      category,
       description,
       climate,
       soilPh,
@@ -60,6 +62,7 @@ const updatePlant = async (req, res) => {
   const {
     imageUrl,
     name,
+    category,
     description,
     climate,
     soilPh,
@@ -72,6 +75,7 @@ const updatePlant = async (req, res) => {
       {
         imageUrl,
         name,
+        category,
         description,
         climate,
         soilPh,

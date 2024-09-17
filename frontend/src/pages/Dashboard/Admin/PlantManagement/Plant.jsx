@@ -24,10 +24,13 @@ function Plant() {
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [dataList, setDataList] = useState([]);
-  const [selectedPlant, setSelectedPlant] = useState(null);
   const [filteredDataList, setFilteredDataList] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [selectedPlant, setSelectedPlant] = useState(null);
+
+  // Filter state
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -61,6 +64,22 @@ function Plant() {
     setFilteredDataList(filteredList);
   };
 
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+    filterByCategory(event.target.value);
+  };
+
+  const filterByCategory = (category) => {
+    if (category === "") {
+      setFilteredDataList(dataList);
+    } else {
+      const filteredList = dataList.filter(
+        (plant) => plant.category === category
+      );
+      setFilteredDataList(filteredList);
+    }
+  };
+
   const generateExcelFile = () => {
     const rearrangedDataList = dataList.map((plant) => ({
       Plant_Name: plant.name,
@@ -69,6 +88,7 @@ function Plant() {
       Soil_pH: plant.soilPh,
       Land_Preparation: plant.landPreparation,
       Fertilizers: plant.fertilizers,
+      Category: plant.category,
     }));
 
     const ws = XLSX.utils.json_to_sheet(rearrangedDataList);
@@ -80,6 +100,7 @@ function Plant() {
   const handleRefreshClick = () => {
     fetchPlants();
   };
+
   const handleButtonClick = () => {
     generateExcelFile();
   };
@@ -166,7 +187,7 @@ function Plant() {
               document={<PlantReport dataList={dataList} />}
               fileName="FruitReport.pdf"
             >
-              {({ url, blob }) => (
+              {({ url }) => (
                 <li className="flex items-center">
                   <a href={url} target="_blank" className="flex items-center">
                     <FaFilePdf className="text-3xl text-red-600" />
@@ -197,6 +218,23 @@ function Plant() {
               Add Plant
             </button>
           </div>
+        </div>
+
+        <div className="mb-4">
+          <select
+            onChange={handleCategoryChange}
+            value={selectedCategory}
+            className="border p-2 rounded"
+          >
+            <option value="">All Categories</option>
+            {[...new Set(dataList.map((plant) => plant.category))].map(
+              (category, index) => (
+                <option key={index} value={category}>
+                  {category}
+                </option>
+              )
+            )}
+          </select>
         </div>
 
         <LargeModal
@@ -242,120 +280,112 @@ function Plant() {
 
         <SearchBar onSearch={handleSearch} />
 
-        <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="p-4 text-left">Image</th>
-              <th className="p-4 text-left">Name</th>
-              <th className="p-4 text-left">Description</th>
-              <th className="p-4 text-left">Climate</th>
-              <th className="p-4 text-left">Soil pH</th>
-              <th className="p-4 text-left">Land Preparation</th>
-              <th className="p-4 text-left">Fertilizers</th>
-              <th className="p-4 text-left">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentPlants.length ? (
-              currentPlants.map((plant) => (
-                <React.Fragment key={plant._id}>
-                  <tr className="border-b">
-                    <td className="p-4">
-                      {plant.imageUrl && (
-                        <img
-                          src={plant.imageUrl}
-                          alt="Plant"
-                          className="w-12 h-12 object-cover rounded-lg"
-                        />
-                      )}
-                    </td>
-                    <td className="p-4">{plant.name}</td>
-                    <td className="p-4">{plant.description}</td>
-                    <td className="p-4">{plant.climate}</td>
-                    <td className="p-4">{plant.soilPh}</td>
-                    <td className="p-4">{plant.landPreparation}</td>
-                    <td className="p-4 w-40">
-                      <ul className="list-disc list-inside">
-                        {plant.fertilizers.map((fertilizer, index) => (
-                          <li key={index}>{fertilizer}</li>
-                        ))}
-                      </ul>
-                    </td>
-                    <td className="p-4">
-                      <div className="flex space-x-2">
-                        <button
-                          className="text-3xl text-blue-600 hover:text-blue-800"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleEditModalOpen(plant);
-                          }}
-                        >
-                          <FaEdit />
-                        </button>
-                        <button
-                          className="text-3xl text-red-600 hover:text-red-800"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleShowDeleteModal(plant._id);
-                          }}
-                        >
-                          <MdDelete />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr onClick={() => handleViewDiseases(plant._id)}>
-                    <td
-                      colSpan="9"
-                      className=" border-b-2 border-gray-500 text-center hover:bg-secondary hover:animate-pulse"
-                    >
-                      <button
-                        className="text-green-600 hover:text-green-800"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleViewDiseases(plant._id);
-                        }}
-                      >
-                        <p>
-                          Diseases{" "}
-                          <span className="animate-bounce">&gt;&gt;</span>{" "}
-                        </p>
-                      </button>
-                    </td>
-                  </tr>
-                </React.Fragment>
-              ))
-            ) : (
+        <div className="mt-6">
+          <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden">
+            <thead className="bg-gray-100">
               <tr>
-                <td
-                  colSpan="9"
-                  className="text-center  p-4 text-gray-500 font-semibold"
-                >
-                  No plants found.
-                </td>
+                <th className="p-4 text-left">Image</th>
+                <th className="p-4 text-left">Name</th>
+                <th className="p-4 text-left">Description</th>
+                <th className="p-4 text-left">Climate</th>
+                <th className="p-4 text-left">Soil pH</th>
+                <th className="p-4 text-left">Land Preparation</th>
+                <th className="p-4 text-left">Fertilizers</th>
+                <th className="p-4 text-left">Action</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {currentPlants.length ? (
+                currentPlants.map((plant) => (
+                  <React.Fragment key={plant._id}>
+                    <tr className="border-b">
+                      <td className="p-4">
+                        {plant.imageUrl && (
+                          <img
+                            src={plant.imageUrl}
+                            alt="Plant"
+                            className="w-12 h-12 object-cover rounded-lg"
+                          />
+                        )}
+                      </td>
+                      <td className="p-4">{plant.name}</td>
+                      <td className="p-4">{plant.description}</td>
+                      <td className="p-4">{plant.climate}</td>
+                      <td className="p-4">{plant.soilPh}</td>
+                      <td className="p-4">{plant.landPreparation}</td>
+                      <td className="p-4 w-40">
+                        <ul className="list-disc list-inside">
+                          {plant.fertilizers.map((fertilizer, index) => (
+                            <li key={index}>{fertilizer}</li>
+                          ))}
+                        </ul>
+                      </td>
+                      <td className="p-4">
+                        <div className="flex space-x-2">
+                          <button
+                            className="text-3xl text-blue-600 hover:text-blue-800"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleEditModalOpen(plant);
+                            }}
+                          >
+                            <FaEdit />
+                          </button>
+                          <button
+                            className="text-3xl text-red-600 hover:text-red-800"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleShowDeleteModal(plant._id);
+                            }}
+                          >
+                            <MdDelete />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr onClick={() => handleViewDiseases(plant._id)}>
+                      <td
+                        colSpan="9"
+                        className=" border-b-2 border-gray-500 text-center hover:bg-secondary hover:animate-pulse"
+                      >
+                        <button
+                          className="text-green-600 hover:text-green-800"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleViewDiseases(plant._id);
+                          }}
+                        >
+                          <p>
+                            Diseases{" "}
+                            <span className="animate-bounce">&gt;&gt;</span>{" "}
+                          </p>
+                        </button>
+                      </td>
+                    </tr>
+                  </React.Fragment>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan="9"
+                    className="text-center  p-4 text-gray-500 font-semibold"
+                  >
+                    No plants found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
 
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={setCurrentPage}
+          onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
         />
       </div>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
+
+      <ToastContainer />
     </div>
   );
 }
