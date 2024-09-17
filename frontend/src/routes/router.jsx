@@ -20,6 +20,7 @@ import Location from "../pages/Dashboard/Farmer/LocationManagement/Location";
 import Diseases from "../pages/Dashboard/Admin/PlantManagement/Diseases";
 import Crops from "../pages/Dashboard/Farmer/LocationManagement/Crop";
 import Profile from "../pages/Dashboard/Profile/Profile";
+import UserPlant from "../pages/Dashboard/Farmer/Plant/Plant";
 
 export const router = createBrowserRouter([
   {
@@ -66,7 +67,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "user-profile",
-        element: <Profile/>
+        element: <Profile />,
       },
 
       // farmer routes
@@ -87,6 +88,16 @@ export const router = createBrowserRouter([
         element: <Crops />,
         loader: ({ params }) =>
           fetch(`http://localhost:3000/locations/${params.locationId}/crops`),
+      },
+      {
+        path: "plant",
+        element: <UserPlant />,
+      },
+      {
+        path: "plant/diseases/:plantId", // Route for crops
+        element: <Crops />,
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/plants/${params.plantId}/diseases`),
       },
 
       // admin routes

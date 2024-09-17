@@ -145,6 +145,25 @@ const PlantForm = ({ handleSubmit, initialData }) => {
           </div>
           <div className="mb-4">
             <label
+              htmlFor="category"
+              className="block text-gray-700 font-semibold mb-1"
+            >
+              Category
+            </label>
+            <select
+              name="category"
+              className="w-full p-2 border border-gray-300 rounded-md"
+              onChange={handleChange}
+              value={formData.category}
+              required
+            >
+              <option value="">Select Category</option>
+              <option value="Vegetable">Vegetable</option>
+              <option value="Fruits">Fruits</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label
               htmlFor="description"
               className="block text-gray-700 font-semibold mb-1"
             >
