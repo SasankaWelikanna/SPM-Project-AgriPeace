@@ -220,7 +220,7 @@ function Plant() {
           </div>
         </div>
 
-        <div className="mb-4">
+        <div className="mb-4 flex justify-between items-center">
           <select
             onChange={handleCategoryChange}
             value={selectedCategory}
@@ -235,6 +235,7 @@ function Plant() {
               )
             )}
           </select>
+          <SearchBar onSearch={handleSearch} />
         </div>
 
         <LargeModal
@@ -277,8 +278,6 @@ function Plant() {
             </button>
           </div>
         </Modal>
-
-        <SearchBar onSearch={handleSearch} />
 
         <div className="mt-6">
           <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden">

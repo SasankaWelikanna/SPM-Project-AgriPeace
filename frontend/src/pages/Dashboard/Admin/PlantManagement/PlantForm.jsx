@@ -158,8 +158,16 @@ const PlantForm = ({ handleSubmit, initialData }) => {
               required
             >
               <option value="">Select Category</option>
-              <option value="Vegetable">Vegetable</option>
+              <option value="Rice">Rice</option>
+              <option value="Vegetables">Vegetables</option>
+              <option value="Leafy Vegetable">Leafy Vegetable</option>
               <option value="Fruits">Fruits</option>
+              <option value="Root Crops">Root Crops</option>
+              <option value="Condiments">Condiments</option>
+              <option value="Mushrooms">Mushrooms</option>
+              <option value="Coarse Grains">Coarse Grains</option>
+              <option value="Legumes">Legumes</option>
+              <option value="Oil Crops">Oil Crops</option>
             </select>
           </div>
           <div className="mb-4">
