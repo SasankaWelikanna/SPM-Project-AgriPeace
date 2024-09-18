@@ -48,8 +48,8 @@ const farmerNavItems = [
     label: "My Locations",
   },
   {
-    to: "/dashboard/plant",
-    icon: <GiField className="text-2xl" />,
+    to: "/dashboard/user-plant",
+    icon: <RiPlantFill className="text-2xl" />,
     label: "Plants",
   },
   {
