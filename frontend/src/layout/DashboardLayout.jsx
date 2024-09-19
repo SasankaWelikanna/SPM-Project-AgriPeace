@@ -63,7 +63,7 @@ const lastMenuItems = [
   { to: "/", icon: <BiHomeAlt className="text-2xl" />, label: "Main Home" },
   {
     to: "/dashboard/user-profile",
-    icon: <FaUserAlt className="text-xl" />,
+    icon: <FaUserAlt className="text-2xl" />,
     label: "Profile",
   },
 ];
