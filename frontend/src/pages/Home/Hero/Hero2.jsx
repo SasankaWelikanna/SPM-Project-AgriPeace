@@ -1,6 +1,7 @@
 import React from "react";
 
 import bgImg from "../../../assets/banner-2.jpg";
+import { Link } from "react-router-dom";
 
 const Hero2 = () => {
   return (
@@ -25,9 +26,11 @@ const Hero2 = () => {
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-5">
+              <Link to={'/login'}>
               <button className="px-7 py-3 rounded-lg bg-secondary font-bold uppercase hover:scale-105 duration-300">
                 Join Today
               </button>
+              </Link>
               <button className="px-7 py-3 rounded-lg border hover:bg-secondary font-bold uppercase">
                 Discover Our Solutions
               </button>

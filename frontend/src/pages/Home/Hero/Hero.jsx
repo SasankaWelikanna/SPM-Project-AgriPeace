@@ -1,7 +1,7 @@
 import React from "react";
 
 import bgImg from "../../../assets/banner-1.jpg";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -26,9 +26,11 @@ const Hero = () => {
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-5">
+              <Link to={'/login'}>
               <button className="px-7 py-3 rounded-lg bg-secondary font-bold uppercase hover:scale-105 duration-300">
                 Join Today
               </button>
+              </Link>
               <NavLink to={'/services'}>
                 <button className="px-7 py-3 rounded-lg border hover:bg-secondary font-bold uppercase">
                   Explore Our Services
