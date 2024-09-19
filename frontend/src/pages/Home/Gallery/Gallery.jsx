@@ -14,24 +14,25 @@ const Gallery = () => {
 
       {/* image container */}
       <div className='md:grid grid-cols-2 items-center justify-center gap-4'>
-         <div className='mb-4 md:mb-0'>
-            <img src={image1} alt="" className='md:h-[720px] w-full mx-auto rounded-sm' />
-         </div>
-         <div className='gap-4 grid grid-cols-2 items-start'>
-            <div>
-               <img src={image2} alt="" className='md:h-[350px] rounded-sm' />
-            </div>
-            <div>
-               <img src={image3} alt="" className='md:h-[350px] rounded-sm' />
-            </div>
-            <div>
-               <img src={image4} alt="" className='md:h-[350px] rounded-sm' />
-            </div>
-            <div>
-               <img src={image5} alt="" className='md:h-[350px] rounded-sm' />
-            </div>
-         </div>
+   <div className='mb-4 md:mb-0'>
+      <img src={image1} alt="" className='md:h-[720px] w-auto mx-auto rounded-sm hover:scale-105 duration-300 hover:rounded-lg object-cover' />
+   </div>
+   <div className='gap-4 grid grid-cols-2 items-start'>
+      <div>
+         <img src={image2} alt="" className='md:h-[350px] w-auto rounded-sm hover:scale-105 duration-300 hover:rounded-lg object-cover' />
       </div>
+      <div>
+         <img src={image3} alt="" className='md:h-[350px] w-auto rounded-sm hover:scale-105 duration-300 hover:rounded-lg object-cover' />
+      </div>
+      <div>
+         <img src={image4} alt="" className='md:h-[350px] w-auto rounded-sm hover:scale-105 duration-300 hover:rounded-lg object-cover' />
+      </div>
+      <div>
+         <img src={image5} alt="" className='md:h-[350px] w-auto rounded-sm hover:scale-105 duration-300 hover:rounded-lg object-cover' />
+      </div>
+   </div>
+</div>
+
     </div>
   )
 }
