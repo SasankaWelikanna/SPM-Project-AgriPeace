@@ -167,7 +167,7 @@ const CostCalculator = () => {
             </div>
 
             <Swiper
-              slidesPerView={1} // Default for mobile
+              slidesPerView={1}
               spaceBetween={30}
               centeredSlides={false}
               pagination={{
