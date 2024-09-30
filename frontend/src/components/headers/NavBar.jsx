@@ -287,12 +287,12 @@ const NavBar = () => {
         {/* Mobile menu */}
         {isMobileMenuOpen && (
           <div className="block md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-2 shadow-lg">
               {navLinks.map((link) => (
                 <NavLink
                   key={link.route}
                   to={link.route}
-                  className="text-gray-700 block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 hover:text-white"
+                  className="text-gray-700 block px-3 py-2 rounded-md text-base font-medium hover:bg-secondary hover:text-white"
                 >
                   {link.name}
                 </NavLink>

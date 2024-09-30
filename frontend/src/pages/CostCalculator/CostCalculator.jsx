@@ -20,6 +20,9 @@ const CostCalculator = () => {
   const [error, setError] = useState(null);
   const [previousCalculations, setPreviousCalculations] = useState([]);
   const [plants, setPlants] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(""); // New state for search term
+  const [selectedCategory, setSelectedCategory] = useState(""); // New state for selected category
+  const [categories, setCategories] = useState([]); // New state for categories
   const { currentUser } = useUser();
   const axiosSecure = useAxiosSecure();
   const axiosFetch = useAxiosFetch();
@@ -41,15 +44,21 @@ const CostCalculator = () => {
         console.error("Error fetching previous calculations:", error);
       }
     };
-  
+
     const fetchPlants = async () => {
       try {
         const response = await axiosFetch.get("/Plant/");
         if (Array.isArray(response.data)) {
-          const sortedPlants = response.data.sort((a, b) => 
+          const sortedPlants = response.data.sort((a, b) =>
             a.name.localeCompare(b.name)
           );
           setPlants(sortedPlants);
+
+          // Extract unique categories
+          const uniqueCategories = [
+            ...new Set(sortedPlants.map((plant) => plant.category))
+          ];
+          setCategories(uniqueCategories);
         } else {
           console.error("Unexpected data format:", response.data);
         }
@@ -57,11 +66,11 @@ const CostCalculator = () => {
         console.error("Error fetching plants:", err);
       }
     };
-  
+
     if (currentUser) {
       fetchPreviousCalculations();
     }
-  
+
     fetchPlants();
   }, [currentUser, axiosSecure, axiosFetch]);
 
@@ -77,7 +86,7 @@ const CostCalculator = () => {
         area,
         waterResources,
         soilType,
-        userId: currentUser._id, // Include the userId in the request
+        userId: currentUser._id,
       });
       const newResult = response.data;
       setResult(newResult);
@@ -92,6 +101,13 @@ const CostCalculator = () => {
     }
   };
 
+  // Filter plants based on the search term and selected category
+  const filteredPlants = plants.filter((plant) => {
+    const matchesSearchTerm = plant.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory ? plant.category === selectedCategory : true;
+    return matchesSearchTerm && matchesCategory;
+  });
+
   return (
     <>
       <div className="mt-20 mx-auto max-w-4xl p-6 bg-white dark:bg-slate-900 dark:border-2 dark:mt-25 shadow-lg rounded-lg">
@@ -101,9 +117,34 @@ const CostCalculator = () => {
         </h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-lg font-semibold text-gray-700">
-              Crop:
-            </label>
+            <div className="flex items-center space-x-4">
+              <label className="text-lg font-semibold text-gray-700 flex-shrink-0">
+                Crop:
+              </label>
+              <input
+                type="text"
+                placeholder="Search crop"
+                className="p-2 bg-gray-100 border border-gray-300 rounded-md flex-grow"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <label className="text-sm text-gray-700">
+                Sort by Category:
+              </label>
+              <select
+                className="p-2 bg-gray-100 border border-gray-300 rounded-md"
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+              >
+                <option value="">All</option>
+                {categories.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <Swiper
               slidesPerView={4}
               spaceBetween={30}
@@ -121,7 +162,7 @@ const CostCalculator = () => {
                 "--swiper-pagination-bottom": "-5px",
               }}
             >
-              {plants.map((plant) => (
+              {filteredPlants.map((plant) => (
                 <SwiperSlide key={plant._id}>
                   <label
                     className={`flex flex-col items-center p-4 border-2 rounded-lg cursor-pointer hover:scale-105 transform transition-all duration-200 ${
@@ -129,10 +170,10 @@ const CostCalculator = () => {
                     }`}
                     style={{ zIndex: crop === plant.name ? 10 : "auto" }}
                     onMouseEnter={(e) =>
-                      e.currentTarget.style.zIndex = 10
+                      (e.currentTarget.style.zIndex = 10)
                     }
                     onMouseLeave={(e) =>
-                      e.currentTarget.style.zIndex = "auto"
+                      (e.currentTarget.style.zIndex = "auto")
                     }
                   >
                     <img

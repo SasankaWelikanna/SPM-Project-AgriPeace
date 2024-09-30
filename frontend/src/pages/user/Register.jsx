@@ -1,10 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import storage from "../../config/firebase.init";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useForm } from "react-hook-form";
 import {
   AiOutlineLock,
   AiOutlineMail,
   AiOutlinePhone,
-  AiOutlinePicture,
   AiOutlineUser,
 } from "react-icons/ai";
 import { HiOutlineLocationMarker } from "react-icons/hi";
@@ -16,6 +17,8 @@ import Scroll from "../../hooks/useScroll";
 
 const Register = () => {
   const navigate = useNavigate();
+  const [imgPerc, setImgPerc] = useState(0);
+  const [img, setImg] = useState(undefined);
   const { signUp, updateUser, setError } = useContext(AuthContext);
   const {
     register,
@@ -24,6 +27,51 @@ const Register = () => {
     formState: { errors },
   } = useForm();
   const [generalError, setGeneralError] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    photoUrl: "",
+    role: "",
+    gender: "",
+    phone: "",
+    address: "",
+  });
+  const [uploading, setUploading] = useState(false);
+
+  useEffect(() => {
+    if (img) {
+      uploadFile(img, "photoUrl");
+    }
+  }, [img]);
+
+  const uploadFile = (file, fileType) => {
+    const fileName = new Date().getTime() + file.name;
+    const storageRef = ref(storage, "images/profilePictures/" + fileName);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+    setUploading(true);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setImgPerc(Math.round(progress));
+      },
+      (error) => {
+        console.log(error);
+        setUploading(false);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setFormData((prev) => ({
+            ...prev,
+            [fileType]: downloadURL,
+          }));
+          setUploading(false);
+        });
+      }
+    );
+  };
 
   const onSubmit = (data) => {
     setError("");
@@ -36,7 +84,7 @@ const Register = () => {
             const userImp = {
               name: user?.displayName,
               email: user?.email,
-              photoUrl: user?.photoURL,
+              photoUrl: formData.photoUrl,
               role: "user",
               gender: data.gender,
               phone: data.phone,
@@ -69,7 +117,7 @@ const Register = () => {
 
   return (
     <div className="flex justify-center items-center pt-14 bg-white dark:bg-gray-900 -mt-14">
-      <Scroll/>
+      <Scroll />
       <div className="bg-white p-8 rounded-lg shadow-md">
         <h2 className="text-3xl font-bold text-center text-secondary mb-6">
           Please Register
@@ -77,6 +125,30 @@ const Register = () => {
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex items-center gap-5">
+            <div className="mb-4">
+              <label
+                htmlFor="photoUrl"
+                className="block  text-gray-700 font-semibold mb-1"
+              >
+                {uploading ? `Uploading: ${imgPerc}%` : "Image"}
+              </label>
+              <input
+                type="file"
+                className="w-full p-2 border border-gray-300 rounded-md"
+                name="photoUrl"
+                onChange={(e) => setImg(e.target.files[0])}
+              />
+              {formData.photoUrl && !uploading && (
+                <div className="mt-4">
+                  <img
+                    src={formData.photoUrl}
+                    alt="Uploaded Preview"
+                    className="w-40 h-40 rounded-md border border-gray-300"
+                  />
+                </div>
+              )}
+            </div>
+
             <div className="mb-4">
               <label
                 htmlFor="name"
@@ -93,25 +165,6 @@ const Register = () => {
               />
               {errors.name && (
                 <p className="text-red-500 text-sm">Name is required</p>
-              )}
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="email"
-                className="block text-gray-700 font-bold mb-2"
-              >
-                <AiOutlineMail className="inline-block mr-2 mb-1 text-lg" />
-                Email
-              </label>
-              <input
-                type="email"
-                placeholder="Enter your email"
-                {...register("email", { required: true })}
-                className="w-full border-gray-300 border rounded-md py-2 px-4 focus:outline-none focus:ring focus:border-blue-300"
-              />
-              {errors.email && (
-                <p className="text-red-500 text-sm">Email is required</p>
               )}
             </div>
           </div>
@@ -184,18 +237,21 @@ const Register = () => {
 
             <div className="mb-4">
               <label
-                htmlFor="photoUrl"
+                htmlFor="email"
                 className="block text-gray-700 font-bold mb-2"
               >
-                <AiOutlinePicture className="inline-block mr-2 mb-1 text-lg" />
-                Photo URL
+                <AiOutlineMail className="inline-block mr-2 mb-1 text-lg" />
+                Email
               </label>
               <input
-                type="text"
-                placeholder="Photo URL"
-                {...register("photoUrl")}
+                type="email"
+                placeholder="Enter your email"
+                {...register("email", { required: true })}
                 className="w-full border-gray-300 border rounded-md py-2 px-4 focus:outline-none focus:ring focus:border-blue-300"
               />
+              {errors.email && (
+                <p className="text-red-500 text-sm">Email is required</p>
+              )}
             </div>
           </div>
 
