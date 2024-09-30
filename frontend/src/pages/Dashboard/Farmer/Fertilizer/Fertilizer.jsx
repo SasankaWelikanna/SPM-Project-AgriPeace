@@ -176,12 +176,7 @@ function Fertilizer() {
                     <strong>Usage:</strong> {selectedFertilizer.usage}
                   </p>
                 </div>
-                <button
-                  className="mt-4 bg-green-500 text-white py-2 px-6 rounded-lg shadow-md hover:bg-green-600 transition duration-300"
-                  onClick={() => handleViewDiseases(selectedFertilizer._id)}
-                >
-                  View Related Diseases
-                </button>
+                
               </div>
             )}
           </div>
