@@ -53,9 +53,9 @@ const farmerNavItems = [
     label: "Plants",
   },
   {
-    to: "/dashboard/my-payments",
-    icon: <MdPayments className="text-2xl" />,
-    label: "Payment History",
+    to: "/dashboard/user-fertilizer",
+    icon: <GiFertilizerBag className="text-2xl" />,
+    label: "Fertilizers",
   },
 ];
 
