@@ -9,7 +9,7 @@ import useUser from "../../hooks/useUser";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAxiosFetch from "../../hooks/useAxiosFetch";
 import PreviousCalculations from "./PreviousCalculations"; // Import the new component
-import { Link } from "react-router-dom";
+import { FaSearch, FaTimes } from "react-icons/fa";
 
 const CostCalculator = () => {
   const [crop, setCrop] = useState("");
@@ -122,17 +122,33 @@ const CostCalculator = () => {
         </h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-col md:flex-row md:items-center md:space-x-4">
               <label className="text-lg font-semibold text-gray-700 flex-shrink-0 dark:text-white">
                 Crop:
               </label>
-              <input
-                type="text"
-                placeholder="Search crop"
-                className="p-2 bg-gray-100 border border-gray-300 rounded-md flex-grow"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
+              <div className="relative flex-grow mb-4 md:mb-0">
+                <input
+                  type="text"
+                  placeholder="Search crop"
+                  className="p-2 bg-gray-100 border border-gray-300 rounded-md w-full pr-10"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button
+                  type="button"
+                  onClick={() => setSearchTerm("")} // Clear search term
+                  className="absolute right-12 top-1/2 transform -translate-y-1/2 text-gray-500"
+                  style={{ display: searchTerm ? "block" : "none" }}
+                >
+                  <FaTimes />
+                </button>
+                <button
+                  type="submit"
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500"
+                >
+                  <FaSearch />
+                </button>
+              </div>
               <label className="text-sm text-gray-700 dark:text-white">
                 Sort by Category:
               </label>
@@ -151,7 +167,7 @@ const CostCalculator = () => {
             </div>
 
             <Swiper
-              slidesPerView={4}
+              slidesPerView={1} // Default for mobile
               spaceBetween={30}
               centeredSlides={false}
               pagination={{
@@ -166,38 +182,57 @@ const CostCalculator = () => {
                 "--swiper-navigation-sides-offset": "0px",
                 "--swiper-pagination-bottom": "-6px",
               }}
+              breakpoints={{
+                640: {
+                  slidesPerView: 2, // 2 slides for small screens
+                },
+                768: {
+                  slidesPerView: 3, // 3 slides for medium screens
+                },
+                1024: {
+                  slidesPerView: 4, // 4 slides for large screens
+                },
+              }}
             >
-              {filteredPlants.map((plant) => (
-                <SwiperSlide key={plant._id}>
-                  <label
-                    className={`flex flex-col items-center p-4 border-2 rounded-lg cursor-pointer hover:scale-105 transform transition-all duration-200 ${
-                      crop === plant.name ? "bg-secondary" : "border-gray-300"
-                    }`}
-                    style={{ zIndex: crop === plant.name ? 10 : "auto" }}
-                    onMouseEnter={(e) => (e.currentTarget.style.zIndex = 10)}
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.zIndex = "auto")
-                    }
-                  >
-                    <img
-                      src={plant.imageUrl}
-                      alt={plant.name}
-                      className="w-full h-36 rounded-md mb-2"
-                      style={{ objectFit: "cover" }}
-                    />
-                    <input
-                      type="radio"
-                      value={plant.name}
-                      checked={crop === plant.name}
-                      onChange={(e) => setCrop(e.target.value)}
-                      className="hidden"
-                    />
-                    <span className="text-center font-semibold text-gray-700 dark:text-white">
-                      {plant.name}
-                    </span>
-                  </label>
-                </SwiperSlide>
-              ))}
+              {filteredPlants.length > 0 ? (
+                filteredPlants.map((plant) => (
+                  <SwiperSlide key={plant._id}>
+                    <label
+                      className={`flex flex-col items-center p-4 border-2 rounded-lg cursor-pointer hover:scale-105 transform transition-all duration-200 ${
+                        crop === plant.name ? "bg-secondary" : "border-gray-300"
+                      }`}
+                      style={{ zIndex: crop === plant.name ? 10 : "auto" }}
+                      onMouseEnter={(e) => (e.currentTarget.style.zIndex = 10)}
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.zIndex = "auto")
+                      }
+                    >
+                      <img
+                        src={plant.imageUrl}
+                        alt={plant.name}
+                        className="w-full h-36 rounded-md mb-2"
+                        style={{ objectFit: "cover" }}
+                      />
+                      <input
+                        type="radio"
+                        value={plant.name}
+                        checked={crop === plant.name}
+                        onChange={(e) => setCrop(e.target.value)}
+                        className="hidden"
+                      />
+                      <span className="text-center font-semibold text-gray-700 dark:text-white">
+                        {plant.name}
+                      </span>
+                    </label>
+                  </SwiperSlide>
+                ))
+              ) : (
+                <div className="flex justify-center items-center h-36">
+                  <p className="text-gray-500">
+                    No crops found for "{searchTerm}".
+                  </p>
+                </div>
+              )}
             </Swiper>
           </div>
 
@@ -230,7 +265,7 @@ const CostCalculator = () => {
                       className="mr-2"
                     />
                     <span className="block text-lg font-medium text-black dark:text-white">
-                      {waterOption}
+                    {waterOption}
                     </span>
                   </label>
                 )
@@ -245,34 +280,35 @@ const CostCalculator = () => {
             <div className="flex flex-wrap gap-4 mt-2">
               {["Fertile", "Moderately Fertile", "Poor", "Sandy", "Rich"].map(
                 (soilOption) => (
-                  <label key={soilOption} className="flex items-center">
-                    <input
-                      type="radio"
-                      value={soilOption}
-                      checked={soilType === soilOption}
-                      onChange={(e) => setSoilType(e.target.value)}
-                      className="mr-2"
-                    />
+                <label key={soilOption} className="flex items-center">
+                  <input
+                    type="radio"
+                    value={soilOption}
+                    checked={soilType === soilOption}
+                    onChange={(e) => setSoilType(e.target.value)}
+                    className="mr-2"
+                  />
                     <span className="block text-lg font-medium text-black dark:text-white">
-                      {soilOption}
+                  {soilOption}
                     </span>
-                  </label>
-                )
-              )}
+                </label>
+              ))}
             </div>
           </div>
 
-          <button
-            type="submit"
-            className={`w-full bg-secondary text-white p-3 rounded-md ${
-              loading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-            disabled={loading}
-          >
-            {loading ? "Calculating..." : "Calculate Cost"}
-          </button>
-
-          {error && <p className="text-red-500 mt-4">{error}</p>}
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              className={`w-auto bg-secondary text-white px-5 py-4 rounded-md hover:scale-110 duration-300 ${
+                loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={loading}
+            >
+              {loading ? "Calculating..." : "Calculate Cost"}
+            </button>
+          </div>
+        </form>
+        {error && <p className="text-red-500 mt-4">{error}</p>}
         {result && (
           <div className="mt-8 p-4 border border-gray-300 rounded-md">
             <h2 className="text-2xl font-semibold text-gray-800">
@@ -300,7 +336,6 @@ const CostCalculator = () => {
             </p>
           </div>
         )}
-        </form>
       </div>
 
       {/* Render the PreviousCalculations component */}
