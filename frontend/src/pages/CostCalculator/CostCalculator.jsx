@@ -56,7 +56,7 @@ const CostCalculator = () => {
 
           // Extract unique categories
           const uniqueCategories = [
-            ...new Set(sortedPlants.map((plant) => plant.category))
+            ...new Set(sortedPlants.map((plant) => plant.category)),
           ];
           setCategories(uniqueCategories);
         } else {
@@ -103,8 +103,12 @@ const CostCalculator = () => {
 
   // Filter plants based on the search term and selected category
   const filteredPlants = plants.filter((plant) => {
-    const matchesSearchTerm = plant.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory ? plant.category === selectedCategory : true;
+    const matchesSearchTerm = plant.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory
+      ? plant.category === selectedCategory
+      : true;
     return matchesSearchTerm && matchesCategory;
   });
 
@@ -112,13 +116,13 @@ const CostCalculator = () => {
     <>
       <div className="mt-20 mx-auto max-w-4xl p-6 bg-white dark:bg-slate-900 dark:border-2 dark:mt-25 shadow-lg rounded-lg">
         <Scroll />
-        <h1 className="text-4xl font-bold mb-6 text-gray-800 text-center">
+        <h1 className="text-4xl font-bold mb-6 text-gray-800 text-center dark:text-white">
           Cost Calculator
         </h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <div className="flex items-center space-x-4">
-              <label className="text-lg font-semibold text-gray-700 flex-shrink-0">
+              <label className="text-lg font-semibold text-gray-700 flex-shrink-0 dark:text-white">
                 Crop:
               </label>
               <input
@@ -128,7 +132,7 @@ const CostCalculator = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <label className="text-sm text-gray-700">
+              <label className="text-sm text-gray-700 dark:text-white">
                 Sort by Category:
               </label>
               <select
@@ -159,7 +163,7 @@ const CostCalculator = () => {
                 "--swiper-navigation-size": "50px",
                 "--swiper-navigation-color": "#333",
                 "--swiper-navigation-sides-offset": "0px",
-                "--swiper-pagination-bottom": "-5px",
+                "--swiper-pagination-bottom": "-6px",
               }}
             >
               {filteredPlants.map((plant) => (
@@ -169,9 +173,7 @@ const CostCalculator = () => {
                       crop === plant.name ? "bg-secondary" : "border-gray-300"
                     }`}
                     style={{ zIndex: crop === plant.name ? 10 : "auto" }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.zIndex = 10)
-                    }
+                    onMouseEnter={(e) => (e.currentTarget.style.zIndex = 10)}
                     onMouseLeave={(e) =>
                       (e.currentTarget.style.zIndex = "auto")
                     }
@@ -189,7 +191,7 @@ const CostCalculator = () => {
                       onChange={(e) => setCrop(e.target.value)}
                       className="hidden"
                     />
-                    <span className="text-center font-semibold text-gray-700">
+                    <span className="text-center font-semibold text-gray-700 dark:text-white">
                       {plant.name}
                     </span>
                   </label>
@@ -199,7 +201,7 @@ const CostCalculator = () => {
           </div>
 
           <div>
-            <label className="block text-lg font-semibold text-gray-700">
+            <label className="block text-lg font-semibold text-gray-700 dark:text-white">
               Area (in acres):
             </label>
             <input
@@ -212,7 +214,7 @@ const CostCalculator = () => {
           </div>
 
           <div>
-            <label className="block text-lg font-semibold text-gray-700">
+            <label className="block text-lg font-semibold text-gray-700 dark:text-white">
               Water Resources:
             </label>
             <div className="flex flex-wrap gap-4 mt-2">
@@ -226,7 +228,9 @@ const CostCalculator = () => {
                       onChange={(e) => setWaterResources(e.target.value)}
                       className="mr-2"
                     />
-                    {waterOption}
+                    <label className="block text-lg font-medium text-black dark:text-white">
+                      {waterOption}
+                    </label>
                   </label>
                 )
               )}
@@ -234,7 +238,7 @@ const CostCalculator = () => {
           </div>
 
           <div>
-            <label className="block text-lg font-semibold text-gray-700">
+            <label className="block text-lg font-semibold text-gray-700 dark:text-white">
               Soil Type:
             </label>
             <div className="flex flex-wrap gap-4 mt-2">
@@ -248,7 +252,9 @@ const CostCalculator = () => {
                       onChange={(e) => setSoilType(e.target.value)}
                       className="mr-2"
                     />
+                    <label className="block text-lg font-medium text-black dark:text-white">
                     {soilOption}
+                    </label>
                   </label>
                 )
               )}
@@ -300,7 +306,9 @@ const CostCalculator = () => {
             Your Previous Calculations
           </h2>
           {previousCalculations.length === 0 ? (
-            <p className="mt-4 text-gray-600">No previous calculations found.</p>
+            <p className="mt-4 text-gray-600">
+              No previous calculations found.
+            </p>
           ) : (
             <div className="overflow-x-auto mt-4">
               <table className="min-w-full divide-y divide-gray-200">
@@ -351,7 +359,9 @@ const CostCalculator = () => {
             To save your calculations, please log in.
           </p>
           <Link to="/login">
-            <button className="bg-secondary rounded-md text-white p-3 hover:scale-110 duration-300">Login</button>
+            <button className="bg-secondary rounded-md text-white p-3 hover:scale-110 duration-300">
+              Login
+            </button>
           </Link>
         </div>
       )}
