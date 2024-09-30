@@ -25,7 +25,7 @@ const SearchBar = ({ onSearch }) => {
           onChange={handleChange}
           placeholder="Search"
           title="Enter search keyword"
-          className="flex-1 p-2 border-2 border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-secondary"
+          className="flex-1 p-2 border-2 border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-secondary dark:bg-gray-700 dark:text-white"
         />
         <button
           type="submit"

@@ -13,6 +13,7 @@ function Diseases() {
   const [filteredDiseases, setFilteredDiseases] = useState([]);
   const [plantName, setPlantName] = useState("");
   const [selectedDisease, setSelectedDisease] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null); // State for selected image
 
   useEffect(() => {
     fetchDiseases();
@@ -76,6 +77,10 @@ function Diseases() {
     setSelectedDisease(disease);
   };
 
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl); // Set the clicked image URL to the state
+  };
+
   return (
     <div className="mt-10 p-4 bg-gray-50">
       <div className="bg-white shadow-md rounded-lg p-6">
@@ -108,10 +113,10 @@ function Diseases() {
                   <img
                     src={disease.imageUrl}
                     alt={disease.name}
-                    className="w-20 h-20 object-cover rounded-lg mb-2"
+                    className="w-full h-32 object-cover mb-4 rounded-lg shadow-lg border border-gray-300 cursor-pointer" // Adjusted size
                   />
                 ) : (
-                  <div className="w-20 h-20 bg-gray-300 rounded-lg mb-2" />
+                  <div className="w-40 h-40 bg-gray-300 rounded-lg mb-2" /> // Adjusted size for placeholder
                 )}
                 <h4 className="text-md font-semibold text-gray-700">
                   {disease.name}
@@ -140,6 +145,7 @@ function Diseases() {
                 alt={selectedDisease.name}
                 className="w-full h-64 object-cover rounded-lg mb-4 border border-gray-300"
                 loading="lazy"
+                onClick={() => handleImageClick(selectedDisease.imageUrl)} // Open image modal
               />
               <div className="text-gray-700 space-y-3">
                 <p className="text-lg font-semibold">
@@ -165,6 +171,23 @@ function Diseases() {
                 </div>
               </div>
             </div>
+          </div>
+        </LargeModal>
+      )}
+
+      {/* Image Modal */}
+      {selectedImage && (
+        <LargeModal
+          isOpen={!!selectedImage}
+          onClose={() => setSelectedImage(null)}
+          title="Image Preview"
+        >
+          <div className="p-6 bg-gray-50 rounded-lg">
+            <img
+              src={selectedImage}
+              alt="Selected Disease"
+              className="w-full h-full object-cover rounded-lg border border-gray-300"
+            />
           </div>
         </LargeModal>
       )}
