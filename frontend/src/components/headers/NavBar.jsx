@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { Switch } from "@mui/material";
+import { FaBars, FaMoon } from "react-icons/fa"; // Import the sun and moon icons
+import { LuSun } from "react-icons/lu";
 import farmerImg from "../../assets/farmer.jpg";
-import { FaBars } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { AuthContext } from "../../utilities/providers/AuthProvider";
 import Swal from "sweetalert2";
@@ -239,11 +239,11 @@ const NavBar = () => {
                 {user && (
                   <li>
                     <Link to={`/dashboard/user-profile`}>
-                    <img
-                      src={currentUser?.photoUrl || farmerImg}
-                      alt="User Avatar"
-                      className="h-[40px] rounded-full w-[40px]"
-                    />
+                      <img
+                        src={currentUser?.photoUrl || farmerImg}
+                        alt="User Avatar"
+                        className="h-[40px] rounded-full w-[40px]"
+                      />
                     </Link>
                   </li>
                 )}
@@ -262,11 +262,20 @@ const NavBar = () => {
                 )}
 
                 {/* color toggle */}
-                <li>
+                <li className="flex flex-col items-center text-center">
                   <ThemeProvider theme={theme}>
-                    <div className="flex flex-col justify-center items-center">
-                      <Switch onChange={() => setIsDarkMode(!isDarkMode)} />
-                      <h1 className="text-[8px]">Light / Dark</h1>
+                    <div
+                      className="flex items-center justify-center cursor-pointer"
+                      onClick={() => setIsDarkMode(!isDarkMode)}
+                    >
+                      {isDarkMode ? (
+                        <FaMoon className="text-white h-5 w-5" />
+                      ) : (
+                        <LuSun className="h-7 w-7" />
+                      )}
+                    </div>
+                    <div className="text-center">
+                      <p className="text-xs">Theme</p>
                     </div>
                   </ThemeProvider>
                 </li>
@@ -274,6 +283,31 @@ const NavBar = () => {
             </div>
           </div>
         </div>
+
+        {/* Mobile menu */}
+        {isMobileMenuOpen && (
+          <div className="block md:hidden">
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-2 shadow-lg">
+              {navLinks.map((link) => (
+                <NavLink
+                  key={link.route}
+                  to={link.route}
+                  className="text-gray-700 block px-3 py-2 rounded-md text-base font-medium hover:bg-secondary hover:text-white"
+                >
+                  {link.name}
+                </NavLink>
+              ))}
+              {user && (
+                <NavLink
+                  to="/dashboard"
+                  className="text-gray-700 block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 hover:text-white"
+                >
+                  Dashboard
+                </NavLink>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </motion.nav>
   );
