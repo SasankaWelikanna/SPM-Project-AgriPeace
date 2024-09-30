@@ -6,6 +6,7 @@ import SearchBar from "../../../../components/Search/SearchBar";
 import { ToastContainer, toast } from "react-toastify";
 import Pagination from "../../../../components/Pagination/Pagination";
 import useDebounce from "../../../../hooks/useDebounce";
+import Card from "../../../../components/Card/Card";
 
 function Plant() {
   const axiosFetch = useAxiosFetch();
@@ -18,6 +19,7 @@ function Plant() {
   );
   const [selectedPlant, setSelectedPlant] = useState(null);
   const [addModalOpen, setAddModalOpen] = useState(false);
+  const [imageModalOpen, setImageModalOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(
     location.state?.selectedCategory || ""
   );
@@ -36,7 +38,7 @@ function Plant() {
 
   useEffect(() => {
     if (!location.state) {
-      fetchPlants(currentPage); // Fetches data for the current page if no state is available
+      fetchPlants(currentPage);
     }
   }, [currentPage]);
 
@@ -92,6 +94,7 @@ function Plant() {
   };
 
   const handleModalClose = () => setAddModalOpen(false);
+  const handleImageModalClose = () => setImageModalOpen(false);
 
   const handleViewDiseases = (plantId) => {
     navigate(`/dashboard/user-plant/diseases/${plantId}`, {
@@ -119,7 +122,7 @@ function Plant() {
       <div className="bg-white shadow-md rounded-lg p-6 dark:bg-gray-700">
         <div className="flex justify-between items-center mb-4">
           <div>
-            <h2 className="text-xl font-semibold text-gray-700">
+            <h2 className="text-xl font-semibold text-gray-700 dark:text-white">
               Plant Details
             </h2>
             <h6 className="text-sm text-gray-500">View plant details</h6>
@@ -130,7 +133,7 @@ function Plant() {
           <select
             onChange={handleCategoryChange}
             value={selectedCategory}
-            className="border p-2 rounded"
+            className="border p-2 rounded dark:bg-gray-700 dark:text-white"
           >
             <option value="">All Categories</option>
             {[...new Set(dataList.map((plant) => plant.category))].map(
@@ -149,16 +152,17 @@ function Plant() {
           onClose={handleModalClose}
           title={selectedPlant ? selectedPlant.name : ""}
         >
-          <div className="p-6 bg-gray-50 rounded-lg">
+          <div className="p-6 bg-gray-50 rounded-lg dark:bg-gray-700">
             {selectedPlant && (
               <div className="flex flex-col space-y-4">
                 <img
                   src={selectedPlant.imageUrl}
                   alt="Plant"
-                  className="w-full h-64 object-cover mb-4 rounded-lg shadow-lg border border-gray-300"
+                  className="w-full h-64 object-cover mb-4 rounded-lg shadow-lg border border-gray-300 cursor-pointer"
                   loading="lazy"
+                  onClick={() => setImageModalOpen(true)}
                 />
-                <div className="text-gray-700 space-y-3">
+                <div className="text-gray-700 space-y-3 dark:text-white">
                   <p className="text-lg font-semibold">
                     <strong>Name:</strong> {selectedPlant.name}
                   </p>
@@ -191,10 +195,27 @@ function Plant() {
           </div>
         </LargeModal>
 
+        {/* Image Modal for larger view */}
+        {selectedPlant && (
+          <LargeModal
+            isOpen={imageModalOpen}
+            onClose={handleImageModalClose}
+            title={selectedPlant.name}
+          >
+            <div className="p-4">
+              <img
+                src={selectedPlant.imageUrl}
+                alt={selectedPlant.name}
+                className="w-full h-auto max-h-[80vh] object-contain rounded-lg duration-300"
+              />
+            </div>
+          </LargeModal>
+        )}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
           {currentPlants.length ? (
             currentPlants.map((plant) => (
-              <PlantCard
+              <Card
                 key={plant._id}
                 plant={plant}
                 handleViewDetails={handleViewDetails}
@@ -210,31 +231,12 @@ function Plant() {
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
+          onPageChange={setCurrentPage}
         />
       </div>
-
       <ToastContainer />
     </div>
   );
 }
-
-const PlantCard = React.memo(({ plant, handleViewDetails }) => (
-  <div
-    className="bg-white shadow-md rounded-lg overflow-hidden cursor-pointer cursor-pointer hover:scale-105 hover:shadow-md"
-    onClick={() => handleViewDetails(plant)}
-  >
-    <img
-      src={plant.imageUrl}
-      alt="Plant"
-      className="w-full h-40 object-cover"
-      loading="lazy"
-    />
-    <div className="p-4">
-      <h3 className="text-lg font-semibold text-gray-700">{plant.name}</h3>
-      <p className="text-sm text-gray-500">{plant.description}</p>
-    </div>
-  </div>
-));
 
 export default Plant;

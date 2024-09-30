@@ -107,7 +107,7 @@ const DashboardLayout = () => {
       <div
         className={`${
           open ? "w-72 overflow-y-auto" : "w-[90px] overflow-auto"
-        } bg-white h-screen p-5 md:block hidden pt-8 relative duration-300`}
+        } bg-white h-screen p-5 md:block hidden pt-8 relative duration-300 dark:bg-gray-700`}
       >
         <div className="flex gap-x-4 items-center">
           <img
@@ -134,7 +134,7 @@ const DashboardLayout = () => {
         {role === "admin" && (
           <ul className="pt-6">
             <p
-              className={`uppercase ml-3 text-gray-500 mb-3 ${
+              className={`uppercase ml-3 text-gray-500 mb-3  ${
                 !open && "hidden"
               }`}
             >
