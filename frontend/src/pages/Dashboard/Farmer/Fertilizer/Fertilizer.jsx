@@ -127,6 +127,14 @@ function Fertilizer() {
             </h2>
             <h6 className="text-sm text-gray-500">View fertilizer details</h6>
           </div>
+          
+          {/* Button to access the Fertilizer Calculator*/}
+
+          <button onClick={() => navigate(`/dashboard/fertilizer-cal`)}
+            className="bg-secondary hover:scale-105 text-white py-2 px-4 rounded-lg">
+            Fertilizer Calculator
+          </button>
+      
         </div>
 
         <div className="mb-4 flex justify-between items-center">

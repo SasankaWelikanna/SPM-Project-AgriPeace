@@ -250,8 +250,8 @@ function Fertilizer() {
               <th className="p-4 text-left">Product Name</th>
               <th className="p-4 text-left">Category</th>
               <th className="p-4 text-left">Description</th>
-              <th className="p-4 text-left">Quantity (kg)</th>
-              <th className="p-4 text-left">Price (Rs)</th>
+              <th className="p-4 text-left">Weight (kg)</th>
+              <th className="p-4 text-left">Average Price (Rs)</th>
               <th className="p-4 text-left">Action</th>
             </tr>
           </thead>

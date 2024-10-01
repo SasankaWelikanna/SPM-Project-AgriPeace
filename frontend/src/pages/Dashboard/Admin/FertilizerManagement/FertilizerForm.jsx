@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import storage from "../../../../config/firebase.init";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
+// Add the fertilizer categories
+const categories = ["Organic", "Inorganic", "Nitrogen", "Phosphorus", "Potassium", "Herbicide", "Insecticide", "Other"];
+
 const FertilizerForm = ({ handleSubmit, initialData }) => {
   const [img, setImg] = useState(undefined);
   const [imgPerc, setImgPerc] = useState(0);
@@ -152,15 +155,23 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
             >
               Category
             </label>
-            <input
-              type="text"
-              className="w-full p-2 border border-gray-300 rounded-md"
+            {/* Dropdown for category */}
+            <select
               name="category"
-              placeholder="Category"
+              className="w-full p-2 border border-gray-300 rounded-md"
               onChange={handleChange}
               value={formData.category}
               required
-            />
+            >
+              <option value="" disabled>
+                Select Category
+              </option>
+              {categories.map((category, index) => (
+                <option key={index} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
@@ -188,7 +199,7 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
               htmlFor="quantity"
               className="block text-gray-700 font-semibold mb-1"
             >
-              Quantity
+              Weight
             </label>
             <input
               type="text"
@@ -206,7 +217,7 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
               htmlFor="price"
               className="block text-gray-700 font-semibold mb-1"
             >
-              Price
+              Average Price
             </label>
             <input
               type="text"
