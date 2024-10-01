@@ -134,7 +134,7 @@ const DashboardLayout = () => {
         {role === "admin" && (
           <ul className="pt-6">
             <p
-              className={`uppercase ml-3 text-gray-500 mb-3  dark:text-white${
+              className={`uppercase ml-3 text-gray-500 mb-3  dark:text-white ${
                 !open && "hidden"
               }`}
             >
