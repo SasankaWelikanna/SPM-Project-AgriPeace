@@ -112,7 +112,7 @@ const DiseaseForm = ({ handleSubmit, initialData }) => {
             </label>
             <input
               type="file"
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md  dark:bg-gray-800 dark:text-white"
               name="imageUrl"
               onChange={(e) => setImg(e.target.files[0])}
             />
@@ -121,7 +121,7 @@ const DiseaseForm = ({ handleSubmit, initialData }) => {
                 <img
                   src={formData.imageUrl}
                   alt="Uploaded Preview"
-                  className="w-40 h-40 rounded-md border border-gray-300"
+                  className="w-40 h-40 rounded-md border border-gray-300  dark:bg-gray-800 dark:text-white"
                 />
               </div>
             )}
@@ -135,7 +135,7 @@ const DiseaseForm = ({ handleSubmit, initialData }) => {
             </label>
             <input
               type="text"
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md  dark:bg-gray-800 dark:text-white"
               name="name"
               placeholder="Disease Name"
               onChange={handleChange}
@@ -152,7 +152,7 @@ const DiseaseForm = ({ handleSubmit, initialData }) => {
             </label>
             <input
               type="text"
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md  dark:bg-gray-800 dark:text-white"
               name="causalAgent"
               placeholder="Causal Agent"
               onChange={handleChange}
@@ -160,10 +160,6 @@ const DiseaseForm = ({ handleSubmit, initialData }) => {
               required
             />
           </div>
-        </div>
-
-        {/* Right Section */}
-        <div>
           <div className="mb-4">
             <label
               htmlFor="diseaseTransmission"
@@ -173,7 +169,7 @@ const DiseaseForm = ({ handleSubmit, initialData }) => {
             </label>
             <input
               type="text"
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md  dark:bg-gray-800 dark:text-white"
               name="diseaseTransmission"
               placeholder="Disease Transmission"
               onChange={handleChange}
@@ -181,6 +177,10 @@ const DiseaseForm = ({ handleSubmit, initialData }) => {
               required
             />
           </div>
+        </div>
+
+        {/* Right Section */}
+        <div>
           <div className="mb-4">
             <label
               htmlFor="diseaseSymptoms"
@@ -189,7 +189,7 @@ const DiseaseForm = ({ handleSubmit, initialData }) => {
               Disease Symptoms
             </label>
             <textarea
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md  dark:bg-gray-800 dark:text-white"
               name="diseaseSymptoms"
               placeholder="Disease Symptoms"
               onChange={handleChange}
@@ -205,7 +205,7 @@ const DiseaseForm = ({ handleSubmit, initialData }) => {
               Control Measures
             </label>
             <textarea
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md  dark:bg-gray-800 dark:text-white"
               name="control"
               placeholder="Control Measures"
               onChange={handleChange}
@@ -221,7 +221,7 @@ const DiseaseForm = ({ handleSubmit, initialData }) => {
               <div key={index} className="flex items-center mb-2">
                 <input
                   type="text"
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  className="w-full p-2 border border-gray-300 rounded-md  dark:bg-gray-800 dark:text-white"
                   placeholder="Fertilizer"
                   value={fertilizer}
                   onChange={(e) => handleFertilizersChange(e, index)}

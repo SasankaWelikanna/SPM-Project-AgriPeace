@@ -17,17 +17,19 @@ const Login = () => {
 
     const data = new FormData(e.target);
     const formData = Object.fromEntries(data);
-    login(formData.email, formData.password).then(() => {
-      navigate(location.state?.from || '/dashboard')
-    }).catch((err) => {
-      setError(err.code);
-      setLoader(false);
-    })
+    login(formData.email, formData.password)
+      .then(() => {
+        navigate(location.state?.from || "/dashboard");
+      })
+      .catch((err) => {
+        setError(err.code);
+        setLoader(false);
+      });
   };
 
   return (
     <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
-      <Scroll/>
+      <Scroll />
       <h1 className="text-2xl font-bold text-secondary sm:text-3xl text-center">
         Log In to Your Account
       </h1>
@@ -35,7 +37,7 @@ const Login = () => {
         Welcome back! Please sign in to continue.
       </p>
 
-      <div className="mx-auto max-w-lg mb-0 mt-6 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8">
+      <div className="mx-auto max-w-lg mb-0 mt-6 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8  dark:bg-slate-800">
         <form onSubmit={handleSubmit} className="space-y-4">
           <p className="text-center text-red-400 text-lg font-medium">
             Sign into your account

@@ -152,8 +152,8 @@ const FertilizerReport = ({ dataList }) => {
               <Text style={styles.tableColHeader}>Product Name</Text>
               <Text style={styles.tableColHeader}>Category</Text>
               <Text style={styles.tableColHeaderDescription}>Description</Text>
-              <Text style={styles.tableColHeader}>Quantity (kg)</Text>
-              <Text style={styles.tableColHeader}>Price (Rs)</Text>
+              <Text style={styles.tableColHeader}>Weight (kg)</Text>
+              <Text style={styles.tableColHeader}>Average Price (Rs)</Text>
             </View>
             {dataList.map((fertilizer, index) => (
               <View key={index} style={styles.tableRow}>
