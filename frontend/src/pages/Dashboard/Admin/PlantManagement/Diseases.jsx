@@ -146,17 +146,17 @@ function Diseases() {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="mt-10 p-4 bg-gray-50">
-      <div className="bg-white shadow-md rounded-lg p-6">
+    <div className="mt-10 p-4 bg-gray-50  dark:bg-gray-900">
+      <div className="bg-white shadow-md rounded-lg p-6  dark:bg-gray-700">
         <Link to="/dashboard/manage-plant">
           <MdOutlineArrowBackIosNew className="text-3xl mb-3" />
         </Link>
         <div className="flex justify-between items-center mb-4">
           <div>
-            <h2 className="text-xl font-semibold text-gray-700">
+            <h2 className="text-xl font-semibold text-gray-700 dark:text-white">
               Plant Diseases - {plantName}
             </h2>
-            <h6 className="text-sm text-gray-500">
+            <h6 className="text-sm text-gray-500 dark:text-gray-200">
               Manage diseases for this plant
             </h6>
           </div>
@@ -228,8 +228,8 @@ function Diseases() {
 
         <SearchBar onSearch={handleSearch} />
 
-        <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden">
-          <thead className="bg-gray-100">
+        <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden  dark:bg-gray-900 dark:text-white">
+          <thead className="bg-gray-100  dark:bg-gray-800">
             <tr>
               <th className="p-4 text-left">Image</th>
               <th className="p-4 text-left">Name</th>

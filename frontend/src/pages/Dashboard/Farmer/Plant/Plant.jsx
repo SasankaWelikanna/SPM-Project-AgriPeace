@@ -117,23 +117,28 @@ function Plant() {
   );
   const totalPages = Math.ceil(filteredDataList.length / plantsPerPage);
 
+  // Handle back navigation
+  const handleBackClick = () => navigate(-1);
+
   return (
-    <div className="mt-10 p-4 bg-gray-50">
+    <div className="mt-10 p-4 bg-gray-50 dark:bg-gray-900">
       <div className="bg-white shadow-md rounded-lg p-6 dark:bg-gray-700">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-4">
           <div>
             <h2 className="text-xl font-semibold text-gray-700 dark:text-white">
               Plant Details
             </h2>
-            <h6 className="text-sm text-gray-500">View plant details</h6>
+            <h6 className="text-sm text-gray-500 dark:text-gray-200">
+              View plant details
+            </h6>
           </div>
         </div>
 
-        <div className="mb-4 flex justify-between items-center">
+        <div className="mb-4 flex flex-col sm:flex-row justify-between items-center">
           <select
             onChange={handleCategoryChange}
             value={selectedCategory}
-            className="border p-2 rounded dark:bg-gray-700 dark:text-white"
+            className="border p-2 rounded dark:bg-gray-700 dark:text-white w-full sm:w-auto"
           >
             <option value="">All Categories</option>
             {[...new Set(dataList.map((plant) => plant.category))].map(
@@ -190,12 +195,18 @@ function Plant() {
                 >
                   View Diseases
                 </button>
+                <button
+                  onClick={handleModalClose}
+                  className="mt-4 sm:hidden bg-red-500 text-white py-2 px-6 rounded-lg shadow-md hover:bg-red-600 transition duration-300"
+                >
+                  Close
+                </button>
               </div>
             )}
           </div>
         </LargeModal>
 
-        {/* Image Modal for larger view */}
+        {/* Image Modal with close button */}
         {selectedPlant && (
           <LargeModal
             isOpen={imageModalOpen}
@@ -228,10 +239,11 @@ function Plant() {
           )}
         </div>
 
+        {/* Pagination */}
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={setCurrentPage}
+          onPageChange={(page) => setCurrentPage(page)}
         />
       </div>
       <ToastContainer />

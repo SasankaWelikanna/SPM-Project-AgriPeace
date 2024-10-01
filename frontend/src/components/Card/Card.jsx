@@ -2,7 +2,7 @@ import React from "react";
 
 const Card = ({ plant, handleViewDetails }) => (
   <div
-    className="bg-white shadow-md rounded-lg overflow-hidden cursor-pointer hover:scale-105 hover:shadow-md dark:bg-gray-700"
+    className="bg-white shadow-md rounded-lg overflow-hidden cursor-pointer hover:scale-105 hover:shadow-md dark:bg-gray-900"
     onClick={() => handleViewDetails(plant)}
   >
     <img
