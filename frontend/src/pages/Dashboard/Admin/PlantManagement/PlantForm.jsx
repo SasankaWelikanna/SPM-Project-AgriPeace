@@ -112,7 +112,7 @@ const PlantForm = ({ handleSubmit, initialData }) => {
             </label>
             <input
               type="file"
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white"
               name="imageUrl"
               onChange={(e) => setImg(e.target.files[0])}
             />
@@ -121,7 +121,7 @@ const PlantForm = ({ handleSubmit, initialData }) => {
                 <img
                   src={formData.imageUrl}
                   alt="Uploaded Preview"
-                  className="w-40 h-40 rounded-md border border-gray-300"
+                  className="w-40 h-40 rounded-md border border-gray-300 dark:bg-gray-800 dark:text-white"
                 />
               </div>
             )}
@@ -135,7 +135,7 @@ const PlantForm = ({ handleSubmit, initialData }) => {
             </label>
             <input
               type="text"
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white"
               name="name"
               placeholder="Plant Name"
               onChange={handleChange}
@@ -152,7 +152,7 @@ const PlantForm = ({ handleSubmit, initialData }) => {
             </label>
             <select
               name="category"
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white"
               onChange={handleChange}
               value={formData.category}
               required
@@ -178,7 +178,7 @@ const PlantForm = ({ handleSubmit, initialData }) => {
               Description
             </label>
             <textarea
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white"
               name="description"
               placeholder="Description"
               onChange={handleChange}
@@ -195,7 +195,7 @@ const PlantForm = ({ handleSubmit, initialData }) => {
             </label>
             <input
               type="text"
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white"
               name="climate"
               placeholder="Climate"
               onChange={handleChange}
@@ -214,7 +214,7 @@ const PlantForm = ({ handleSubmit, initialData }) => {
             </label>
             <input
               type="text"
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white"
               name="soilPh"
               placeholder="Soil pH"
               onChange={handleChange}
@@ -230,7 +230,7 @@ const PlantForm = ({ handleSubmit, initialData }) => {
               Land Preparation
             </label>
             <textarea
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white"
               name="landPreparation"
               placeholder="Land Preparation"
               onChange={handleChange}
@@ -246,7 +246,7 @@ const PlantForm = ({ handleSubmit, initialData }) => {
               <div key={index} className="flex items-center mb-2">
                 <input
                   type="text"
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  className="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white"
                   placeholder="Fertilizer"
                   value={fertilizer}
                   onChange={(e) => handleFertilizersChange(e, index)}

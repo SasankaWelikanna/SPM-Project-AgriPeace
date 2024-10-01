@@ -134,7 +134,7 @@ const DashboardLayout = () => {
         {role === "admin" && (
           <ul className="pt-6">
             <p
-              className={`uppercase ml-3 text-gray-500 mb-3  ${
+              className={`uppercase ml-3 text-gray-500 mb-3  dark:text-white${
                 !open && "hidden"
               }`}
             >
@@ -147,7 +147,9 @@ const DashboardLayout = () => {
                     to={menuItem.to}
                     className={({ isActive }) =>
                       `flex ${
-                        isActive ? "bg-secondary text-white" : "text-[#413F44]"
+                        isActive
+                          ? "bg-secondary text-white"
+                          : "text-[#413F44] dark:text-white"
                       } duration-150 rounded-md p-2 cursor-pointer hover:scale-105 hover:shadow-md font-bold text-sm items-center gap-x-4`
                     }
                   >
@@ -169,7 +171,7 @@ const DashboardLayout = () => {
         {role === "user" && (
           <ul className="pt-6">
             <p
-              className={`uppercase ml-3 text-gray-500 mb-3 ${
+              className={`uppercase ml-3 text-gray-500 mb-3 dark:text-white ${
                 !open && "hidden"
               }`}
             >
@@ -182,7 +184,9 @@ const DashboardLayout = () => {
                     to={menuItem.to}
                     className={({ isActive }) =>
                       `flex ${
-                        isActive ? "bg-secondary text-white" : "text-[#413F44]"
+                        isActive
+                          ? "bg-secondary text-white"
+                          : "text-[#413F44] dark:text-white"
                       } duration-150 rounded-md p-2 cursor-pointer hover:scale-105 hover:shadow-md font-bold text-sm items-center gap-x-4`
                     }
                   >
@@ -202,7 +206,9 @@ const DashboardLayout = () => {
 
         <ul className="pt-6">
           <p
-            className={`uppercase ml-3 text-gray-500 mb-3 ${!open && "hidden"}`}
+            className={`uppercase ml-3 text-gray-500 mb-3 dark:text-white ${
+              !open && "hidden"
+            }`}
           >
             <small>Useful links</small>
           </p>
@@ -212,7 +218,9 @@ const DashboardLayout = () => {
                 to={menuItem.to}
                 className={({ isActive }) =>
                   `flex ${
-                    isActive ? "bg-secondary text-white" : "text-[#413F44]"
+                    isActive
+                      ? "bg-secondary text-white"
+                      : "text-[#413F44] dark:text-white"
                   } duration-150 rounded-md p-2 cursor-pointer hover:scale-105 hover:shadow-md font-bold text-sm items-center gap-x-4`
                 }
               >
@@ -229,7 +237,7 @@ const DashboardLayout = () => {
           <li>
             <button
               onClick={handleLogout}
-              className={`flex w-full text-[#413F44] duration-150 rounded-md p-2 cursor-pointer hover:shadow-md hover:text-red-500 font-bold text-sm items-center gap-x-4`}
+              className={`flex w-full text-[#413F44] duration-150 rounded-md p-2 cursor-pointer hover:shadow-md hover:text-red-500 font-bold text-sm items-center gap-x-4 dark:text-white`}
             >
               <BiLogInCircle className="text-2xl" />
               <span className={`${!open && "hidden"} origin-left duration-200`}>
@@ -249,18 +257,17 @@ const DashboardLayout = () => {
                 className="w-12 h-12 rounded-full object-cover border-2"
               />
             </Link>
-            <span
-              className={`${
-                !open && "hidden"
-              } text-gray-700 font-semibold text-sm`}
-            >
-              {currentUser?.name || "User"}
-            </span>
+            <div className={`${!open && "hidden"} duration-200`}>
+              <p className="text-sm font-bold dark:text-white">
+                {currentUser.name}
+              </p>
+              <p className="text-xs text-gray-400">{currentUser.email}</p>
+            </div>
           </div>
         )}
       </div>
 
-      <div className="h-screen overflow-y-auto px-8 flex-1">
+      <div className="h-screen overflow-y-auto px-8 flex-1 dark:bg-gray-900">
         <Scroll />
         <Outlet />
       </div>

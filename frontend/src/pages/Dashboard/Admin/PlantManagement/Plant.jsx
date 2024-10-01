@@ -173,14 +173,16 @@ function Plant() {
   const totalPages = Math.ceil(filteredDataList.length / plantsPerPage);
 
   return (
-    <div className="mt-10 p-4 bg-gray-50">
-      <div className="bg-white shadow-md rounded-lg p-6">
+    <div className="mt-10 p-4 bg-gray-50 dark:bg-gray-900">
+      <div className="bg-white shadow-md rounded-lg p-6 dark:bg-gray-700">
         <div className="flex justify-between items-center mb-4">
           <div>
-            <h2 className="text-xl font-semibold text-gray-700">
+            <h2 className="text-xl font-semibold text-gray-700 dark:text-white">
               Plant Details
             </h2>
-            <h6 className="text-sm text-gray-500">Manage plant details</h6>
+            <h6 className="text-sm text-gray-500 dark:text-gray-200">
+              Manage plant details
+            </h6>
           </div>
           <div className="flex space-x-4">
             <BlobProvider
@@ -224,7 +226,7 @@ function Plant() {
           <select
             onChange={handleCategoryChange}
             value={selectedCategory}
-            className="border p-2 rounded"
+            className="border p-2 rounded dark:bg-gray-700 dark:text-white w-full sm:w-auto"
           >
             <option value="">All Categories</option>
             {[...new Set(dataList.map((plant) => plant.category))].map(
@@ -280,8 +282,8 @@ function Plant() {
         </Modal>
 
         <div className="mt-6">
-          <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden">
-            <thead className="bg-gray-100">
+          <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-900">
+            <thead className="bg-gray-100 dark:bg-gray-800 dark:text-white">
               <tr>
                 <th className="p-4 text-left">Image</th>
                 <th className="p-4 text-left">Name</th>
@@ -293,7 +295,7 @@ function Plant() {
                 <th className="p-4 text-left">Action</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="dark:text-white">
               {currentPlants.length ? (
                 currentPlants.map((plant) => (
                   <React.Fragment key={plant._id}>
@@ -345,7 +347,7 @@ function Plant() {
                     <tr onClick={() => handleViewDiseases(plant._id)}>
                       <td
                         colSpan="9"
-                        className=" border-b-2 border-gray-500 text-center hover:bg-secondary hover:animate-pulse"
+                        className=" border-b-2 border-gray-500 text-center hover:bg-secondary hover:animate-pulse dark:bg-gray-700"
                       >
                         <button
                           className="text-green-600 hover:text-green-800"
@@ -355,7 +357,7 @@ function Plant() {
                           }}
                         >
                           <p>
-                            Diseases{" "}
+                            Diseases of {plant.name}{" "}
                             <span className="animate-bounce">&gt;&gt;</span>{" "}
                           </p>
                         </button>

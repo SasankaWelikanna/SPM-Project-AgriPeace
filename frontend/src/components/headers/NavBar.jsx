@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { AuthContext } from "../../utilities/providers/AuthProvider";
 import Swal from "sweetalert2";
 import useUser from "../../hooks/useUser";
+import ThemeToggle from "../ThemeToggle/ThemeToggle";
 
 const navLinks = [
   { name: "Home", route: "/" },
@@ -261,23 +262,12 @@ const NavBar = () => {
                   </li>
                 )}
 
-                {/* color toggle */}
-                <li className="flex flex-col items-center text-center">
-                  <ThemeProvider theme={theme}>
-                    <div
-                      className="flex items-center justify-center cursor-pointer"
-                      onClick={() => setIsDarkMode(!isDarkMode)}
-                    >
-                      {isDarkMode ? (
-                        <FaMoon className="text-white h-5 w-5" />
-                      ) : (
-                        <LuSun className="h-7 w-7" />
-                      )}
-                    </div>
-                    <div className="text-center">
-                      <p className="text-xs">Theme</p>
-                    </div>
-                  </ThemeProvider>
+                {/* Theme Toggle */}
+                <li>
+                  <ThemeToggle
+                    isDarkMode={isDarkMode}
+                    setIsDarkMode={setIsDarkMode}
+                  />
                 </li>
               </ul>
             </div>
