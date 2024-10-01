@@ -14,6 +14,7 @@ const Card = ({ plant, handleViewDetails }) => (
     <div className="p-4">
       <h3 className="text-lg font-semibold text-gray-700 dark:text-white">
         {plant.name}
+        {plant.productName}
       </h3>
     </div>
   </div>

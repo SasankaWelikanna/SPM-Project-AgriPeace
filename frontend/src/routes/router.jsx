@@ -22,6 +22,8 @@ import UserDiseases from "../pages/Dashboard/Farmer/Plant/Diseases";
 import Crops from "../pages/Dashboard/Farmer/LocationManagement/Crop";
 import Profile from "../pages/Dashboard/Profile/Profile";
 import UserPlant from "../pages/Dashboard/Farmer/Plant/Plant";
+import UserFertilizer from "../pages/Dashboard/Farmer/Fertilizer/Fertilizer";
+import FertilizerCalculator from "../pages/Dashboard/Farmer/Fertilizer/FertilizerCal"
 
 export const router = createBrowserRouter([
   {
@@ -99,6 +101,14 @@ export const router = createBrowserRouter([
         element: <UserDiseases />,
         loader: ({ params }) =>
           fetch(`http://localhost:3000/plants/${params.plantId}/diseases`),
+      },
+      {
+        path: "user-fertilizer",
+        element: <UserFertilizer />,
+      },
+      {
+        path: "fertilizer-cal",
+        element: <FertilizerCalculator />,
       },
 
       // admin routes
