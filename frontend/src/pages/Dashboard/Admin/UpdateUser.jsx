@@ -1,4 +1,5 @@
 import React from "react";
+import { FaArrowLeft } from "react-icons/fa";
 import useAuth from "../../../hooks/useAuth";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import useAxiosFetch from "../../../hooks/useAxiosFetch";
@@ -28,6 +29,14 @@ const UpdateUser = () => {
 
   return (
     <div>
+      <div className="flex items-center my-4">
+        <button
+          onClick={() => navigate("/dashboard/manage-users")}
+          className="inline-flex items-center gap-2 px-4 py-2 text-white bg-blue-500 rounded-md"
+        >
+          <FaArrowLeft />
+        </button>
+      </div>
       <h1 className="mt-5 text-4xl font-bold text-center">
         Update : <span className="text-secondary">{userCredentials?.name}</span>
       </h1>

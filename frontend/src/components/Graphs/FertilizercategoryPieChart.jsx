@@ -9,7 +9,14 @@ import {
   Sector,
 } from "recharts";
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#50C878", "#FF6347"];
+const COLORS = [
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "#50C878",
+  "#FF6347",
+];
 
 const FertilizerCategoryPieChart = () => {
   const [fertilizerCategoryData, setFertilizerCategoryData] = useState([]);
@@ -53,9 +60,9 @@ const FertilizerCategoryPieChart = () => {
   const onPieLeave = () => setActiveIndex(-1);
 
   return (
-    <div className="flex relative w-full px-4 mt-14 ml-12 shadow-md h-min">
-      <div className="w-2/3">
-        <h3 className="font-bold text-center dark:text-white mb-4">
+    <div className="flex flex-col md:flex-row relative w-full px-4 mt-14 shadow-md h-min">
+      <div className="w-full md:w-2/3 ">
+        <h3 className="font-bold text-center dark:text-white mb-4 text-lg md:text-xl">
           Fertilizers by Category
         </h3>
         <ResponsiveContainer width="100%" height={300}>
@@ -119,7 +126,7 @@ const FertilizerCategoryPieChart = () => {
       </div>
 
       {/* Add category list on the side */}
-      <div className="w-1/3 flex flex-col justify-center items-start px-4">
+      <div className="w-full md:w-1/3 flex flex-col justify-center items-start px-4 mt-4 md:mt-0 dark:text-white">
         <h4 className="font-bold mb-2">Categories:</h4>
         <ul className="list-none">
           {fertilizerCategoryData.map((entry, index) => (
