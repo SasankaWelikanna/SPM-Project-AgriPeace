@@ -71,7 +71,7 @@ function FertilizerCalculator() {
   };
 
   return (
-    <div className="mt-10 p-4 bg-gray-50"> {/* Grey background similar to the Fertilizer page */}
+    <div className="mt-10 p-4 bg-gray-50 dark:bg-gray-900"> 
       <div className="bg-white shadow-md rounded-lg p-6 dark:bg-gray-700">
         <Link to="/dashboard/user-fertilizer">
           <MdOutlineArrowBackIosNew className="text-3xl mb-4" />
@@ -83,7 +83,7 @@ function FertilizerCalculator() {
         </h1>
 
         {/* Fields Section */}
-        <div className="bg-white p-6 rounded-lg shadow-sm grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+        <div className="bg-white p-6 rounded-lg shadow-sm grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 dark:bg-gray-900">
           {/* Plant Type Dropdown */}
           <div className="flex flex-col">
             <label className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
@@ -166,7 +166,7 @@ function FertilizerCalculator() {
 
         {/* Result */}
         {fertilizerQuantity && (
-          <div className="mt-6 bg-green-100 text-green-800 p-6 rounded-lg">
+          <div className="mt-6 bg-green-100 text-green-800 p-6 rounded-lg dark:bg-gray-900 dark:text-white">
             <h3 className="font-medium">
               <center>Recommended Fertilizer Quantity:</center>
             </h3>

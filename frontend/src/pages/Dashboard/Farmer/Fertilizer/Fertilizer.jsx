@@ -118,7 +118,7 @@ function Fertilizer() {
   const totalPages = Math.ceil(filteredDataList.length / fertilizersPerPage);
 
   return (
-    <div className="mt-10 p-4 bg-gray-50">
+    <div className="mt-10 p-4 bg-gray-50 dark:bg-gray-900">
       <div className="bg-white shadow-md rounded-lg p-6 dark:bg-gray-700">
         <div className="flex justify-between items-center mb-4">
           <div>
