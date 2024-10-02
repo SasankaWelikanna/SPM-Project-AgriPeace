@@ -37,7 +37,7 @@ const PlantSlider = () => {
   };
 
   return (
-    <div className="relative w-full max-w-md px-4 mt-20 shadow-md h-min ">
+    <div className="relative w-full max-w-md px-4 mt-14 shadow-md h-min ">
       <div>
         <h3 className="font-bold p-2 dark:text-white">Plnats</h3>
       </div>
