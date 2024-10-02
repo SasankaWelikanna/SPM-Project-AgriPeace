@@ -1,0 +1,71 @@
+import React, { useEffect, useState } from "react";
+import useAxiosSecure from "../../hooks/useAxiosSecure"; // Import your Axios hook
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts"; // Import recharts components
+
+const PlantCategoryChart = () => {
+  const [plantCategoryData, setPlantCategoryData] = useState([]);
+  const axiosSecure = useAxiosSecure();
+
+  useEffect(() => {
+    const fetchPlantData = async () => {
+      try {
+        const response = await axiosSecure.get("/Plant"); // Adjust the endpoint if necessary
+        const plants = response.data;
+
+        // Group plants by category and count the quantity in each category
+        const categoryMap = plants.reduce((acc, plant) => {
+          const category = plant.category; // Assuming the category is stored in `plant.category`
+          if (!acc[category]) {
+            acc[category] = 1;
+          } else {
+            acc[category]++;
+          }
+          return acc;
+        }, {});
+
+        // Format the data for the chart
+        const formattedData = Object.keys(categoryMap).map((category) => ({
+          category,
+          quantity: categoryMap[category],
+        }));
+
+        setPlantCategoryData(formattedData);
+      } catch (error) {
+        console.error("Error fetching plant data:", error);
+      }
+    };
+
+    fetchPlantData();
+  }, [axiosSecure]);
+
+  return (
+    <div className="relative w-full px-4 mt-8 shadow-md h-min">
+      <h3 className="font-bold text-center dark:text-white">
+        Plants by Category
+      </h3>
+      <ResponsiveContainer width="100%" height={400}>
+        <BarChart
+          data={plantCategoryData}
+          margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="category" />
+          {/* Ensure Y-axis shows only whole numbers */}
+          <YAxis allowDecimals={false} />
+          <Tooltip />
+          <Bar dataKey="quantity" fill="#50C878" />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
+export default PlantCategoryChart;
