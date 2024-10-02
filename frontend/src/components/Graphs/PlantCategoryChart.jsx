@@ -47,20 +47,17 @@ const PlantCategoryChart = () => {
   }, [axiosSecure]);
 
   return (
-    <div className="relative w-full px-4 mt-8 shadow-md h-min">
-      <h3 className="font-bold text-center dark:text-white">
+    <div className="relative w-full p-4 mt-8 shadow-md h-min md:p-0">
+      <h3 className="font-bold text-center dark:text-white text-lg md:text-xl">
         Plants by Category
       </h3>
-      <ResponsiveContainer width="100%" height={400}>
+      <ResponsiveContainer width="100%" height={300}>
         <BarChart
           data={plantCategoryData}
           margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-            dataKey="category"
-            tick={{ fontSize: 10 }} // Reducing font size of category labels
-          />
+          <XAxis dataKey="category" tick={{ fontSize: 10 }} />
           <YAxis allowDecimals={false} />
           <Tooltip />
           <Bar dataKey="quantity" fill="#50C878" />

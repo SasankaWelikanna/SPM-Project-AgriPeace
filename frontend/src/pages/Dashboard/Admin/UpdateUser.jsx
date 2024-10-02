@@ -28,7 +28,7 @@ const UpdateUser = () => {
 
   return (
     <div>
-      <h1 className="mt-5 text-4xl font-bold text-center">
+      <h1 className="mt-5 text-4xl font-bold text-center ">
         Update : <span className="text-secondary">{userCredentials?.name}</span>
       </h1>
       <p className="text-center">
