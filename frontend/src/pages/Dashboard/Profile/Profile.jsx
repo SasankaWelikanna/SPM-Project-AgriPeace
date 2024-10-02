@@ -1,24 +1,76 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import useUser from "../../../hooks/useUser";
-import useAxiosFetch from "../../../hooks/useAxiosFetch";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import storage from "../../../config/firebase.init";
+import Swal from "sweetalert2";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const Profile = () => {
   const { currentUser } = useUser();
   const userCredentials = currentUser;
-  const axiosFetch = useAxiosFetch();
   const axiosSecure = useAxiosSecure();
+
+  const [img, setImg] = useState(undefined);
+  const [imgPerc, setImgPerc] = useState(0);
+  const [uploading, setUploading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: userCredentials?.name || "",
+    phone: userCredentials?.phone || "",
+    address: userCredentials?.address || "",
+    photoUrl: userCredentials?.photoUrl || "",
+  });
+
+  useEffect(() => {
+    if (img) {
+      uploadFile(img, "photoUrl");
+    }
+  }, [img]);
+
+  const uploadFile = (file, fileType) => {
+    const fileName = new Date().getTime() + file.name;
+    const storageRef = ref(storage, "images/profilePictures/" + fileName);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+    setUploading(true);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setImgPerc(Math.round(progress));
+      },
+      (error) => {
+        console.error(error);
+        setUploading(false);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setFormData((prev) => ({
+            ...prev,
+            [fileType]: downloadURL,
+          }));
+          setUploading(false);
+        });
+      }
+    );
+  };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    const updatedData = Object.fromEntries(formData);
     axiosSecure
-      .put(`/update-user/${userCredentials._id}`, updatedData)
-      .then((res) => {
-        alert("User updated successfully !");
+      .put(`/update-user/${userCredentials._id}`, formData)
+      .then(() => {
+        Swal.fire({
+          title: "Updated!",
+          text: "Your details have been updated successfully.",
+          icon: "success",
+        })
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -26,9 +78,7 @@ const Profile = () => {
       <h1 className="mt-5 text-4xl font-bold text-center">
         Update <span className="text-secondary">Profile</span>
       </h1>
-      <p className="text-center">
-        Change your details
-      </p>
+      <p className="text-center">Change your details</p>
 
       <section className="">
         <div className="px-4 py-16 mx-auto sm:px-6 lg:px-8">
@@ -36,6 +86,27 @@ const Profile = () => {
             <form className="space-y-4" onSubmit={handleFormSubmit}>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
+                  <label className="block text-gray-700 font-semibold mb-1">
+                    {uploading ? `Uploading: ${imgPerc}%` : "Photo"}
+                  </label>
+                  <input
+                    type="file"
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                    name="photoUrl"
+                    onChange={(e) => setImg(e.target.files[0])}
+                  />
+                  {formData.photoUrl && !uploading && (
+                    <div className="mt-4">
+                      <img
+                        src={formData.photoUrl}
+                        alt="Uploaded Preview"
+                        className="w-40 h-40 rounded-md border border-gray-300"
+                      />
+                    </div>
+                  )}
+                </div>
+                <div className="flex-col">
+                  <div>
                   <label className="pb-4 ml-2" htmlFor="name">
                     Name
                   </label>
@@ -44,17 +115,17 @@ const Profile = () => {
                     placeholder="Your Name"
                     type="text"
                     required
-                    defaultValue={
-                      userCredentials?.name ? userCredentials?.name : ""
-                    }
                     id="name"
                     name="name"
+                    value={formData.name}
+                    onChange={handleChange}
                   />
-                </div>
-                <div>
+                  </div>
+                  <div className="mt-5">
                   <label className="pb-4 ml-2" htmlFor="email">
                     Email
                   </label>
+                  <span className="text-red-400 ml-3 text-sm">You can't edit your email</span>
                   <input
                     className="w-full p-3 mt-3 text-sm border rounded-lg outline-none border-secondary"
                     placeholder="Email Address"
@@ -66,27 +137,26 @@ const Profile = () => {
                     name="email"
                   />
                 </div>
-
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <div>
-                    <label className="ml-2" htmlFor="phone">
-                      Phone
-                    </label>
-                    <input
-                      className="w-full p-3 mt-3 text-sm border rounded-lg outline-none border-secondary"
-                      placeholder="Phone Number"
-                      type="tel"
-                      required
-                      defaultValue={
-                        userCredentials?.phone ? userCredentials?.phone : ""
-                      }
-                      id="phone"
-                      name="phone"
-                    />
-                  </div>
                 </div>
+                
               </div>
+
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="ml-2" htmlFor="phone">
+                    Phone
+                  </label>
+                  <input
+                    className="w-full p-3 mt-3 text-sm border rounded-lg outline-none border-secondary"
+                    placeholder="Phone Number"
+                    type="tel"
+                    required
+                    value={formData.phone}
+                    id="phone"
+                    name="phone"
+                    onChange={handleChange}
+                  />
+                </div>
                 <div>
                   <label className="ml-2" htmlFor="address">
                     Address
@@ -95,30 +165,17 @@ const Profile = () => {
                     className="w-full p-3 mt-2 text-sm border rounded-lg outline-none border-secondary"
                     placeholder="Address"
                     type="text"
-                    defaultValue={userCredentials?.address}
+                    value={formData.address}
                     id="address"
                     name="address"
-                  />
-                </div>
-                <div>
-                  <label className="ml-2" htmlFor="photoUrl">
-                    Photo URL
-                  </label>
-                  <input
-                    className="w-full p-3 mt-2 text-sm border rounded-lg outline-none border-secondary"
-                    placeholder="Photo URL"
-                    type="text"
-                    defaultValue={userCredentials?.photoUrl}
-                    id="photoUrl"
-                    name="photoUrl"
+                    onChange={handleChange}
                   />
                 </div>
               </div>
-              
-              
+
               <div className="flex justify-center">
                 <button
-                  className="px-10 py-5 text-white rounded-lg bg-secondary hover:bg-red-500 hover:shadow-lg hover:outline-black"
+                  className="px-10 py-5 text-white rounded-lg bg-secondary hover:bg-red-500"
                   type="submit"
                 >
                   Update
