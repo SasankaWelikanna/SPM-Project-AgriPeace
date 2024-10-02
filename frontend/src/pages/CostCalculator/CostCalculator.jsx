@@ -8,6 +8,8 @@ import Scroll from "../../hooks/useScroll";
 import useUser from "../../hooks/useUser";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAxiosFetch from "../../hooks/useAxiosFetch";
+import PreviousCalculations from "./PreviousCalculations"; // Import the new component
+import { FaSearch, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const CostCalculator = () => {
@@ -121,17 +123,33 @@ const CostCalculator = () => {
         </h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-col md:flex-row md:items-center md:space-x-4">
               <label className="text-lg font-semibold text-gray-700 flex-shrink-0 dark:text-white">
                 Crop:
               </label>
-              <input
-                type="text"
-                placeholder="Search crop"
-                className="p-2 bg-gray-100 border border-gray-300 rounded-md flex-grow"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
+              <div className="relative flex-grow mb-4 md:mb-0">
+                <input
+                  type="text"
+                  placeholder="Search crop"
+                  className="p-2 bg-gray-100 border border-gray-300 rounded-md w-full pr-10"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button
+                  type="button"
+                  onClick={() => setSearchTerm("")} // Clear search term
+                  className="absolute right-12 top-1/2 transform -translate-y-1/2 text-gray-500"
+                  style={{ display: searchTerm ? "block" : "none" }}
+                >
+                  <FaTimes />
+                </button>
+                <button
+                  type="submit"
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500"
+                >
+                  <FaSearch />
+                </button>
+              </div>
               <label className="text-sm text-gray-700 dark:text-white">
                 Sort by Category:
               </label>
@@ -150,7 +168,7 @@ const CostCalculator = () => {
             </div>
 
             <Swiper
-              slidesPerView={4}
+              slidesPerView={1}
               spaceBetween={30}
               centeredSlides={false}
               pagination={{
@@ -165,38 +183,64 @@ const CostCalculator = () => {
                 "--swiper-navigation-sides-offset": "0px",
                 "--swiper-pagination-bottom": "-6px",
               }}
+              breakpoints={{
+                640: {
+                  slidesPerView: 2, // 2 slides for small screens
+                },
+                768: {
+                  slidesPerView: 3, // 3 slides for medium screens
+                },
+                1024: {
+                  slidesPerView: 4, // 4 slides for large screens
+                },
+              }}
             >
-              {filteredPlants.map((plant) => (
-                <SwiperSlide key={plant._id}>
-                  <label
-                    className={`flex flex-col items-center p-4 border-2 rounded-lg cursor-pointer hover:scale-105 transform transition-all duration-200 ${
-                      crop === plant.name ? "bg-secondary" : "border-gray-300"
-                    }`}
-                    style={{ zIndex: crop === plant.name ? 10 : "auto" }}
-                    onMouseEnter={(e) => (e.currentTarget.style.zIndex = 10)}
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.zIndex = "auto")
-                    }
-                  >
-                    <img
-                      src={plant.imageUrl}
-                      alt={plant.name}
-                      className="w-full h-36 rounded-md mb-2"
-                      style={{ objectFit: "cover" }}
-                    />
-                    <input
-                      type="radio"
-                      value={plant.name}
-                      checked={crop === plant.name}
-                      onChange={(e) => setCrop(e.target.value)}
-                      className="hidden"
-                    />
-                    <span className="text-center font-semibold text-gray-700 dark:text-white">
-                      {plant.name}
-                    </span>
-                  </label>
-                </SwiperSlide>
-              ))}
+              {filteredPlants.length > 0 ? (
+                filteredPlants.map((plant) => (
+                  <SwiperSlide key={plant._id}>
+                    <label
+                      className={`flex flex-col items-center p-4 border-2 rounded-lg cursor-pointer hover:scale-105 transform transition-all duration-200 ${
+                        crop === plant.name ? "bg-secondary" : "border-gray-300"
+                      }`}
+                      onMouseEnter={(e) => (e.currentTarget.style.zIndex = 10)}
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.zIndex = "auto")
+                      }
+                      style={{
+                        opacity: crop === "" || crop === plant.name ? 1 : 0.5, // Adjust opacity
+                      }}
+                    >
+                      <img
+                        src={plant.imageUrl}
+                        alt={plant.name}
+                        className="w-full h-36 rounded-md mb-2"
+                        style={{ objectFit: "cover" }}
+                      />
+                      <input
+                        type="radio"
+                        value={plant.name}
+                        checked={crop === plant.name}
+                        onChange={(e) => {
+                          // If the selected crop is already chosen, unselect it
+                          setCrop((prevCrop) =>
+                            prevCrop === plant.name ? "" : plant.name
+                          );
+                        }}
+                        className="hidden"
+                      />
+                      <span className="text-center font-semibold text-gray-700 dark:text-white">
+                        {plant.name}
+                      </span>
+                    </label>
+                  </SwiperSlide>
+                ))
+              ) : (
+                <div className="flex justify-center items-center h-36">
+                  <p className="text-gray-500">
+                    No crops found for "{searchTerm}".
+                  </p>
+                </div>
+              )}
             </Swiper>
           </div>
 
@@ -228,9 +272,9 @@ const CostCalculator = () => {
                       onChange={(e) => setWaterResources(e.target.value)}
                       className="mr-2"
                     />
-                    <label className="block text-lg font-medium text-black dark:text-white">
+                    <span className="block text-lg font-medium text-black dark:text-white">
                       {waterOption}
-                    </label>
+                    </span>
                   </label>
                 )
               )}
@@ -252,47 +296,55 @@ const CostCalculator = () => {
                       onChange={(e) => setSoilType(e.target.value)}
                       className="mr-2"
                     />
-                    <label className="block text-lg font-medium text-black dark:text-white">
-                    {soilOption}
-                    </label>
+                    <span className="block text-lg font-medium text-black dark:text-white">
+                      {soilOption}
+                    </span>
                   </label>
                 )
               )}
             </div>
           </div>
 
-          <button
-            className="bg-secondary text-white py-2 px-4 rounded-md shadow-md hover:scale-125 transition"
-            type="submit"
-            disabled={loading}
-          >
-            {loading ? "Calculating..." : "Calculate"}
-          </button>
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              className={`w-auto bg-secondary text-white px-5 py-4 rounded-md hover:scale-110 duration-300 ${
+                loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={loading}
+            >
+              {loading ? "Calculating..." : "Calculate Cost"}
+            </button>
+          </div>
         </form>
-
         {error && <p className="text-red-500 mt-4">{error}</p>}
         {result && (
           <div className="mt-8 p-4 border border-gray-300 rounded-md">
-            <h2 className="text-2xl font-semibold text-gray-800">
-              Estimated Cost
-            </h2>
-            <p className="mt-2">
+            <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">Result</h2>
+            <p className="mt-2 dark:text-white">
               Crop: <span className="font-medium">{result.crop}</span>
             </p>
-            <p>
+            <p className="dark:text-white">
               Area: <span className="font-medium">{result.area} acres</span>
             </p>
-            <p className="font-bold text-lg mt-2">
+            <p className="font-bold text-lg mt-2 dark:text-white">
               Estimated Cost:{" "}
-              <span className="text-secondary text-3xl">
+              <span className="text-secondary dark:text-secondary: text-3xl">
                 Rs. {result.estimatedCost.toFixed(2)}
               </span>
             </p>
-            <p>
+            <p className="dark:text-white">
               Fertilizer Needs:{" "}
               <span className="font-medium">{result.fertilizerNeeds}</span>
+              <Link to={"/products"}>
+                <span>
+                  <button className="ml-6 bg-secondary px-3 py-1 text-white rounded-xl">
+                    Shop Fertilizers
+                  </button>
+                </span>
+              </Link>
             </p>
-            <p>
+            <p className="dark:text-white">
               Water Needs:{" "}
               <span className="font-medium">{result.waterNeeds}</span>
             </p>
@@ -300,71 +352,11 @@ const CostCalculator = () => {
         )}
       </div>
 
-      {currentUser ? (
-        <div className="mt-16">
-          <h2 className="text-2xl font-semibold text-gray-800">
-            Your Previous Calculations
-          </h2>
-          {previousCalculations.length === 0 ? (
-            <p className="mt-4 text-gray-600">
-              No previous calculations found.
-            </p>
-          ) : (
-            <div className="overflow-x-auto mt-4">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-200 font-bold text-center">
-                  <tr>
-                    {[
-                      "Crop",
-                      "Area (acres)",
-                      "Estimated Cost (Rs.)",
-                      "Fertilizer Needs",
-                      "Water Needs",
-                      "Date",
-                    ].map((header) => (
-                      <th
-                        key={header}
-                        className="px-4 py-2 text-gray-700 font-semibold"
-                      >
-                        {header}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {previousCalculations.map((calculation, index) => (
-                    <tr key={index} className="text-center">
-                      <td className="px-4 py-2">{calculation.crop}</td>
-                      <td className="px-4 py-2">{calculation.area}</td>
-                      <td className="px-4 py-2 text-secondary text-xl">
-                        Rs. {calculation.estimatedCost.toFixed(2)}
-                      </td>
-                      <td className="px-4 py-2">
-                        {calculation.fertilizerNeeds}
-                      </td>
-                      <td className="px-4 py-2">{calculation.waterNeeds}</td>
-                      <td className="px-4 py-2">
-                        {new Date(calculation.createdAt).toLocaleDateString()}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="mt-16 text-center">
-          <p className="text-xl text-gray-700 font-bold mb-3">
-            To save your calculations, please log in.
-          </p>
-          <Link to="/login">
-            <button className="bg-secondary rounded-md text-white p-3 hover:scale-110 duration-300">
-              Login
-            </button>
-          </Link>
-        </div>
-      )}
+      {/* Render the PreviousCalculations component */}
+      <PreviousCalculations
+        previousCalculations={previousCalculations}
+        currentUser={currentUser}
+      />
     </>
   );
 };
