@@ -3,6 +3,8 @@ import React from "react";
 const Card = ({ plant, handleViewDetails }) => (
   <div
     className="bg-white shadow-md rounded-lg overflow-hidden cursor-pointer hover:scale-105 hover:shadow-md dark:bg-gray-900"
+    data-aos="flip-up"
+    data-aos-duration="1000"
     onClick={() => handleViewDetails(plant)}
   >
     <img
