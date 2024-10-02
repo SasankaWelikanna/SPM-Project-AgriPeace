@@ -86,9 +86,17 @@ function Diseases() {
     <div className="mt-10 p-4 bg-gray-50 dark:bg-gray-900">
       <div className="bg-white shadow-md rounded-lg p-6 dark:bg-gray-700">
         <Link to="/dashboard/user-plant">
-          <MdOutlineArrowBackIosNew className="text-3xl mb-3" />
+          <MdOutlineArrowBackIosNew
+            className="text-3xl mb-3"
+            data-aos="fade-in"
+            data-aos-duration="1000"
+          />
         </Link>
-        <div className="flex justify-between items-center mb-4">
+        <div
+          className="flex justify-between items-center mb-4"
+          data-aos="flip-up"
+          data-aos-duration="2000"
+        >
           <div>
             <h2 className="text-xl font-semibold text-gray-700 dark:text-white">
               Plant Diseases - {plantName}

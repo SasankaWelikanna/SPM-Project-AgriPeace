@@ -59,7 +59,7 @@ const services = [
 const Services = () => {
   return (
     <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8 dark:bg-gray-900 mt-10">
-      <Scroll/>
+      <Scroll />
       <header className="text-center mb-12">
         <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-4">
           Our Services
@@ -76,17 +76,19 @@ const Services = () => {
         {services.map((service, index) => (
           <div
             key={index}
-            className="bg-white shadow-lg rounded-lg p-6 hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+            className="bg-white shadow-lg rounded-lg p-6 hover:shadow-2xl transition-all duration-300 transform hover:scale-105 dark:bg-gray-950 "
           >
             <div className="flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4">
               <span className="text-3xl text-green-600">{service.icon}</span>
             </div>
-            <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+            <h2 className="text-2xl font-semibold text-gray-900 mb-2 dark:text-white">
               {service.title}
             </h2>
-            <p className="text-gray-700 mb-4">{service.description}</p>
+            <p className="text-gray-700 mb-4 dark:text-white">
+              {service.description}
+            </p>
             <details
-              className="text-gray-700 cursor-pointer group overflow-hidden"
+              className="text-gray-700 cursor-pointer group overflow-hidden dark:text-white"
               open={false} // Initially closed
             >
               <summary className="flex items-center">
@@ -109,23 +111,23 @@ const Services = () => {
         </h2>
         <div className="flex justify-center">
           <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-              <p className="text-gray-700 italic">
+            <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 dark:bg-gray-950">
+              <p className="text-gray-700 italic  dark:text-white">
                 "The soil testing service was a game-changer for our farm. We
                 were able to improve our soil health significantly and saw a
                 substantial increase in our crop yields."
               </p>
-              <p className="text-right mt-4 text-gray-900 font-semibold">
+              <p className="text-right mt-4 text-gray-900 font-semibold  dark:text-white">
                 - Farmer John
               </p>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-              <p className="text-gray-700 italic">
+            <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 dark:bg-gray-950">
+              <p className="text-gray-700 italic  dark:text-white">
                 "The crop consultation helped us choose the best crops for our
                 climate and market. Their expert advice and support have been
                 invaluable."
               </p>
-              <p className="text-right mt-4 text-gray-900 font-semibold">
+              <p className="text-right mt-4 text-gray-900 font-semibold  dark:text-white">
                 - Farmer Lisa
               </p>
             </div>
@@ -142,7 +144,7 @@ const Services = () => {
           you achieve your farming goals. Our team of experts is here to support
           you every step of the way.
         </p>
-        <NavLink to={'/contact'}>
+        <NavLink to={"/contact"}>
           <button className="inline-block bg-secondary text-white px-6 py-3 rounded-md text-lg font-medium hover:bg-green-700 transition-all duration-300">
             Contact Us
           </button>

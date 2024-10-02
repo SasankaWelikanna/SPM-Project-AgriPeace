@@ -49,12 +49,12 @@ const Products = () => {
 
       {/* Section Toggle Buttons */}
       <div className="flex justify-center mb-4">
-        <div className=" bg-white border border-secondary rounded-md py-2 px-4">
+        <div className=" bg-white border border-secondary rounded-md py-2 px-4 dark:bg-gray-950">
           <button
             className={`px-20 py-2 mr-2 rounded ${
               selectedSection === "plants"
                 ? "bg-secondary text-white"
-                : "bg-gray-300"
+                : "bg-gray-300 dark:bg-gray-900 dark:text-white"
             }`}
             onClick={() => handleSectionChange("plants")}
           >
@@ -64,7 +64,7 @@ const Products = () => {
             className={`px-20 py-2 rounded ${
               selectedSection === "fertilizers"
                 ? "bg-secondary text-white"
-                : "bg-gray-300"
+                : "bg-gray-300  dark:bg-gray-900 dark:text-white"
             }`}
             onClick={() => handleSectionChange("fertilizers")}
           >
