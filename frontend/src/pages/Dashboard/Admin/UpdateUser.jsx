@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { FaArrowLeft } from "react-icons/fa";
+import React, { useEffect, useRef, useState } from "react";
+import { FaArrowLeft, FaPencilAlt } from "react-icons/fa";
 import useAuth from "../../../hooks/useAuth";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import useAxiosFetch from "../../../hooks/useAxiosFetch";
@@ -18,6 +18,7 @@ const UpdateUser = () => {
   const navigate = useNavigate();
   const [img, setImg] = useState(undefined);
   const [imgPerc, setImgPerc] = useState(0);
+  const fileInputRef = useRef(null);
   const [uploading, setUploading] = useState(false);
   const [formData, setFormData] = useState({
     name: userCredentials?.name || "",
@@ -72,7 +73,7 @@ const UpdateUser = () => {
           title: "Updated!",
           text: "Details have been updated successfully.",
           icon: "success",
-        })
+        });
         navigate(`/dashboard/manage-users`);
       })
       .catch((err) => console.error(err));
@@ -81,6 +82,10 @@ const UpdateUser = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handlePencilClick = () => {
+    fileInputRef.current.click(); // Trigger file input on pencil icon click
   };
 
   return (
@@ -114,60 +119,83 @@ const UpdateUser = () => {
           <div className="p-8 bg-white rounded-lg shadow-lg lg:p-12">
             <form className="space-y-4" onSubmit={handleFormSubmit}>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div>
-                  <label htmlFor="photoUrl" className="block text-gray-700 font-semibold mb-1">
+                <div>
+                  <label
+                    htmlFor="photoUrl"
+                    className="block text-gray-700 font-semibold mb-1"
+                  >
                     {uploading ? `Uploading: ${imgPerc}%` : "Photo"}
                   </label>
-                  <input
-                    type="file"
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                    name="photoUrl"
-                    onChange={(e) => setImg(e.target.files[0])}
-                  />
-                  {formData.photoUrl && !uploading && (
-                    <div className="mt-4">
+
+                  {/* Pencil Icon to trigger file input */}
+                  <div className="relative w-40 h-40">
+                    {formData.photoUrl && !uploading ? (
                       <img
                         src={formData.photoUrl}
                         alt="Uploaded Preview"
-                        className="w-40 h-40 rounded-md border border-gray-300"
+                        className="w-full h-full rounded-md border border-gray-300"
                       />
-                    </div>
-                  )}
+                    ) : (
+                      <div className="w-40 h-40 rounded-md border border-gray-300"></div>
+                    )}
+
+                    {/* Pencil Icon */}
+                    <button
+                      type="button"
+                      onClick={handlePencilClick}
+                      className="absolute bottom-2 right-2 bg-gray-100 rounded-full p-2 shadow-md hover:bg-gray-200"
+                    >
+                      <FaPencilAlt className="text-gray-700" />
+                    </button>
+                  </div>
+
+                  {/* Hidden file input */}
+                  <input
+                    type="file"
+                    className="hidden"
+                    ref={fileInputRef}
+                    name="photoUrl"
+                    onChange={(e) => setImg(e.target.files[0])}
+                  />
                 </div>
 
                 <div className="flex-col">
-                <div>
-                  <label className="pb-4 ml-2" htmlFor="name">Name</label>
-                  <input
-                    className="w-full p-3 mt-1 text-sm border rounded-lg outline-none border-secondary"
-                    placeholder="Your Name"
-                    type="text"
-                    required
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                  />
+                  <div>
+                    <label className="pb-4 ml-2" htmlFor="name">
+                      Name
+                    </label>
+                    <input
+                      className="w-full p-3 mt-1 text-sm border rounded-lg outline-none border-secondary"
+                      placeholder="Your Name"
+                      type="text"
+                      required
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                    />
                   </div>
-                <div className="mt-5">
-                  <label className="pb-4 ml-2" htmlFor="email">Email</label>
-                  <input
-                    className="w-full p-3 mt-3 text-sm border rounded-lg outline-none border-secondary"
-                    placeholder="Email Address"
-                    type="email"
-                    required
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                  />
+                  <div className="mt-5">
+                    <label className="pb-4 ml-2" htmlFor="email">
+                      Email
+                    </label>
+                    <input
+                      className="w-full p-3 mt-3 text-sm border rounded-lg outline-none border-secondary"
+                      placeholder="Email Address"
+                      type="email"
+                      required
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                    />
+                  </div>
                 </div>
-                
-                </div>
-                
 
                 <div>
-                  <label className="ml-2" htmlFor="phone">Phone</label>
+                  <label className="ml-2" htmlFor="phone">
+                    Phone
+                  </label>
                   <input
                     className="w-full p-3 mt-3 text-sm border rounded-lg outline-none border-secondary"
                     placeholder="Phone Number"
@@ -180,7 +208,9 @@ const UpdateUser = () => {
                   />
                 </div>
                 <div>
-                  <label className="ml-2" htmlFor="address">Address</label>
+                  <label className="ml-2" htmlFor="address">
+                    Address
+                  </label>
                   <input
                     className="w-full p-3 mt-3 text-sm border rounded-lg outline-none border-secondary"
                     placeholder="Address"

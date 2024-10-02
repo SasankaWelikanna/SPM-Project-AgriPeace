@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import {FaPencilAlt} from "react-icons/fa";
 import useUser from "../../../hooks/useUser";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import storage from "../../../config/firebase.init";
@@ -9,10 +10,10 @@ const Profile = () => {
   const { currentUser } = useUser();
   const userCredentials = currentUser;
   const axiosSecure = useAxiosSecure();
-
   const [img, setImg] = useState(undefined);
   const [imgPerc, setImgPerc] = useState(0);
   const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef(null);
   const [formData, setFormData] = useState({
     name: userCredentials?.name || "",
     phone: userCredentials?.phone || "",
@@ -64,14 +65,23 @@ const Profile = () => {
           title: "Updated!",
           text: "Your details have been updated successfully.",
           icon: "success",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload(); // Reload only after "OK" is clicked
+          }
         });
       })
       .catch((err) => console.error(err));
   };
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handlePencilClick = () => {
+    fileInputRef.current.click(); // Trigger file input on pencil icon click
   };
 
   return (
@@ -86,26 +96,46 @@ const Profile = () => {
           <div className="p-8 bg-white rounded-lg shadow-lg lg:p-12">
             <form className="space-y-4" onSubmit={handleFormSubmit}>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div>
-                  <label className="block text-gray-700 font-semibold mb-1">
+              <div>
+                  <label
+                    htmlFor="photoUrl"
+                    className="block text-gray-700 font-semibold mb-1"
+                  >
                     {uploading ? `Uploading: ${imgPerc}%` : "Photo"}
                   </label>
-                  <input
-                    type="file"
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                    name="photoUrl"
-                    onChange={(e) => setImg(e.target.files[0])}
-                  />
-                  {formData.photoUrl && !uploading && (
-                    <div className="mt-4">
+
+                  {/* Pencil Icon to trigger file input */}
+                  <div className="relative w-40 h-40">
+                    {formData.photoUrl && !uploading ? (
                       <img
                         src={formData.photoUrl}
                         alt="Uploaded Preview"
-                        className="w-40 h-40 rounded-md border border-gray-300"
+                        className="w-full h-full rounded-md border border-gray-300"
                       />
-                    </div>
-                  )}
+                    ) : (
+                      <div className="w-40 h-40 rounded-md border border-gray-300"></div>
+                    )}
+
+                    {/* Pencil Icon */}
+                    <button
+                      type="button"
+                      onClick={handlePencilClick}
+                      className="absolute bottom-2 right-2 bg-gray-100 rounded-full p-2 shadow-md hover:bg-gray-200"
+                    >
+                      <FaPencilAlt className="text-gray-700" />
+                    </button>
+                  </div>
+
+                  {/* Hidden file input */}
+                  <input
+                    type="file"
+                    className="hidden"
+                    ref={fileInputRef}
+                    name="photoUrl"
+                    onChange={(e) => setImg(e.target.files[0])}
+                  />
                 </div>
+
                 <div className="flex-col">
                   <div>
                     <label className="pb-4 ml-2" htmlFor="name">
