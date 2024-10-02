@@ -149,10 +149,12 @@ function Diseases() {
     <div className="mt-10 p-4 bg-gray-50  dark:bg-gray-900">
       <div className="bg-white shadow-md rounded-lg p-6  dark:bg-gray-700">
         <Link to="/dashboard/manage-plant">
-          <MdOutlineArrowBackIosNew className="text-3xl mb-3" />
+          <div data-aos="flip-up" data-aos-duration="1000">
+            <MdOutlineArrowBackIosNew className="text-3xl mb-3" />
+          </div>
         </Link>
         <div className="flex justify-between items-center mb-4">
-          <div>
+          <div data-aos="flip-up" data-aos-duration="1000">
             <h2 className="text-xl font-semibold text-gray-700 dark:text-white">
               Plant Diseases - {plantName}
             </h2>
@@ -160,7 +162,11 @@ function Diseases() {
               Manage diseases for this plant
             </h6>
           </div>
-          <div className="flex space-x-4">
+          <div
+            className="flex space-x-4"
+            data-aos="flip-up"
+            data-aos-duration="1000"
+          >
             <BlobProvider
               document={<DiseaseReport dataList={dataList} />}
               fileName="DiseaseReport.pdf"
@@ -225,10 +231,15 @@ function Diseases() {
             </button>
           </div>
         </Modal>
+        <div data-aos="flip-up" data-aos-duration="1000">
+          <SearchBar onSearch={handleSearch} />
+        </div>
 
-        <SearchBar onSearch={handleSearch} />
-
-        <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden  dark:bg-gray-900 dark:text-white">
+        <table
+          className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden  dark:bg-gray-900 dark:text-white"
+          data-aos="fade-in"
+          data-aos-duration="1000"
+        >
           <thead className="bg-gray-100  dark:bg-gray-800">
             <tr>
               <th className="p-4 text-left">Image</th>

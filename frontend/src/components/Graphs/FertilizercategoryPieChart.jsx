@@ -60,7 +60,7 @@ const FertilizerCategoryPieChart = () => {
   const onPieLeave = () => setActiveIndex(-1);
 
   return (
-    <div className="flex flex-col md:flex-row relative w-full px-4 mt-14 shadow-md h-min">
+    <div className="flex flex-col md:flex-row ml-12 relative w-full px-4 mt-14 shadow-md h-min">
       <div className="w-full md:w-2/3 ">
         <h3 className="font-bold text-center dark:text-white mb-4 text-lg md:text-xl">
           Fertilizers by Category
@@ -87,7 +87,7 @@ const FertilizerCategoryPieChart = () => {
                     dy={8}
                     textAnchor="middle"
                     fill="#333"
-                    className="text-lg font-bold"
+                    className="text-lg font-bold dark:text-white"
                   >
                     {props.payload.name}
                   </text>
@@ -106,9 +106,9 @@ const FertilizerCategoryPieChart = () => {
                     dy={25}
                     textAnchor="middle"
                     fill="#999"
-                    className="text-sm font-semibold"
+                    className="text-sm font-semibold dark:text-white"
                   >
-                    {props.payload.value} qty
+                    {props.payload.value} products
                   </text>
                 </g>
               )}
