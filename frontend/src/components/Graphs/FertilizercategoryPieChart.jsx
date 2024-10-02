@@ -87,7 +87,7 @@ const FertilizerCategoryPieChart = () => {
                     dy={8}
                     textAnchor="middle"
                     fill="#333"
-                    className="text-lg font-bold"
+                    className="text-lg font-bold dark:text-white"
                   >
                     {props.payload.name}
                   </text>
@@ -106,9 +106,9 @@ const FertilizerCategoryPieChart = () => {
                     dy={25}
                     textAnchor="middle"
                     fill="#999"
-                    className="text-sm font-semibold"
+                    className="text-sm font-semibold dark:text-white"
                   >
-                    {props.payload.value} qty
+                    {props.payload.value} products
                   </text>
                 </g>
               )}

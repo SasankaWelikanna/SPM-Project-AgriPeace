@@ -12,7 +12,11 @@ const Products = () => {
     const fetchPlants = async () => {
       try {
         const response = await axiosSecure.get("/Plant"); // Adjust the endpoint as necessary
-        setPlantsData(response.data);
+        // Sort plants alphabetically by name
+        const sortedPlants = response.data.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
+        setPlantsData(sortedPlants);
       } catch (error) {
         console.error("Error fetching plant data:", error);
       }
@@ -21,7 +25,11 @@ const Products = () => {
     const fetchFertilizers = async () => {
       try {
         const response = await axiosSecure.get("/Fertilizer"); // Adjust the endpoint for fertilizers
-        setFertilizersData(response.data);
+        // Sort fertilizers alphabetically by productName
+        const sortedFertilizers = response.data.sort((a, b) =>
+          a.productName.localeCompare(b.productName)
+        );
+        setFertilizersData(sortedFertilizers);
       } catch (error) {
         console.error("Error fetching fertilizer data:", error);
       }
@@ -92,7 +100,7 @@ const Products = () => {
               key={fertilizer.id} // Assuming each fertilizer has a unique 'id'
               className="relative p-4 border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
             >
-              <h3 className="mt-2 font-semibold text-center">
+              <h3 className="mt-2 font-semibold text-center dark:text-white">
                 {fertilizer.productName}
               </h3>
               <div className="relative">
