@@ -264,10 +264,12 @@ function Plant() {
           onClose={handleCloseDeleteModal}
           title="Confirm Delete"
         >
-          <p>Are you sure you want to delete this record?</p>
+          <p className="dark:text-white">
+            Are you sure you want to delete this record?
+          </p>
           <div className="mt-6 flex justify-end">
             <button
-              className="px-4 py-2 mr-4 bg-gray-300 rounded hover:bg-gray-400"
+              className="px-4 py-2 mr-4 bg-gray-300 rounded hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-800 dark:text-white"
               onClick={handleCloseDeleteModal}
             >
               Cancel
@@ -347,7 +349,7 @@ function Plant() {
                     <tr onClick={() => handleViewDiseases(plant._id)}>
                       <td
                         colSpan="9"
-                        className=" border-b-2 border-gray-500 text-center hover:bg-secondary hover:animate-pulse dark:bg-gray-700"
+                        className="bg-gray-50 border-b-2 border-gray-500 text-center hover:bg-secondary hover:animate-pulse dark:bg-gray-700"
                       >
                         <button
                           className="text-green-600 hover:text-green-800"

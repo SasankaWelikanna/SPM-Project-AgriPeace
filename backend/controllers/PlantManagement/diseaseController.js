@@ -21,6 +21,16 @@ exports.getDiseaseById = async (req, res) => {
   }
 };
 
+// Get all diseases
+exports.getAllDiseases = async (req, res) => {
+  try {
+    const diseases = await Disease.find(); // Fetch all diseases
+    res.status(200).json(diseases);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 // Add a new disease
 exports.createDisease = async (req, res) => {
   const disease = new Disease({
