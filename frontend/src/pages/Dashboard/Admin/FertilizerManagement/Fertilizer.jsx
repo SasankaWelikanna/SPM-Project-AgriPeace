@@ -30,6 +30,9 @@ function Fertilizer() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
 
+  // Filter state
+  const [selectedCategory, setSelectedCategory] = useState("");
+
    // Pagination state
    const [currentPage, setCurrentPage] = useState(1);
    const [fertilizersPerPage] = useState(3); // Adjust as needed
@@ -62,6 +65,22 @@ function Fertilizer() {
     });
     setFilteredDataList(filteredList);
   };
+
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+    filterByCategory(event.target.value);
+  };
+  
+  const filterByCategory = (category) => {
+    if (category === "") {
+      setFilteredDataList(dataList);
+    } else {
+      const filteredList = dataList.filter(
+        (fertilizer) => fertilizer.category === category
+      );
+      setFilteredDataList(filteredList);
+    }
+  };  
 
   const generateExcelFile = () => {
     const rearrangedDataList = dataList.map((fertilizer) => ({
@@ -199,6 +218,33 @@ function Fertilizer() {
           </div>
         </div>
 
+        <div className="mb-4 flex justify-between items-center">
+          <select
+            onChange={handleCategoryChange}
+            value={selectedCategory}
+            className="border p-2 rounded dark:bg-gray-700 dark:text-white w-full sm:w-auto"
+            data-aos="flip-up"
+            data-aos-duration="1000"
+          >
+            <option value="">All Categories</option>
+            {[...new Set(dataList.map((fertilizer) => fertilizer.category))].map(
+              (category, index) => (
+                <option key={index} value={category}>
+                  {category}
+                </option>
+              )
+            )}
+          </select>
+          <div data-aos="flip-up" data-aos-duration="1000">
+            <SearchBar
+              onSearch={handleSearch}
+              data-aos="slide-left"
+              data-aos-duration="1000"
+            />
+          </div>
+        </div>
+
+
         {/* Add Fertilizer LargeModal */}
         <LargeModal
           isOpen={addModalOpen}
@@ -242,8 +288,6 @@ function Fertilizer() {
             </button>
           </div>
         </Modal>
-
-        <SearchBar onSearch={handleSearch} />
 
         <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-900 dark:text-white">
           <thead className="bg-gray-100 dark:bg-gray-800 dark:text-white">
