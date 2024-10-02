@@ -12,6 +12,7 @@ import { RiDashboardFill } from "react-icons/ri";
 import Swal from "sweetalert2";
 import Scroll from "../hooks/useScroll";
 import Loader from "../components/Loader/Loader";
+import ThemeToggle from "../components/ThemeToggle/ThemeToggle";
 
 const adminNavItems = [
   {
@@ -70,6 +71,7 @@ const lastMenuItems = [
 
 const DashboardLayout = () => {
   const [open, setOpen] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const { loader, logout } = useAuth();
   const { currentUser } = useUser();
   const navigate = useNavigate();
@@ -103,7 +105,7 @@ const DashboardLayout = () => {
   }
 
   return (
-    <div className="flex">
+    <div className={`flex ${isDarkMode ? "dark" : ""}`}>
       <div
         className={`${
           open ? "w-72 overflow-y-auto" : "w-[90px] overflow-auto"
@@ -249,7 +251,7 @@ const DashboardLayout = () => {
 
         {/* User Info Section */}
         {currentUser && (
-          <div className="absolute bottom-5 px-4 flex items-center gap-x-4">
+          <div className="absolute bottom-5 px-2 flex items-center gap-x-4">
             <Link to={`/dashboard/user-profile`}>
               <img
                 src={currentUser?.photoUrl}
@@ -263,6 +265,12 @@ const DashboardLayout = () => {
               </p>
               <p className="text-xs text-gray-400">{currentUser.email}</p>
             </div>
+            <div className={`${!open && "hidden"} duration-200`}>
+              <ThemeToggle
+                isDarkMode={isDarkMode}
+                setIsDarkMode={setIsDarkMode}
+              />
+            </div>
           </div>
         )}
       </div>
@@ -270,6 +278,9 @@ const DashboardLayout = () => {
       <div className="h-screen overflow-y-auto px-8 flex-1 dark:bg-gray-900">
         <Scroll />
         <Outlet />
+        {/* <div className="absolute top-2 right-4 z-50">
+          <ThemeToggle isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+        </div> */}
       </div>
     </div>
   );

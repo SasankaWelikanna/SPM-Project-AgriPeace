@@ -27,7 +27,7 @@ const AdminHome = () => {
         Welcome Back,{" "}
         <span className="text-secondary">{currentUser?.name}</span> !
       </h1>
-      <div className="flex flex-row gap-4 w-full">
+      <div className="flex flex-row gap-2 relative w-full">
         <AdminStats users={users} />
         <PlantCount />
         <DiseaseCount />
