@@ -201,11 +201,13 @@ const CostCalculator = () => {
                       className={`flex flex-col items-center p-4 border-2 rounded-lg cursor-pointer hover:scale-105 transform transition-all duration-200 ${
                         crop === plant.name ? "bg-secondary" : "border-gray-300"
                       }`}
-                      style={{ zIndex: crop === plant.name ? 10 : "auto" }}
                       onMouseEnter={(e) => (e.currentTarget.style.zIndex = 10)}
                       onMouseLeave={(e) =>
                         (e.currentTarget.style.zIndex = "auto")
                       }
+                      style={{
+                        opacity: crop === "" || crop === plant.name ? 1 : 0.5, // Adjust opacity
+                      }}
                     >
                       <img
                         src={plant.imageUrl}
@@ -217,7 +219,12 @@ const CostCalculator = () => {
                         type="radio"
                         value={plant.name}
                         checked={crop === plant.name}
-                        onChange={(e) => setCrop(e.target.value)}
+                        onChange={(e) => {
+                          // If the selected crop is already chosen, unselect it
+                          setCrop((prevCrop) =>
+                            prevCrop === plant.name ? "" : plant.name
+                          );
+                        }}
                         className="hidden"
                       />
                       <span className="text-center font-semibold text-gray-700 dark:text-white">
