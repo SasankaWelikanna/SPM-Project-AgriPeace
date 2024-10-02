@@ -7,6 +7,8 @@ import DiseaseCount from "../../../components/Counts/DiseaseCount";
 import FertilizerCount from "../../../components/Counts/FertilizerCount";
 import PlantSlider from "../../../components/Sliders/PlantSlider";
 import PlantCategoryChart from "../../../components/Graphs/PlantCategoryChart";
+import FertilizerCategoryChart from "../../../components/Graphs/FertilizerCategoryChart";
+import FertilizerCategoryPieChart from "../../../components/Graphs/FertilizercategoryPieChart";
 
 const AdminHome = () => {
   const { currentUser } = useUser();
@@ -33,10 +35,16 @@ const AdminHome = () => {
         <DiseaseCount />
         <FertilizerCount />
       </div>
-      <div className="flex flex-row gap-4 w-full">
-        <PlantCategoryChart />
+      <div className="flex flex-row gap-5 w-full ">
+      <FertilizerCategoryPieChart />
+        <div className="flex flex-col gap-4 w-full">
         <PlantSlider />
+        </div>
       </div>
+      <div className="flex flex-row gap-4 w-full">
+      <PlantCategoryChart />
+      </div>
+      
     </div>
   );
 };
