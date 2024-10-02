@@ -14,6 +14,7 @@ const AdminHome = () => {
   const { currentUser } = useUser();
   const axiosFetch = useAxiosFetch();
   const [users, setUsers] = useState([]);
+
   useEffect(() => {
     axiosFetch
       .get("/users")
@@ -24,27 +25,26 @@ const AdminHome = () => {
   }, []);
 
   return (
-    <div>
+    <div className="p-4">
       <h1 className="text-4xl font-bold my-7 dark:text-white">
         Welcome Back,{" "}
-        <span className="text-secondary">{currentUser?.name}</span> !
+        <span className="text-secondary">{currentUser?.name}</span>!
       </h1>
-      <div className="flex flex-row gap-2 relative w-full">
+      <div className="flex flex-col sm:flex-row gap-2 relative w-full">
         <AdminStats users={users} />
         <PlantCount />
         <DiseaseCount />
         <FertilizerCount />
       </div>
-      <div className="flex flex-row gap-5 w-full ">
-      <FertilizerCategoryPieChart />
-        <div className="flex flex-col gap-4 w-full">
-        <PlantSlider />
+      <div className="flex flex-col sm:flex-row gap-5 w-full">
+        <FertilizerCategoryPieChart className="w-full sm:w-1/2" />
+        <div className="flex flex-col gap-4 w-full sm:w-1/2">
+          <PlantSlider />
         </div>
       </div>
-      <div className="flex flex-row gap-4 w-full">
-      <PlantCategoryChart />
+      <div className="flex flex-col sm:flex-row gap-4 w-full">
+        <PlantCategoryChart className="w-full sm:w-1/2" />
       </div>
-      
     </div>
   );
 };
