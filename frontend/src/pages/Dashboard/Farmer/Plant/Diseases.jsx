@@ -90,16 +90,15 @@ function Diseases() {
         </Link>
         <div className="flex justify-between items-center mb-4">
           <div>
-            <h2 className="text-xl font-semibold text-gray-700">
+            <h2 className="text-xl font-semibold text-gray-700 dark:text-white">
               Plant Diseases - {plantName}
             </h2>
-            <h6 className="text-sm text-gray-500">
+            <h6 className="text-sm text-gray-500 dark:text-gray-200">
               View diseases for this plant
             </h6>
           </div>
+          <SearchBar onSearch={handleSearch} />
         </div>
-
-        <SearchBar onSearch={handleSearch} />
 
         {/* Disease Cards using Card component */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">

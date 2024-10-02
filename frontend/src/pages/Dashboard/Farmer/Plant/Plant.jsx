@@ -124,7 +124,7 @@ function Plant() {
     <div className="mt-10 p-4 bg-gray-50 dark:bg-gray-900">
       <div className="bg-white shadow-md rounded-lg p-6 dark:bg-gray-700">
         <div className="flex flex-col md:flex-row justify-between items-center mb-4">
-          <div>
+          <div data-aos="flip-up" data-aos-duration="1000">
             <h2 className="text-xl font-semibold text-gray-700 dark:text-white">
               Plant Details
             </h2>
@@ -134,7 +134,11 @@ function Plant() {
           </div>
         </div>
 
-        <div className="mb-4 flex flex-col sm:flex-row justify-between items-center">
+        <div
+          className="mb-4 flex flex-col sm:flex-row justify-between items-center"
+          data-aos="flip-up"
+          data-aos-duration="1000"
+        >
           <select
             onChange={handleCategoryChange}
             value={selectedCategory}
@@ -157,7 +161,11 @@ function Plant() {
           onClose={handleModalClose}
           title={selectedPlant ? selectedPlant.name : ""}
         >
-          <div className="p-6 bg-gray-50 rounded-lg dark:bg-gray-700">
+          <div
+            className="p-6 bg-gray-50 rounded-lg dark:bg-gray-700 "
+            data-aos="fade-in"
+            data-aos-duration="1000"
+          >
             {selectedPlant && (
               <div className="flex flex-col space-y-4">
                 <img

@@ -176,7 +176,7 @@ function Plant() {
     <div className="mt-10 p-4 bg-gray-50 dark:bg-gray-900">
       <div className="bg-white shadow-md rounded-lg p-6 dark:bg-gray-700">
         <div className="flex justify-between items-center mb-4">
-          <div>
+          <div data-aos="flip-up" data-aos-duration="1000">
             <h2 className="text-xl font-semibold text-gray-700 dark:text-white">
               Plant Details
             </h2>
@@ -184,7 +184,11 @@ function Plant() {
               Manage plant details
             </h6>
           </div>
-          <div className="flex space-x-4">
+          <div
+            className="flex space-x-4"
+            data-aos="flip-up"
+            data-aos-duration="1000"
+          >
             <BlobProvider
               document={<PlantReport dataList={dataList} />}
               fileName="FruitReport.pdf"
@@ -227,6 +231,8 @@ function Plant() {
             onChange={handleCategoryChange}
             value={selectedCategory}
             className="border p-2 rounded dark:bg-gray-700 dark:text-white w-full sm:w-auto"
+            data-aos="flip-up"
+            data-aos-duration="1000"
           >
             <option value="">All Categories</option>
             {[...new Set(dataList.map((plant) => plant.category))].map(
@@ -237,7 +243,13 @@ function Plant() {
               )
             )}
           </select>
-          <SearchBar onSearch={handleSearch} />
+          <div data-aos="flip-up" data-aos-duration="1000">
+            <SearchBar
+              onSearch={handleSearch}
+              data-aos="slide-left"
+              data-aos-duration="1000"
+            />
+          </div>
         </div>
 
         <LargeModal
@@ -284,7 +296,11 @@ function Plant() {
         </Modal>
 
         <div className="mt-6">
-          <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-900">
+          <table
+            className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-900"
+            data-aos="fade-in"
+            data-aos-duration="2000"
+          >
             <thead className="bg-gray-100 dark:bg-gray-800 dark:text-white">
               <tr>
                 <th className="p-4 text-left">Image</th>
