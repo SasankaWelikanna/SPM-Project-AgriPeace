@@ -4,6 +4,7 @@ import Home from "../pages/Home/Home";
 import Services from "../pages/Services/Services";
 import ContactUs from "../pages/ContactUs/ContactUs";
 import AboutUs from "../pages/AboutUs/AboutUs";
+import Products from "../pages/Products/Products";
 import Login from "../pages/user/Login";
 import Register from "../pages/user/Register";
 import DashboardLayout from "../layout/DashboardLayout";
@@ -23,7 +24,7 @@ import Crops from "../pages/Dashboard/Farmer/LocationManagement/Crop";
 import Profile from "../pages/Dashboard/Profile/Profile";
 import UserPlant from "../pages/Dashboard/Farmer/Plant/Plant";
 import UserFertilizer from "../pages/Dashboard/Farmer/Fertilizer/Fertilizer";
-import FertilizerCalculator from "../pages/Dashboard/Farmer/Fertilizer/FertilizerCal"
+import FertilizerCalculator from "../pages/Dashboard/Farmer/Fertilizer/FertilizerCal";
 
 export const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ export const router = createBrowserRouter([
       {
         path: "/aboutUs",
         element: <AboutUs />,
+      },
+      {
+        path: "/products",
+        element: <Products />,
       },
       {
         path: "/login",

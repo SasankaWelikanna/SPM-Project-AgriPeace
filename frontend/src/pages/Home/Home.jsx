@@ -10,10 +10,14 @@ import Bar1 from "./HomePageItems/Bar1";
 const Home = () => {
   return (
     <section>
-      <Scroll/>
+      <Scroll />
       <HeroContainer />
 
-      <div className="max-w-screen-xl mx-auto">
+      <div
+        className="max-w-screen-xl mx-auto"
+        data-aos="fade-up"
+        data-aos-duration="1000"
+      >
         <CostCalculatorSection />
       </div>
 

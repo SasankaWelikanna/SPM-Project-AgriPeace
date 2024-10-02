@@ -125,76 +125,104 @@ const styles = StyleSheet.create({
   },
 });
 
+// Helper function to split data into chunks of 5 rows
+const paginateData = (dataList, itemsPerPage) => {
+  const pages = [];
+  for (let i = 0; i < dataList.length; i += itemsPerPage) {
+    pages.push(dataList.slice(i, i + itemsPerPage));
+  }
+  return pages;
+};
+
 const Footer = () => (
   <Text style={styles.footer}>
     © 2024 www.agripeace.lk copyright all right reserved.
   </Text>
 );
 
+// Main Component
 const PlantReport = ({ dataList }) => {
   const reportDateTime = new Date().toLocaleString("en-US", {
     timeZone: "Asia/Colombo",
   });
 
+  // Adjust itemsPerPage based on the available page height
+  const paginatedData = paginateData(dataList, 6); // Adjust this number to control rows per page
+
   return (
     <Document>
-      <Page size="Letter" orientation="landscape" style={styles.page}>
-        <View style={styles.section}>
-          <View style={styles.header}>
-            <View style={styles.headerTextContainer}>
-              <Image src={logo} style={styles.logo} />
-            </View>
-            <Text style={styles.headerText}>{reportDateTime}</Text>
-          </View>
-          <Text style={styles.heading}>Plant Details</Text>
-          <View style={styles.table}>
-            <View style={styles.tableRow}>
-              <Text style={styles.tableColHeader}>Plant Name</Text>
+      {paginatedData.map((pageData, pageIndex) => (
+        <Page
+          key={pageIndex}
+          size="Letter"
+          orientation="landscape"
+          style={styles.page}
+        >
+          <View style={styles.section}>
+            {/* Render header and date only on the first page */}
+            {pageIndex === 0 && (
+              <>
+                <View style={styles.header}>
+                  <View style={styles.headerTextContainer}>
+                    <Image src={logo} style={styles.logo} />
+                  </View>
+                  <Text style={styles.headerText}>{reportDateTime}</Text>
+                </View>
+                <View style={styles.table}>
+                  <Text style={styles.heading}>Plant Details</Text>
+                </View>
+              </>
+            )}
 
-              <Text style={styles.tableColHeaderDescription}>Description</Text>
-              <Text style={styles.tableColHeader}>Climate</Text>
-              <Text style={styles.tableColHeader}>Soil pH</Text>
-              <Text style={styles.tableColHeaderDescription}>
-                Land Preparation
-              </Text>
-              <Text style={styles.tableColHeaderDescription}>Fertilizers</Text>
-            </View>
-            {dataList.map((plant, index) => (
-              <View key={index} style={styles.tableRow}>
-                <Text style={styles.tableCol}>{plant.name}</Text>
-
-                <Text style={styles.tableColDescription}>
-                  {plant.description}
+            {/* Table of plant details */}
+            <View style={styles.table}>
+              <View style={styles.tableRow}>
+                <Text style={styles.tableColHeader}>Plant Name</Text>
+                <Text style={styles.tableColHeaderDescription}>
+                  Description
                 </Text>
-                <Text style={styles.tableCol}>{plant.climate}</Text>
-                <Text style={styles.tableCol}>{plant.soilPh}</Text>
-                <Text style={styles.tableColDescription}>
-                  {plant.landPreparation}
+                <Text style={styles.tableColHeader}>Climate</Text>
+                <Text style={styles.tableColHeader}>Soil pH</Text>
+                <Text style={styles.tableColHeaderDescription}>
+                  Land Preparation
                 </Text>
-                <Text style={styles.tableColDescription}>
-                  {plant.fertilizers}
+                <Text style={styles.tableColHeaderDescription}>
+                  Fertilizers
                 </Text>
               </View>
-            ))}
+              {pageData.map((plant, index) => (
+                <View key={index} style={styles.tableRow}>
+                  <Text style={styles.tableCol}>{plant.name}</Text>
+                  <Text style={styles.tableColDescription}>
+                    {plant.description}
+                  </Text>
+                  <Text style={styles.tableCol}>{plant.climate}</Text>
+                  <Text style={styles.tableCol}>{plant.soilPh}</Text>
+                  <Text style={styles.tableColDescription}>
+                    {plant.landPreparation}
+                  </Text>
+                  <Text style={styles.tableColDescription}>
+                    {plant.fertilizers}
+                  </Text>
+                </View>
+              ))}
+            </View>
+
+            {/* Render signature only on the last page */}
+            {pageIndex === paginatedData.length - 1 && (
+              <View style={styles.signatureContainerCenter}>
+                <View style={styles.signatureLine} />
+                <Text style={styles.signatureText}>Signature</Text>
+              </View>
+            )}
           </View>
-          <View style={styles.signatureContainerCenter}>
-            <View style={styles.signatureLine} />
-            <Text style={styles.signatureText}>Signature</Text>
-          </View>
-        </View>
-        <Footer />
-      </Page>
+
+          {/* Render footer only on the last page */}
+          {pageIndex === paginatedData.length - 1 && <Footer />}
+        </Page>
+      ))}
     </Document>
   );
 };
-
-// Function to format date
-// const formatDate = (date) => {
-//   return new Date(date).toLocaleDateString("en-US", {
-//     year: "numeric",
-//     month: "long",
-//     day: "numeric",
-//   });
-// };
 
 export default PlantReport;

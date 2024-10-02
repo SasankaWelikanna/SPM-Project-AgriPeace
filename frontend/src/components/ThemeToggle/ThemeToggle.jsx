@@ -13,7 +13,7 @@ const ThemeToggle = ({ isDarkMode, setIsDarkMode }) => {
   }, [isDarkMode]);
 
   return (
-    <div className="flex flex-col items-center text-center">
+    <div className="flex flex-col items-center text-center ml-2">
       <div
         className="flex items-center justify-center cursor-pointer p-2 bg-black/10 dark:bg-gray-700 rounded-full duration-700"
         onClick={() => setIsDarkMode(!isDarkMode)}
