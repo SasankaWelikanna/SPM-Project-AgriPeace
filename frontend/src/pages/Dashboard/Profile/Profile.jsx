@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import {FaPencilAlt} from "react-icons/fa";
+import { FaPencilAlt } from "react-icons/fa";
 import useUser from "../../../hooks/useUser";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import storage from "../../../config/firebase.init";
@@ -73,7 +73,6 @@ const Profile = () => {
       })
       .catch((err) => console.error(err));
   };
-  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -96,7 +95,7 @@ const Profile = () => {
           <div className="p-8 bg-white rounded-lg shadow-lg lg:p-12">
             <form className="space-y-4" onSubmit={handleFormSubmit}>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div>
+                <div>
                   <label
                     htmlFor="photoUrl"
                     className="block text-gray-700 font-semibold mb-1"
