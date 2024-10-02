@@ -139,7 +139,7 @@ const UpdateUser = () => {
                 <div>
                   <label className="pb-4 ml-2" htmlFor="name">Name</label>
                   <input
-                    className="w-full p-3 mt-3 text-sm border rounded-lg outline-none border-secondary"
+                    className="w-full p-3 mt-1 text-sm border rounded-lg outline-none border-secondary"
                     placeholder="Your Name"
                     type="text"
                     required
@@ -182,7 +182,7 @@ const UpdateUser = () => {
                 <div>
                   <label className="ml-2" htmlFor="address">Address</label>
                   <input
-                    className="w-full p-3 mt-2 text-sm border rounded-lg outline-none border-secondary"
+                    className="w-full p-3 mt-3 text-sm border rounded-lg outline-none border-secondary"
                     placeholder="Address"
                     type="text"
                     id="address"

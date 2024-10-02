@@ -35,7 +35,8 @@ const Profile = () => {
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setImgPerc(Math.round(progress));
       },
       (error) => {
@@ -63,7 +64,7 @@ const Profile = () => {
           title: "Updated!",
           text: "Your details have been updated successfully.",
           icon: "success",
-        })
+        });
       })
       .catch((err) => console.error(err));
   };
@@ -80,7 +81,7 @@ const Profile = () => {
       </h1>
       <p className="text-center">Change your details</p>
 
-      <section className="">
+      <section>
         <div className="px-4 py-16 mx-auto sm:px-6 lg:px-8">
           <div className="p-8 bg-white rounded-lg shadow-lg lg:p-12">
             <form className="space-y-4" onSubmit={handleFormSubmit}>
@@ -107,38 +108,39 @@ const Profile = () => {
                 </div>
                 <div className="flex-col">
                   <div>
-                  <label className="pb-4 ml-2" htmlFor="name">
-                    Name
-                  </label>
-                  <input
-                    className="w-full p-3 mt-3 text-sm border rounded-lg outline-none border-secondary"
-                    placeholder="Your Name"
-                    type="text"
-                    required
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                  />
+                    <label className="pb-4 ml-2" htmlFor="name">
+                      Name
+                    </label>
+                    <input
+                      className="w-full p-3 mt-1 text-sm border rounded-lg outline-none border-secondary"
+                      placeholder="Your Name"
+                      type="text"
+                      required
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                    />
                   </div>
                   <div className="mt-5">
-                  <label className="pb-4 ml-2" htmlFor="email">
-                    Email
-                  </label>
-                  <span className="text-red-400 ml-3 text-sm">You can't edit your email</span>
-                  <input
-                    className="w-full p-3 mt-3 text-sm border rounded-lg outline-none border-secondary"
-                    placeholder="Email Address"
-                    disabled
-                    type="email"
-                    required
-                    defaultValue={userCredentials?.email}
-                    id="email"
-                    name="email"
-                  />
+                    <label className="pb-4 ml-2" htmlFor="email">
+                      Email
+                    </label>
+                    <span className="text-red-400 ml-3 text-sm">
+                      You can't edit your email
+                    </span>
+                    <input
+                      className="w-full p-3 mt-3 text-sm border rounded-lg outline-none border-secondary"
+                      placeholder="Email Address"
+                      disabled
+                      type="email"
+                      required
+                      defaultValue={userCredentials?.email}
+                      id="email"
+                      name="email"
+                    />
+                  </div>
                 </div>
-                </div>
-                
               </div>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -162,7 +164,7 @@ const Profile = () => {
                     Address
                   </label>
                   <input
-                    className="w-full p-3 mt-2 text-sm border rounded-lg outline-none border-secondary"
+                    className="w-full p-3 mt-3 text-sm border rounded-lg outline-none border-secondary"
                     placeholder="Address"
                     type="text"
                     value={formData.address}
