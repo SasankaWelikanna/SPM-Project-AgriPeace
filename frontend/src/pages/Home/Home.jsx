@@ -15,8 +15,8 @@ const Home = () => {
 
       <div
         className="max-w-screen-xl mx-auto"
-        data-aos="fade-up"
-        data-aos-duration="1000"
+        data-aos="fade-left"
+        data-aos-duration="1500"
       >
         <CostCalculatorSection />
       </div>
@@ -25,18 +25,17 @@ const Home = () => {
         <Gallery />
       </div>
 
-      <div className="mx-auto">
+      <div className="mx-auto" data-aos="zoom" data-aos-duration="1000">
         <Bar1 />
       </div>
 
-      <div className="mx-auto">
+      <div className="mx-auto" data-aos="fade-left" data-aos-duration="1500">
         <Bar />
       </div>
 
       <div className="mx-auto">
         <Testimonials />
       </div>
-
     </section>
   );
 };
