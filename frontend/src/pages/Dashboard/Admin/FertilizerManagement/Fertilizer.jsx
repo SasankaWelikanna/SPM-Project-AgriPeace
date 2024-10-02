@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import useAxiosFetch from "../../../../hooks/useAxiosFetch";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { useNavigate } from "react-router-dom";
-import Modal from "../../../../components/Modal/LargeModal";
-import SearchBar from "../../../../components/Search/SearchBar";
+import LargeModal from "../../../../components/Modal/LargeModal";
+import Modal from "../../../../components/Modal/Modal";
+import SearchBar from"../../../../components/Search/SearchBar";
 import { ToastContainer, toast } from "react-toastify";
 import { MdDelete } from "react-icons/md";
 import * as XLSX from "xlsx";
@@ -14,6 +15,7 @@ import FertilizerForm from "./FertilizerForm";
 import FertilizerReport from "./FertilizerReport";
 import { BlobProvider } from "@react-pdf/renderer";
 import Pagination from "../../../../components/Pagination/Pagination"; // Import the Pagination component
+
 
 function Fertilizer() {
   const axiosFetch = useAxiosFetch();
@@ -28,9 +30,9 @@ function Fertilizer() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
 
-  // Pagination state
-  const [currentPage, setCurrentPage] = useState(1);
-  const [fertilizersPerPage] = useState(3); // Adjust as needed
+   // Pagination state
+   const [currentPage, setCurrentPage] = useState(1);
+   const [fertilizersPerPage] = useState(3); // Adjust as needed
 
   useEffect(() => {
     fetchFertilizers();
@@ -69,12 +71,14 @@ function Fertilizer() {
       Quantity: fertilizer.quantity,
       Price: fertilizer.price,
     }));
-
+  
     const ws = XLSX.utils.json_to_sheet(rearrangedDataList);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Fertilizer Report");
     writeFile(wb, "fertilizer_report.xlsx");
   };
+  
+
 
   const handleRefreshClick = () => {
     fetchFertilizers();
@@ -147,20 +151,17 @@ function Fertilizer() {
   const totalPages = Math.ceil(filteredDataList.length / fertilizersPerPage);
 
   return (
-    <div className="mt-10 p-4 bg-gray-50">
-      <div className="bg-white shadow-md rounded-lg p-6">
-        <div className="flex justify-between items-center mb-4">
-          <div data-aos="flip-up" data-aos-duration="1000">
-            <h2 className="text-xl font-semibold text-gray-700">
+    <div className="mt-10 p-4 bg-gray-50  dark:bg-gray-900">
+      <div className="bg-white shadow-md rounded-lg p-6  dark:bg-gray-700 ">
+        <div className="flex justify-between items-center mb-4 ">
+          <div>
+            <h2 className="text-xl font-semibold text-gray-700  dark:text-white">
               Fertilizer Details
             </h2>
-            <h6 className="text-sm text-gray-500">Manage fertilizer details</h6>
+            <h6 className="text-sm text-gray-500  dark:text-white">
+              Manage fertilizer details</h6>
           </div>
-          <div
-            className="flex space-x-4"
-            data-aos="flip-up"
-            data-aos-duration="1000"
-          >
+          <div className="flex space-x-4">
             <BlobProvider
               document={<FertilizerReport dataList={dataList} />}
               fileName="FertilizerReport.pdf"
@@ -198,17 +199,17 @@ function Fertilizer() {
           </div>
         </div>
 
-        {/* Add Fertilizer Modal */}
-        <Modal
+        {/* Add Fertilizer LargeModal */}
+        <LargeModal
           isOpen={addModalOpen}
           onClose={handleAddModalClose}
           title="Add Fertilizer"
         >
           <FertilizerForm handleSubmit={handleAddSubmit} />
-        </Modal>
+        </LargeModal>
 
-        {/* Edit Fertilizer Modal */}
-        <Modal
+        {/* Edit Fertilizer LargeModal */}
+        <LargeModal
           isOpen={editModalOpen}
           onClose={handleEditModalClose}
           title="Edit Fertilizer"
@@ -217,18 +218,18 @@ function Fertilizer() {
             handleSubmit={handleEditSubmit}
             initialData={selectedFertilizer}
           />
-        </Modal>
+        </LargeModal>
 
-        {/* Delete Confirmation Modal */}
+        {/* Delete Confirmation LargeModal */}
         <Modal
           isOpen={showDeleteModal}
           onClose={handleCloseDeleteModal}
           title="Confirm Delete"
         >
-          <p>Are you sure you want to delete this record?</p>
+          <p className="dark:text-white">Are you sure you want to delete this record?</p>
           <div className="mt-6 flex justify-end">
             <button
-              className="px-4 py-2 mr-4 bg-gray-300 rounded hover:bg-gray-400"
+              className="px-4 py-2 mr-4 bg-gray-300 rounded hover:bg-gray-400  dark:bg-gray-700 dark:hover:bg-gray-800 dark:text-white"
               onClick={handleCloseDeleteModal}
             >
               Cancel
@@ -241,15 +242,11 @@ function Fertilizer() {
             </button>
           </div>
         </Modal>
-        <div data-aos="flip-up" data-aos-duration="1000">
-          <SearchBar onSearch={handleSearch} />
-        </div>
-        <table
-          className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden"
-          data-aos="fade-in"
-          data-aos-duration="2000"
-        >
-          <thead className="bg-gray-100">
+
+        <SearchBar onSearch={handleSearch} />
+
+        <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-900 dark:text-white">
+          <thead className="bg-gray-100 dark:bg-gray-800 dark:text-white">
             <tr>
               <th className="p-4 text-left">Image</th>
               <th className="p-4 text-left">Product Name</th>
@@ -280,26 +277,26 @@ function Fertilizer() {
                   <td className="p-4">{fertilizer.price}</td>
 
                   <td className="p-4">
-                    <div className="flex space-x-2">
-                      <button
-                        className="text-3xl text-blue-600 hover:text-blue-800"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEditModalOpen(fertilizer);
-                        }}
-                      >
-                        <FaEdit />
-                      </button>
-                      <button
-                        className="text-3xl text-red-600 hover:text-red-800"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleShowDeleteModal(fertilizer._id);
-                        }}
-                      >
-                        <MdDelete />
-                      </button>
-                    </div>
+                  <div className="flex space-x-2">
+                        <button
+                          className="text-3xl text-blue-600 hover:text-blue-800"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEditModalOpen(fertilizer);
+                          }}
+                        >
+                          <FaEdit />
+                        </button>
+                        <button
+                          className="text-3xl text-red-600 hover:text-red-800"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleShowDeleteModal(fertilizer._id);
+                          }}
+                        >
+                          <MdDelete />
+                        </button>
+                      </div>
                   </td>
                 </tr>
               ))

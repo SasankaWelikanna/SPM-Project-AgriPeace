@@ -125,7 +125,7 @@ function Fertilizer() {
             <h2 className="text-xl font-semibold text-gray-700 dark:text-white">
               Fertilizer Details
             </h2>
-            <h6 className="text-sm text-gray-500">View fertilizer details</h6>
+            <h6 className="text-sm text-gray-500 dark:text-white">View fertilizer details</h6>
           </div>
           
           {/* Button to access the Fertilizer Calculator*/}
