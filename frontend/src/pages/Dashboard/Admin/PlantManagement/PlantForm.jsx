@@ -160,7 +160,7 @@ const PlantForm = ({ handleSubmit, initialData }) => {
               <option value="">Select Category</option>
               <option value="Rice">Rice</option>
               <option value="Vegetables">Vegetables</option>
-              <option value="Leafy Vegetable">Leafy Vegetable</option>
+              <option value="Leafy">Leafy Vegetable</option>
               <option value="Fruits">Fruits</option>
               <option value="Root Crops">Root Crops</option>
               <option value="Condiments">Condiments</option>
