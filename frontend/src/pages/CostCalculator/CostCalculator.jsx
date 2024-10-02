@@ -10,6 +10,7 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAxiosFetch from "../../hooks/useAxiosFetch";
 import PreviousCalculations from "./PreviousCalculations"; // Import the new component
 import { FaSearch, FaTimes } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const CostCalculator = () => {
   const [crop, setCrop] = useState("");
@@ -272,7 +273,7 @@ const CostCalculator = () => {
                       className="mr-2"
                     />
                     <span className="block text-lg font-medium text-black dark:text-white">
-                    {waterOption}
+                      {waterOption}
                     </span>
                   </label>
                 )
@@ -287,19 +288,20 @@ const CostCalculator = () => {
             <div className="flex flex-wrap gap-4 mt-2">
               {["Fertile", "Moderately Fertile", "Poor", "Sandy", "Rich"].map(
                 (soilOption) => (
-                <label key={soilOption} className="flex items-center">
-                  <input
-                    type="radio"
-                    value={soilOption}
-                    checked={soilType === soilOption}
-                    onChange={(e) => setSoilType(e.target.value)}
-                    className="mr-2"
-                  />
+                  <label key={soilOption} className="flex items-center">
+                    <input
+                      type="radio"
+                      value={soilOption}
+                      checked={soilType === soilOption}
+                      onChange={(e) => setSoilType(e.target.value)}
+                      className="mr-2"
+                    />
                     <span className="block text-lg font-medium text-black dark:text-white">
-                  {soilOption}
+                      {soilOption}
                     </span>
-                </label>
-              ))}
+                  </label>
+                )
+              )}
             </div>
           </div>
 
@@ -318,26 +320,31 @@ const CostCalculator = () => {
         {error && <p className="text-red-500 mt-4">{error}</p>}
         {result && (
           <div className="mt-8 p-4 border border-gray-300 rounded-md">
-            <h2 className="text-2xl font-semibold text-gray-800">
-              Estimated Cost
-            </h2>
-            <p className="mt-2">
+            <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">Result</h2>
+            <p className="mt-2 dark:text-white">
               Crop: <span className="font-medium">{result.crop}</span>
             </p>
-            <p>
+            <p className="dark:text-white">
               Area: <span className="font-medium">{result.area} acres</span>
             </p>
-            <p className="font-bold text-lg mt-2">
+            <p className="font-bold text-lg mt-2 dark:text-white">
               Estimated Cost:{" "}
-              <span className="text-secondary text-3xl">
+              <span className="text-secondary dark:text-secondary: text-3xl">
                 Rs. {result.estimatedCost.toFixed(2)}
               </span>
             </p>
-            <p>
+            <p className="dark:text-white">
               Fertilizer Needs:{" "}
               <span className="font-medium">{result.fertilizerNeeds}</span>
+              <Link to={"/products"}>
+                <span>
+                  <button className="ml-6 bg-secondary px-3 py-1 text-white rounded-xl">
+                    Shop Fertilizers
+                  </button>
+                </span>
+              </Link>
             </p>
-            <p>
+            <p className="dark:text-white">
               Water Needs:{" "}
               <span className="font-medium">{result.waterNeeds}</span>
             </p>

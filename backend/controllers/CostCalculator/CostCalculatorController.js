@@ -5,7 +5,17 @@ const getBaseCostPerAcre = (crop) => {
           'Gotukola': 150,
           'Carrot': 120,
           'Pumpkin': 200,
-          'Leeks': 180,
+          'Potato': 180,
+          'Tomato': 120,
+          'Basmati Rice': 110,
+          'Spinach': 180,
+          'Garlic': 100,
+          'Oyster Mushroom': 90,
+          'Chili Pepper': 170,
+          'Cabbage': 110,
+          'Ginger': 70,
+          'Beetroot': 150,
+          'Lettuce': 180,
       };
       return baseCosts[crop] || 100; // Default base cost if crop is not found
    };
@@ -40,7 +50,6 @@ const getBaseCostPerAcre = (crop) => {
    };
    
    // Main calculation function
-   
    exports.calculateCost = async (req, res) => {
       try {
           const { crop, area, waterResources, soilType, userId } = req.body;

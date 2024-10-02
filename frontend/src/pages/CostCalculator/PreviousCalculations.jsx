@@ -4,15 +4,15 @@ import { Link } from "react-router-dom";
 const PreviousCalculations = ({ previousCalculations, currentUser }) => {
   return (
     <div className="mt-16">
-      <h2 className="text-2xl font-semibold text-gray-800">
+      <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">
         Your Previous Calculations
       </h2>
       {previousCalculations.length === 0 ? (
-        <p className="mt-4 text-gray-600">No previous calculations found.</p>
+        <p className="mt-4 text-gray-600 dark:text-white">No previous calculations found.</p>
       ) : (
         <div className="overflow-x-auto mt-4">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-200 font-bold text-center">
+            <thead className="bg-gray-200 dark:bg-slate-500 font-bold text-center">
               <tr>
                 {[
                   "Crop",
@@ -22,13 +22,13 @@ const PreviousCalculations = ({ previousCalculations, currentUser }) => {
                   "Water Needs",
                   "Date",
                 ].map((header) => (
-                  <th key={header} className="px-4 py-2 text-gray-700 font-semibold">
+                  <th key={header} className="px-4 py-2 text-gray-700 font-semibold dark:text-white">
                     {header}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white dark:bg-slate-600 dark:text-white divide-y divide-gray-200">
               {previousCalculations.map((calculation, index) => (
                 <tr key={index} className="text-center">
                   <td className="px-4 py-2">{calculation.crop}</td>

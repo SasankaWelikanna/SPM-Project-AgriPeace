@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { FaBars, FaMoon } from "react-icons/fa"; // Import the sun and moon icons
+import { FaBars, FaTimes } from "react-icons/fa"; // Import the sun and moon icons
 import { LuSun } from "react-icons/lu";
 import farmerImg from "../../assets/farmer.jpg";
 import { motion } from "framer-motion";
@@ -145,9 +145,13 @@ const NavBar = () => {
             <button
               type="button"
               onClick={toggleMobileMenu}
-              className="text-gray-300 hover:text-white focus:outline-none"
+              className="text-secondary hover:text-white focus:outline-none"
             >
-              <FaBars className="h-6 w-6 hover:text-primary" />
+              {isMobileMenuOpen ? (
+                <FaTimes className="h-6 w-6 hover:text-white" /> // Show close icon when menu is open
+              ) : (
+                <FaBars className="h-6 w-6 hover:text-white" /> // Show hamburger icon when menu is closed
+              )}
             </button>
           </div>
 
@@ -275,9 +279,10 @@ const NavBar = () => {
         </div>
 
         {/* Mobile menu */}
+        {/* Mobile menu */}
         {isMobileMenuOpen && (
           <div className="block md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-2 shadow-lg">
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gradient-to-r from-secondary to-white border-2 shadow-2xl rounded-b-xl text-center">
               {navLinks.map((link) => (
                 <NavLink
                   key={link.route}
@@ -287,6 +292,7 @@ const NavBar = () => {
                   {link.name}
                 </NavLink>
               ))}
+              {/* Dashboard link for logged-in users */}
               {user && (
                 <NavLink
                   to="/dashboard"
@@ -295,6 +301,24 @@ const NavBar = () => {
                   Dashboard
                 </NavLink>
               )}
+
+              {/* Logout for logged-in users */}
+              {user && (
+                <NavLink
+                  onClick={handleLogout}
+                  className="text-gray-700 block px-3 py-2 rounded-md text-base font-medium hover:bg-secondary hover:text-white"
+                >
+                  Logout
+                </NavLink>
+              )}
+
+              {/* Theme Toggle without circle */}
+              <div className="px-3 py-2">
+                <ThemeToggle
+                  isDarkMode={isDarkMode}
+                  setIsDarkMode={setIsDarkMode}
+                />
+              </div>
             </div>
           </div>
         )}

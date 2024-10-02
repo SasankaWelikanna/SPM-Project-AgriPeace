@@ -15,14 +15,14 @@ const ThemeToggle = ({ isDarkMode, setIsDarkMode }) => {
   return (
     <div className="flex flex-col items-center text-center">
       <div
-        className="flex items-center justify-center cursor-pointer p-2 bg-white dark:bg-gray-700 rounded-full duration-700"
+        className="flex items-center justify-center cursor-pointer p-2 bg-black/10 dark:bg-gray-700 rounded-full duration-700"
         onClick={() => setIsDarkMode(!isDarkMode)}
         aria-label="Toggle dark mode"
       >
         {isDarkMode ? (
           <FaMoon className="text-white h-6 w-6 transition duration-300 ease-in-out" />
         ) : (
-          <LuSun className="text-yellow-400 h-6 w-6 transition duration-300 ease-in-out" />
+          <LuSun className="text-orange-400 h-6 w-6 transition duration-300 ease-in-out" />
         )}
       </div>
       {/* <div className="text-center mt-1">

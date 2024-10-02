@@ -3,6 +3,9 @@ import HeroContainer from "./Hero/HeroContainer";
 import Gallery from "./Gallery/Gallery";
 import CostCalculatorSection from "./Cost Calculator/CostCalculatorSection";
 import Scroll from "../../hooks/useScroll";
+import Bar from "./HomePageItems/Bar";
+import Testimonials from "./HomePageItems/Testimonials";
+import Bar1 from "./HomePageItems/Bar1";
 
 const Home = () => {
   return (
@@ -17,6 +20,19 @@ const Home = () => {
       <div className="max-w-screen-xl mx-auto">
         <Gallery />
       </div>
+
+      <div className="mx-auto">
+        <Bar1 />
+      </div>
+
+      <div className="mx-auto">
+        <Bar />
+      </div>
+
+      <div className="mx-auto">
+        <Testimonials />
+      </div>
+
     </section>
   );
 };
