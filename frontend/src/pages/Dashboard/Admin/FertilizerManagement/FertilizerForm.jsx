@@ -105,7 +105,7 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
             </label>
             <input
               type="file"
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white"
               name="imageUrl"
               onChange={(e) => setImg(e.target.files[0])}
             />
@@ -139,7 +139,7 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
             </label>
             <input
               type="text"
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white"
               name="productName"
               placeholder="Fertilizer Name"
               onChange={handleChange}
@@ -158,7 +158,7 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
             {/* Dropdown for category */}
             <select
               name="category"
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white"
               onChange={handleChange}
               value={formData.category}
               required
@@ -185,7 +185,7 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
             </label>
             <textarea
               type="text"
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white"
               name="description"
               placeholder="Description"
               onChange={handleChange}
@@ -203,9 +203,9 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
             </label>
             <input
               type="text"
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white"
               name="quantity"
-              placeholder="Quantity"
+              placeholder="Weight"
               onChange={handleChange}
               value={formData.quantity}
               required
@@ -221,9 +221,9 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
             </label>
             <input
               type="text"
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white"
               name="price"
-              placeholder="Price"
+              placeholder="Average Price"
               onChange={handleChange}
               value={formData.price}
               required

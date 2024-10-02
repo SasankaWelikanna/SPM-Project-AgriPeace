@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import useAxiosFetch from "../../../../hooks/useAxiosFetch";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { useNavigate } from "react-router-dom";
-import Modal from "../../../../components/Modal/LargeModal";
+import LargeModal from "../../../../components/Modal/LargeModal";
+import Modal from "../../../../components/Modal/Modal";
 import SearchBar from"../../../../components/Search/SearchBar";
 import { ToastContainer, toast } from "react-toastify";
 import { MdDelete } from "react-icons/md";
@@ -150,14 +151,15 @@ function Fertilizer() {
   const totalPages = Math.ceil(filteredDataList.length / fertilizersPerPage);
 
   return (
-    <div className="mt-10 p-4 bg-gray-50">
-      <div className="bg-white shadow-md rounded-lg p-6">
-        <div className="flex justify-between items-center mb-4">
+    <div className="mt-10 p-4 bg-gray-50  dark:bg-gray-900">
+      <div className="bg-white shadow-md rounded-lg p-6  dark:bg-gray-700 ">
+        <div className="flex justify-between items-center mb-4 ">
           <div>
-            <h2 className="text-xl font-semibold text-gray-700">
+            <h2 className="text-xl font-semibold text-gray-700  dark:text-white">
               Fertilizer Details
             </h2>
-            <h6 className="text-sm text-gray-500">Manage fertilizer details</h6>
+            <h6 className="text-sm text-gray-500  dark:text-white">
+              Manage fertilizer details</h6>
           </div>
           <div className="flex space-x-4">
             <BlobProvider
@@ -197,17 +199,17 @@ function Fertilizer() {
           </div>
         </div>
 
-        {/* Add Fertilizer Modal */}
-        <Modal
+        {/* Add Fertilizer LargeModal */}
+        <LargeModal
           isOpen={addModalOpen}
           onClose={handleAddModalClose}
           title="Add Fertilizer"
         >
           <FertilizerForm handleSubmit={handleAddSubmit} />
-        </Modal>
+        </LargeModal>
 
-        {/* Edit Fertilizer Modal */}
-        <Modal
+        {/* Edit Fertilizer LargeModal */}
+        <LargeModal
           isOpen={editModalOpen}
           onClose={handleEditModalClose}
           title="Edit Fertilizer"
@@ -216,18 +218,18 @@ function Fertilizer() {
             handleSubmit={handleEditSubmit}
             initialData={selectedFertilizer}
           />
-        </Modal>
+        </LargeModal>
 
-        {/* Delete Confirmation Modal */}
+        {/* Delete Confirmation LargeModal */}
         <Modal
           isOpen={showDeleteModal}
           onClose={handleCloseDeleteModal}
           title="Confirm Delete"
         >
-          <p>Are you sure you want to delete this record?</p>
+          <p className="dark:text-white">Are you sure you want to delete this record?</p>
           <div className="mt-6 flex justify-end">
             <button
-              className="px-4 py-2 mr-4 bg-gray-300 rounded hover:bg-gray-400"
+              className="px-4 py-2 mr-4 bg-gray-300 rounded hover:bg-gray-400  dark:bg-gray-700 dark:hover:bg-gray-800 dark:text-white"
               onClick={handleCloseDeleteModal}
             >
               Cancel
@@ -243,8 +245,8 @@ function Fertilizer() {
 
         <SearchBar onSearch={handleSearch} />
 
-        <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden">
-          <thead className="bg-gray-100">
+        <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-900 dark:text-white">
+          <thead className="bg-gray-100 dark:bg-gray-800 dark:text-white">
             <tr>
               <th className="p-4 text-left">Image</th>
               <th className="p-4 text-left">Product Name</th>
