@@ -106,6 +106,7 @@ const DashboardLayout = () => {
 
   return (
     <div className={`flex ${isDarkMode ? "dark" : ""}`}>
+      <Scroll/>
       <div
         className={`${
           open ? "w-72 overflow-y-auto" : "w-[90px] overflow-auto"
