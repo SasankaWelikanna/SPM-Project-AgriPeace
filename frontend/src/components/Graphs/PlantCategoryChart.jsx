@@ -57,8 +57,10 @@ const PlantCategoryChart = () => {
           margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="category" />
-          {/* Ensure Y-axis shows only whole numbers */}
+          <XAxis
+            dataKey="category"
+            tick={{ fontSize: 10 }} // Reducing font size of category labels
+          />
           <YAxis allowDecimals={false} />
           <Tooltip />
           <Bar dataKey="quantity" fill="#50C878" />
