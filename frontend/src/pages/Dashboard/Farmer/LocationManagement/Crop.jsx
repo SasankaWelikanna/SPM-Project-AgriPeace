@@ -7,16 +7,22 @@ import CropForm from "./CropForm";
 import SearchBar from "../../../../components/Search/SearchBar";
 import { ToastContainer, toast } from "react-toastify";
 import { MdDelete, MdOutlineArrowBackIosNew } from "react-icons/md";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaFileExcel, FaFilePdf } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import * as XLSX from "xlsx";
+import { writeFile } from "xlsx";
+import CropReport from "./CropReport";
+import { BlobProvider } from "@react-pdf/renderer";
+import { HiRefresh } from "react-icons/hi";
 
 function Crop() {
   const axiosFetch = useAxiosFetch();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
+
   const { locationId } = useParams();
   const [crop, setCrop] = useState([]);
-  const [filteredCrops,setFilteredCrops] = useState([]);
+  const [filteredCrops, setFilteredCrops] = useState([]);
   const [location, setLocation] = useState("");
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -25,6 +31,12 @@ function Crop() {
   const [filteredDataList, setFilteredDataList] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+
+  //weather API
+  const [temperature, setTemperature] = useState(null);
+  const [rainfall, setRainfall] = useState(null);
+  const [humidity, setHumidity] = useState(null);
+  const [windSpeed, setWindSpeed] = useState(null);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -38,11 +50,12 @@ function Crop() {
   useEffect(() => {
     setFilteredCrops(dataList);
   }, [dataList]);
-  
 
   const fetchCrops = async () => {
     try {
-      const response = await axiosFetch.get(`/api/crops/location/${locationId}`);
+      const response = await axiosFetch.get(
+        `/api/crops/location/${locationId}`
+      );
       console.log("Fetched Crops Data:", response.data); // Debug log
       // Verify the data structure
       if (Array.isArray(response.data)) {
@@ -64,6 +77,7 @@ function Crop() {
       const response = await axiosFetch.get(`/Location/${locationId}`);
       if (response.data && response.data.city) {
         setLocation(response.data.city);
+        fetchWeatherData(response.data.city);
       } else {
         console.error("Location not found:", response.data);
         toast.error("Failed to fetch location.");
@@ -74,13 +88,66 @@ function Crop() {
     }
   };
 
+  // Fetch weather data from OpenWeatherMap API
+  const fetchWeatherData = async (city) => {
+    const apiKey = "ac180212c769edd1643ef7a93bc9d33e";
+    try {
+      if (!city) {
+        throw new Error("City name is missing");
+      }
+
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
+      );
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      if (data.main) {
+        setTemperature(data.main.temp);
+        setRainfall(data.rain ? data.rain["1h"] : 0);
+        setHumidity(data.main.humidity);
+        setWindSpeed(data.wind.speed);
+      } else {
+        throw new Error("Weather data is incomplete");
+      }
+    } catch (err) {
+      console.error("Error fetching weather data:", err);
+      toast.error(`Failed to fetch weather data: ${err.message}`);
+    }
+  };
+
   const handleSearch = (query) => {
     const filteredList = dataList.filter((crop) => {
       const cropName = `${crop.cropName}`;
       return cropName.toLowerCase().includes(query.toLowerCase());
     });
     setFilteredCrops(filteredList);
-  };  
+  };
+
+  const generateExcelFile = () => {
+    const rearrangedDataList = dataList.map((crop) => ({
+      Crop_Name: crop.cropName,
+      Crop_Type: crop.cropType,
+      Land_Size: crop.landSize,
+      Planting_Quantity: crop.plantingQuantity,
+      Expected_Quantity: crop.expectedQuantity,
+      Planting_Date: crop.plantingDate,
+      Expected_Date: crop.expectedDate,
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(rearrangedDataList);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Crop Report");
+    writeFile(wb, "crop_report.xlsx");
+  };
+
+  const handleButtonClick = () => {
+    generateExcelFile();
+  };
 
   const handleRefreshClick = () => {
     fetchCrops();
@@ -143,37 +210,57 @@ function Crop() {
   // Get current crops for pagination
   const indexOfLastCrop = currentPage * cropsPerPage;
   const indexOfFirstCrop = indexOfLastCrop - cropsPerPage;
-  const currentCrops = filteredCrops.slice(
-    indexOfFirstCrop,
-    indexOfLastCrop
-  );
+  const currentCrops = filteredCrops.slice(indexOfFirstCrop, indexOfLastCrop);
 
   const totalPages = Math.ceil(filteredCrops.length / cropsPerPage);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="mt-10 p-4 bg-gray-50">
-      <div className="bg-white shadow-md rounded-lg p-6">
+    <div className="mt-10 p-4 bg-gray-50 dark:bg-gray-900">
+      <div className="bg-white shadow-md rounded-lg p-6 dark:bg-gray-700">
         <Link to="/dashboard/location">
           <MdOutlineArrowBackIosNew className="text-3xl mb-3" />
         </Link>
         <div className="flex justify-between items-center mb-4">
           <div>
-            <h2 className="text-xl font-semibold text-gray-700">
+            <h2 className="text-xl font-semibold text-gray-700 dark:text-white">
               Crop Details - {location}
             </h2>
-            <h6 className="text-sm text-gray-500">Manage crop details</h6>
+            <h6 className="text-sm text-gray-500 dark:text-gray-200">
+              Manage crop details
+            </h6>
           </div>
           <div className="flex space-x-4">
+            <BlobProvider
+              document={<CropReport dataList={dataList} />}
+              fileName="CropReport.pdf"
+            >
+              {({ url }) => (
+                <li className="flex items-center">
+                  <a href={url} target="_blank" className="flex items-center">
+                    <FaFilePdf className="text-3xl text-red-600" />
+                  </a>
+                </li>
+              )}
+            </BlobProvider>
+            <li className="flex items-center">
+              <a
+                href="#"
+                onClick={handleButtonClick}
+                className="flex items-center"
+              >
+                <FaFileExcel className="text-3xl text-green-600" />
+              </a>
+            </li>
             <button
               className="text-blue-500 hover:underline"
               onClick={handleRefreshClick}
             >
-              Refresh
+              <HiRefresh className="text-3xl" />
             </button>
             <button
-              className="bg-blue-500 text-white py-2 px-4 rounded-lg"
+              className="bg-secondary text-white py-2 px-4 rounded-lg"
               onClick={handleAddModalOpen}
             >
               Add Crop
@@ -208,10 +295,12 @@ function Crop() {
           onClose={handleCloseDeleteModal}
           title="Confirm Delete"
         >
-          <p>Are you sure you want to delete this record?</p>
+          <p className="dark:text-white">
+            Are you sure you want to delete this record?
+          </p>
           <div className="mt-6 flex justify-end">
             <button
-              className="px-4 py-2 mr-4 bg-gray-300 rounded hover:bg-gray-400"
+              className="px-4 py-2 mr-4 bg-gray-300 rounded hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-800 dark:text-white"
               onClick={handleCloseDeleteModal}
             >
               Cancel
@@ -225,58 +314,85 @@ function Crop() {
           </div>
         </Modal>
 
+        {/* Weather Data */}
+        <div class="max-w-sm p-4 bg-white rounded-md shadow-md dark:bg-gray-800">
+          <h3 class="text-xl font-semibold text-gray-700 dark:text-white mb-2">
+            Current Weather
+          </h3>
+          <div class="text-center mb-4">
+            <p class="text-lg font-bold text-gray-900 dark:text-white">
+              <strong>Temperature:</strong>{" "}
+              {temperature ? `${temperature} °C` : "Loading..."}
+            </p>
+            <p class="text-sm text-gray-500 dark:text-gray-300">
+              <strong>Rainfall:</strong>{" "}
+              {rainfall !== null ? `${rainfall} mm` : "Loading..."}
+            </p>
+          </div>
+          <div class="text-sm text-gray-600 dark:text-gray-300">
+            <p>
+              <strong>Humidity:</strong>{" "}
+              {humidity !== null ? `${humidity} %` : "Loading..."}
+            </p>
+            <p>
+              <strong>Wind Speed:</strong>{" "}
+              {windSpeed !== null ? `${windSpeed} km/h` : "Loading..."}
+            </p>
+          </div>
+        </div>
+
         <SearchBar onSearch={handleSearch} />
 
-        <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden">
-            <thead className="bg-gray-100">
-                <tr>
-                <th className="p-4 text-left">Crop Name</th>
-                <th className="p-4 text-left">Crop Type</th>
-                <th className="p-4 text-left">Land Size</th>
-                <th className="p-4 text-left">Planting Quantity</th>
-                <th className="p-4 text-left">Expected Quantity</th>
-                <th className="p-4 text-left">Planting Date</th>
-                <th className="p-4 text-left">Expected Date</th>
-                <th className="p-4 text-left">Action</th>
+        <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-900">
+          <thead className="bg-gray-100 dark:bg-gray-800 dark:text-white">
+            <tr>
+              <th className="p-4 text-left">Crop Name</th>
+              <th className="p-4 text-left">Crop Type</th>
+              <th className="p-4 text-left">Land Size</th>
+              <th className="p-4 text-left">Planting Quantity</th>
+              <th className="p-4 text-left">Expected Quantity</th>
+              <th className="p-4 text-left">Planting Date</th>
+              <th className="p-4 text-left">Expected Date</th>
+              <th className="p-4 text-left">Action</th>
+            </tr>
+          </thead>
+          <tbody className="dark:text-white">
+            {currentCrops.length ? (
+              currentCrops.map((crop) => (
+                <tr key={crop._id} className="border-b">
+                  <td className="p-4">{crop.cropName}</td>
+                  <td className="p-4">{crop.cropType}</td>
+                  <td className="p-4">{crop.landSize}</td>
+                  <td className="p-4">{crop.plantingQuantity}</td>
+                  <td className="p-4">{crop.expectedQuantity}</td>
+                  <td className="p-4">{crop.plantingDate}</td>
+                  <td className="p-4">{crop.expectedDate}</td>
+                  <td className="p-4 flex space-x-2">
+                    <button
+                      className="text-blue-500 hover:underline"
+                      onClick={() => handleEditModalOpen(crop)}
+                    >
+                      <FaEdit className="text-3xl" />
+                    </button>
+                    <button
+                      className="text-red-500 hover:underline"
+                      onClick={() => handleShowDeleteModal(crop._id)}
+                    >
+                      <MdDelete className="text-3xl" />
+                    </button>
+                  </td>
                 </tr>
-            </thead>
-            <tbody>
-                {currentCrops.length ? (
-                currentCrops.map((crop) => (
-                    <tr key={crop._id} className="border-b">
-                    <td className="p-4">{crop.cropName}</td>
-                    <td className="p-4">{crop.cropType}</td>
-                    <td className="p-4">{crop.landSize}</td>
-                    <td className="p-4">{crop.plantingQuantity}</td>
-                    <td className="p-4">{crop.expectedQuantity}</td>
-                    <td className="p-4">{crop.plantingDate}</td>
-                    <td className="p-4">{crop.expectedDate}</td>
-                    <td className="p-4 flex space-x-2">
-                        <button
-                        className="text-blue-500 hover:underline"
-                        onClick={() => handleEditModalOpen(crop)}
-                        >
-                        <FaEdit className="text-3xl" />
-                        </button>
-                        <button
-                        className="text-red-500 hover:underline"
-                        onClick={() => handleShowDeleteModal(crop._id)}
-                        >
-                        <MdDelete className="text-3xl" />
-                        </button>
-                    </td>
-                    </tr>
-                ))
-                ) : (
-                <tr>
-                    <td colSpan="8" className="p-4 text-center text-gray-500">
-                    No Data
-                    </td>
-                </tr>
-                )}
-            </tbody>
-            </table>
-          {/* Pagination */}
+              ))
+            ) : (
+              <tr>
+                <td colSpan="8" className="p-4 text-center text-gray-500">
+                  No Data
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+        {/* Pagination */}
         <div className="flex justify-center mt-4">
           <button
             onClick={() => paginate(currentPage - 1)}

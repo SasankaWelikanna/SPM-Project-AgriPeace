@@ -7,8 +7,13 @@ import LocationForm from "./LocationForm";
 import SearchBar from "../../../../components/Search/SearchBar";
 import { ToastContainer, toast } from "react-toastify";
 import { MdDelete } from "react-icons/md";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaFileExcel, FaFilePdf } from "react-icons/fa";
 import Pagination from "../../../../components/Pagination/Pagination";
+import { BlobProvider } from "@react-pdf/renderer";
+import LocationReport from "./LocationReport";
+import * as XLSX from "xlsx";
+import { writeFile } from "xlsx";
+import { HiRefresh } from "react-icons/hi";
 
 function Location() {
   const axiosFetch = useAxiosFetch();
@@ -55,6 +60,28 @@ function Location() {
       return city.toLowerCase().includes(query.toLowerCase());
     });
     setFilteredDataList(filteredList);
+  };
+
+  const generateExcelFile = () => {
+    const rearrangedDataList = dataList.map((location) => ({
+      Province: location.province,
+      District: location.district,
+      City: location.city,
+      Latitude: location.latitude,
+      Longitude: location.longitude,
+      Area_Size: location.areaSize,
+      Soil_Type: location.soilType,
+      Irrigation_Type: location.irrigationType
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(rearrangedDataList);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Location Report");
+    writeFile(wb, "location_report.xlsx");
+  };
+
+  const handleButtonClick = () => {
+    generateExcelFile();
   };
 
   const handleRefreshClick = () => {
@@ -129,24 +156,45 @@ function Location() {
   const totalPages = Math.ceil(filteredDataList.length / locationsPerPage);
   
   return (
-    <div className="mt-10 p-4 bg-gray-50">
-      <div className="bg-white shadow-md rounded-lg p-6">
+    <div className="mt-10 p-4 bg-gray-50 dark:bg-gray-900">
+      <div className="bg-white shadow-md rounded-lg p-6 dark:bg-gray-700">
         <div className="flex justify-between items-center mb-4">
           <div>
-            <h2 className="text-xl font-semibold text-gray-700">
+            <h2 className="text-xl font-semibold text-gray-700 dark:text-white">
               Location Details
             </h2>
-            <h6 className="text-sm text-gray-500">Manage location details</h6>
+            <h6 className="text-sm text-gray-500 dark:text-gray-200">Manage location details</h6>
           </div>
           <div className="flex space-x-4">
+            <BlobProvider
+              document={<LocationReport dataList={dataList} />}
+              fileName="LocationReport.pdf"
+            >
+              {({ url }) => (
+                <li className="flex items-center">
+                  <a href={url} target="_blank" className="flex items-center">
+                    <FaFilePdf className="text-3xl text-red-600" />
+                  </a>
+                </li>
+              )}
+            </BlobProvider>
+            <li className="flex items-center">
+              <a
+                href="#"
+                onClick={handleButtonClick}
+                className="flex items-center"
+              >
+                <FaFileExcel className="text-3xl text-green-600" />
+              </a>
+            </li>
             <button
               className="text-blue-500 hover:underline"
               onClick={handleRefreshClick}
             >
-              Refresh
+              <HiRefresh className="text-3xl" />
             </button>
             <button
-              className="bg-blue-500 text-white py-2 px-4 rounded-lg"
+              className="bg-secondary text-white py-2 px-4 rounded-lg"
               onClick={handleAddModalOpen}
             >
               Add Location
@@ -181,10 +229,10 @@ function Location() {
           onClose={handleCloseDeleteModal}
           title="Confirm Delete"
         >
-          <p>Are you sure you want to delete this record?</p>
+          <p className="dark:text-white">Are you sure you want to delete this record?</p>
           <div className="mt-6 flex justify-end">
             <button
-              className="px-4 py-2 mr-4 bg-gray-300 rounded hover:bg-gray-400"
+              className="px-4 py-2 mr-4 bg-gray-300 rounded hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-800 dark:text-white"
               onClick={handleCloseDeleteModal}
             >
               Cancel
@@ -200,8 +248,8 @@ function Location() {
 
         <SearchBar onSearch={handleSearch} />
 
-        <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden">
-          <thead className="bg-gray-100">
+        <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-900">
+          <thead className="bg-gray-100 dark:bg-gray-800 dark:text-white">
             <tr>
               <th className="p-4 text-left">Province</th>
               <th className="p-4 text-left">District</th>
@@ -214,7 +262,7 @@ function Location() {
               <th className="p-4 text-left">Action</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="dark:text-white">
             {currentLocation.length ? (
               currentLocation.map((location) => (
                 <tr key={location._id} className="border-b">
