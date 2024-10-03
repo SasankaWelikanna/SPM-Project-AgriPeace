@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import useUser from "../../../hooks/useUser";
 import useAxiosFetch from "../../../hooks/useAxiosFetch";
+import { Link } from "react-router-dom";
 import AdminStats from "./AdminStats";
 import PlantCount from "../../../components/Counts/PlantCount";
 import DiseaseCount from "../../../components/Counts/DiseaseCount";
 import FertilizerCount from "../../../components/Counts/FertilizerCount";
 import PlantSlider from "../../../components/Sliders/PlantSlider";
 import PlantCategoryChart from "../../../components/Graphs/PlantCategoryChart";
-import FertilizerCategoryChart from "../../../components/Graphs/FertilizerCategoryChart";
 import FertilizerCategoryPieChart from "../../../components/Graphs/FertilizercategoryPieChart";
+import { FaArrowRight } from "react-icons/fa";
 
 const AdminHome = () => {
   const { currentUser } = useUser();
@@ -44,20 +45,36 @@ const AdminHome = () => {
         <DiseaseCount />
         <FertilizerCount />
       </div>
-      <div className="flex justify-between sm:flex-row gap-20 w-full">
-        <div data-aos="slide-right" data-aos-duration="1500">
-          <FertilizerCategoryPieChart className="w-full sm:w-1/2" />
+      <div className="flex justify-between sm:flex-row gap-20 ">
+        <div
+          className="dark:bg-gray-800 rounded-xl mt-14 pt-4 pr-8 shadow-xl"
+          data-aos="slide-right"
+          data-aos-duration="1500"
+        >
+          <FertilizerCategoryPieChart className=" sm:w-1/2" />
         </div>
         <div
-          className="sm:w-1/2"
+          className="sm:w-1/2 mt-10"
           data-aos="slide-left"
           data-aos-duration="1500"
         >
-          <PlantSlider />
+          <div className="dark:bg-gray-800 rounded-lg w-fit shadow-xl">
+            <h3 className="font-bold my-2 mx-4 mt-4 dark:text-white">
+              <Link to={"/dashboard/manage-plant"}>
+                <div className="flex gap-x-3 items-center py-2">
+                  <h3 className="font-bold dark:text-white">
+                    See About Plants
+                  </h3>
+                  <FaArrowRight className="text-secondary" />
+                </div>
+              </Link>
+            </h3>
+            <PlantSlider />
+          </div>
         </div>
       </div>
       <div
-        className="flex flex-col sm:flex-row gap-4 w-full"
+        className="dark:bg-gray-800 rounded-xl my-4 pt-4 pr-8 shadow-xl"
         data-aos="slide-up"
         data-aos-duration="1500"
       >
