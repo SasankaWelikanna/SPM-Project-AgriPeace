@@ -254,7 +254,6 @@ function Plant() {
           onPageChange={(page) => setCurrentPage(page)}
         />
       </div>
-      <ToastContainer />
     </div>
   );
 }

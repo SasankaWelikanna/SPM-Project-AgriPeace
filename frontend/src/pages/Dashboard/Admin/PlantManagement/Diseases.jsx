@@ -339,7 +339,6 @@ function Diseases() {
           </button>
         </div>
       </div>
-      <ToastContainer />
     </div>
   );
 }

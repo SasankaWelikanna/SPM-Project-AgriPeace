@@ -29,32 +29,37 @@ const Weather = () => {
     <div className="mt-5">
       {error && <p className="text-red-500">{error}</p>}
       {weather ? (
-        <div className="weather-card bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+        <div className="weather-card bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-fit">
           <h2 className="text-xl font-bold dark:text-white text-center mb-2">
             Current Weather
           </h2>
-          <h3 className="text-lg font-semibold dark:text-white">
-            {weather.name}
-          </h3>
-          <p className="text-sm italic text-gray-600 dark:text-gray-300">
-            {weather.weather[0].description}
-          </p>
-          <div className="flex items-center mt-3">
-            <img
-              className="w-20 h-20"
-              src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}
-              alt={weather.weather[0].description}
-            />
-            <div className="ml-4">
-              <p className="text-xl font-bold dark:text-white">
-                {weather.main.temp}°C
+          <div className="flex flex-row gap-5">
+            <div className="flex flex-col">
+              <h3 className="text-lg font-semibold dark:text-white">
+                {weather.name}
+              </h3>
+
+              <p className="text-sm italic text-gray-600 dark:text-gray-300">
+                {weather.weather[0].description}
               </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Humidity: {weather.main.humidity}%
-              </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Wind Speed: {weather.wind.speed} m/s
-              </p>
+            </div>
+            <div className="flex items-center mt-3">
+              <img
+                className="w-20 h-20"
+                src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}
+                alt={weather.weather[0].description}
+              />
+              <div className="ml-4">
+                <p className="text-xl font-bold dark:text-white">
+                  {weather.main.temp}°C
+                </p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  Humidity: {weather.main.humidity}%
+                </p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  Wind Speed: {weather.wind.speed} m/s
+                </p>
+              </div>
             </div>
           </div>
         </div>
