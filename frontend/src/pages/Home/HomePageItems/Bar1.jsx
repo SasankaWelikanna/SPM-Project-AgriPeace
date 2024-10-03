@@ -11,7 +11,7 @@ const Bar1 = () => {
       <h1 className='text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-secondary to-yellow-500 text-center lg:text-left'>
           Welcome to AgriPeace: Farm with Ease
         </h1>
-        <p className='mt-4 text-lg text-gray-600 text-center lg:text-left dark:text-white'>
+        <p className='mt-4 text-lg text-gray-600 text-center lg:text-left dark:text-white py-5'>
           Our agriculture management system provides innovative solutions for modern farming. 
           From tracking fertilizer distribution to recognizing plant diseases, we aim to make farming more efficient and sustainable.
         </p>

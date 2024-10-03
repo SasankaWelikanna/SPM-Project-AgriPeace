@@ -85,7 +85,7 @@ const Profile = () => {
 
   return (
     <div>
-      <h1 className="mt-5 text-4xl font-bold text-center">
+      <h1 className="mt-5 text-4xl font-bold text-center dark:text-white">
         Update <span className="text-secondary">Profile</span>
       </h1>
       <p className="text-center">Change your details</p>
