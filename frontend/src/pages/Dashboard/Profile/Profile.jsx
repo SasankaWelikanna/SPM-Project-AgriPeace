@@ -92,9 +92,9 @@ const Profile = () => {
 
       <section>
         <div className="px-4 py-16 mx-auto sm:px-6 lg:px-8">
-          <div className="p-8 bg-white rounded-lg shadow-lg lg:p-12">
+          <div className="p-8 bg-white dark:bg-slate-700 rounded-lg shadow-lg lg:p-12">
             <form className="space-y-4" onSubmit={handleFormSubmit}>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 dark:text-white">
                 <div>
                   <label
                     htmlFor="photoUrl"
@@ -141,7 +141,7 @@ const Profile = () => {
                       Name
                     </label>
                     <input
-                      className="w-full p-3 mt-1 text-sm border rounded-lg outline-none border-secondary"
+                      className="w-full p-3 mt-1 text-sm border rounded-lg outline-none border-secondary dark:bg-slate-800"
                       placeholder="Your Name"
                       type="text"
                       required
@@ -172,13 +172,13 @@ const Profile = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 dark:text-white">
                 <div>
                   <label className="ml-2" htmlFor="phone">
                     Phone
                   </label>
                   <input
-                    className="w-full p-3 mt-3 text-sm border rounded-lg outline-none border-secondary"
+                    className="w-full p-3 mt-3 text-sm border rounded-lg outline-none border-secondary dark:bg-slate-800"
                     placeholder="Phone Number"
                     type="tel"
                     required
@@ -193,7 +193,7 @@ const Profile = () => {
                     Address
                   </label>
                   <input
-                    className="w-full p-3 mt-3 text-sm border rounded-lg outline-none border-secondary"
+                    className="w-full p-3 mt-3 text-sm border rounded-lg outline-none border-secondary dark:bg-slate-800"
                     placeholder="Address"
                     type="text"
                     value={formData.address}
