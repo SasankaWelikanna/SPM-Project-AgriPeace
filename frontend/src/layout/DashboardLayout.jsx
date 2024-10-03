@@ -13,6 +13,7 @@ import Swal from "sweetalert2";
 import Scroll from "../hooks/useScroll";
 import Loader from "../components/Loader/Loader";
 import ThemeToggle from "../components/ThemeToggle/ThemeToggle";
+import { ToastContainer, toast } from "react-toastify";
 
 const adminNavItems = [
   {
@@ -106,7 +107,7 @@ const DashboardLayout = () => {
 
   return (
     <div className={`flex ${isDarkMode ? "dark" : ""}`}>
-      <Scroll/>
+      <Scroll />
       <div
         className={`${
           open ? "w-72 overflow-y-auto" : "w-[90px] overflow-auto"
@@ -283,6 +284,7 @@ const DashboardLayout = () => {
           <ThemeToggle isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
         </div> */}
       </div>
+      <ToastContainer theme={isDarkMode ? "dark" : "light"} />
     </div>
   );
 };

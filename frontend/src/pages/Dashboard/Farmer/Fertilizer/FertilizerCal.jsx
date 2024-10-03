@@ -28,12 +28,25 @@ function FertilizerCalculator() {
     onion: ["Urea", "Phosphorus", "Potash", "Sulfur"],
     spinach: ["Ammonium Nitrate", "Phosphate", "Potassium", "Magnesium"],
     cabbage: ["Urea", "Phosphorus", "Potassium", "Boron"],
-    lettuce: ["Nitrogen", "Phosphorus", "Potassium", "Calcium"]
+    lettuce: ["Nitrogen", "Phosphorus", "Potassium", "Calcium"],
   };
 
   const plantTypes = [
-    "corn", "wheat", "rice", "sorghum", "barley", "oats", "sugarcane", "maize",
-    "potato", "tomato", "carrot", "onion", "spinach", "cabbage", "lettuce"
+    "corn",
+    "wheat",
+    "rice",
+    "sorghum",
+    "barley",
+    "oats",
+    "sugarcane",
+    "maize",
+    "potato",
+    "tomato",
+    "carrot",
+    "onion",
+    "spinach",
+    "cabbage",
+    "lettuce",
   ];
 
   useEffect(() => {
@@ -63,7 +76,8 @@ function FertilizerCalculator() {
       baseQuantity *= 1.1;
     }
 
-    const fertilizerFactor = fertilizer === "Nitrogen" ? 1.2 : fertilizer === "Phosphorus" ? 1.1 : 1.0;
+    const fertilizerFactor =
+      fertilizer === "Nitrogen" ? 1.2 : fertilizer === "Phosphorus" ? 1.1 : 1.0;
 
     const totalQuantity = (baseQuantity + areaFactor) * fertilizerFactor;
     setFertilizerQuantity(totalQuantity.toFixed(2));
@@ -71,7 +85,7 @@ function FertilizerCalculator() {
   };
 
   return (
-    <div className="mt-10 p-4 bg-gray-50 dark:bg-gray-900"> 
+    <div className="mt-10 p-4 bg-gray-50 dark:bg-gray-900">
       <div className="bg-white shadow-md rounded-lg p-6 dark:bg-gray-700">
         <Link to="/dashboard/user-fertilizer">
           <MdOutlineArrowBackIosNew className="text-3xl mb-4" />
@@ -175,8 +189,6 @@ function FertilizerCalculator() {
             </p>
           </div>
         )}
-
-        <ToastContainer />
       </div>
     </div>
   );
