@@ -13,7 +13,8 @@ import Swal from "sweetalert2";
 import Scroll from "../hooks/useScroll";
 import Loader from "../components/Loader/Loader";
 import ThemeToggle from "../components/ThemeToggle/ThemeToggle";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import { MdOutlineMenuOpen } from "react-icons/md";
 
 const adminNavItems = [
   {
@@ -113,7 +114,11 @@ const DashboardLayout = () => {
           open ? "w-72 overflow-y-auto" : "w-[90px] overflow-auto"
         } bg-white h-screen p-5 md:block hidden pt-8 relative duration-300 dark:bg-gray-700 shadow-lg`}
       >
-        <div className="flex gap-x-4 items-center">
+        <div className="flex gap-x-3 items-center">
+          <MdOutlineMenuOpen
+            onClick={() => setOpen(!open)}
+            className="cursor-pointer text-2xl text-secondary"
+          />
           <img
             onClick={() => setOpen(!open)}
             src={logo}

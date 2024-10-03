@@ -20,32 +20,23 @@ const CurrentDateTime = () => {
     return "Good Evening";
   };
 
-  const formatDate = () => {
-    return dateTime.toLocaleString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
-  const formatTime = () => {
-    return dateTime.toLocaleString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: true,
-    });
-  };
-
   const isDayTime = () => {
     const hour = dateTime.getHours();
     return hour >= 6 && hour < 18; // Consider daytime from 6 AM to 6 PM
   };
 
   return (
-    <div className="p-8 bg-white rounded-lg shadow-md text-center mt-5 dark:bg-gray-800 dark:text-white w-fit flex flex-col items-center justify-center">
-      <div className="text-3xl ">{formatDate()}</div>
-      <div className="text-lg">{formatTime()}</div>
+    <div className="p-4 bg-white rounded-lg shadow-md text-center mt-5 dark:bg-gray-800 dark:text-white flex flex-col justify-center items-center">
+      <h2 className="text-lg md:text-xl lg:text-2xl font-bold mt-2">
+        {getGreeting()}
+      </h2>
+      <div className="flex justify-center items-center mt-4">
+        {isDayTime() ? (
+          <FaSun className="text-yellow-500  sm:text-7xl md:text-7xl" />
+        ) : (
+          <FaMoon className="text-blue-500  sm:text-7xl md:text-7xl" />
+        )}
+      </div>
     </div>
   );
 };
