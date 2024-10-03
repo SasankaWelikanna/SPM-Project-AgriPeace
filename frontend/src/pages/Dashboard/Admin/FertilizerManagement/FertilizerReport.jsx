@@ -125,6 +125,15 @@ const styles = StyleSheet.create({
   },
 });
 
+// Pagination function to split dataList into chunks of 8
+const chunkDataList = (dataList, size) => {
+  const chunked = [];
+  for (let i = 0; i < dataList.length; i += size) {
+    chunked.push(dataList.slice(i, i + size));
+  }
+  return chunked;
+};
+
 const Footer = () => (
   <Text style={styles.footer}>
     © 2024 www.agripeace.lk copyright all right reserved.
@@ -136,17 +145,25 @@ const FertilizerReport = ({ dataList }) => {
     timeZone: "Asia/Colombo",
   });
 
+  const dataChunks = chunkDataList(dataList, 8); // Split the dataList into chunks of 8 records
+
   return (
     <Document>
-      <Page size="Letter" orientation="landscape" style={styles.page}>
-        <View style={styles.section}>
-          <View style={styles.header}>
-            <View style={styles.headerTextContainer}>
-              <Image src={logo} style={styles.logo} />
-            </View>
-            <Text style={styles.headerText}>{reportDateTime}</Text>
-          </View>
-          <Text style={styles.heading}>Fertilizer Details</Text>
+      {dataChunks.map((chunk, pageIndex) => (
+        <Page key={pageIndex} size="Letter" orientation="landscape" style={styles.page}>
+          {pageIndex === 0 && (
+            // Only render the header and signature once, on the first page
+            <>
+              <View style={styles.header}>
+                <View style={styles.headerTextContainer}>
+                  <Image src={logo} style={styles.logo} />
+                </View>
+                <Text style={styles.headerText}>{reportDateTime}</Text>
+              </View>
+              <Text style={styles.heading}>Fertilizer Details</Text>
+            </>
+          )}
+
           <View style={styles.table}>
             <View style={styles.tableRow}>
               <Text style={styles.tableColHeader}>Product Name</Text>
@@ -155,25 +172,29 @@ const FertilizerReport = ({ dataList }) => {
               <Text style={styles.tableColHeader}>Weight (kg)</Text>
               <Text style={styles.tableColHeader}>Average Price (Rs)</Text>
             </View>
-            {dataList.map((fertilizer, index) => (
+            {chunk.map((fertilizer, index) => (
               <View key={index} style={styles.tableRow}>
                 <Text style={styles.tableCol}>{fertilizer.productName}</Text>
                 <Text style={styles.tableCol}>{fertilizer.category}</Text>
-                <Text style={styles.tableColDescription}>{fertilizer.description}</Text>
+                <Text style={styles.tableColDescription}>
+                  {fertilizer.description}
+                </Text>
                 <Text style={styles.tableCol}>{fertilizer.quantity}</Text>
                 <Text style={styles.tableCol}>{fertilizer.price}</Text>
               </View>
             ))}
           </View>
-          <View style={styles.signatureContainer}>
+
+          {pageIndex === dataChunks.length - 1 && (
+            // Render the signature only on the last page
             <View style={styles.signatureContainerCenter}>
               <View style={styles.signatureLine} />
               <Text style={styles.signatureText}>Signature</Text>
             </View>
-          </View>
-        </View>
-        <Footer />
-      </Page>
+          )}
+          <Footer />
+        </Page>
+      ))}
     </Document>
   );
 };
