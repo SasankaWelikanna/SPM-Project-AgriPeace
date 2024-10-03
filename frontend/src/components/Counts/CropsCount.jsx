@@ -22,7 +22,7 @@ const CropsCount = () => {
 
   return (
     <div>
-      <div className=" relative w-96 gap-4 px-4 mt-8 sm:grid-cols-4 sm:px-8">
+      <div className=" relative w-96 gap-4  mt-8 sm:grid-cols-4 sm:px-8">
         <div className="flex items-center bg-white border rounded-sm overflow-hidden shadow dark:bg-gray-800">
           <div className="p-4 bg-green-400">
             <RiPlantFill className="text-5xl text-white" />

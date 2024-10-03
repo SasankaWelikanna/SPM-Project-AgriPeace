@@ -121,7 +121,7 @@ function Fertilizer() {
     <div className="mt-10 p-4 bg-gray-50 dark:bg-gray-900">
       <div className="bg-white shadow-md rounded-lg p-6 dark:bg-gray-700">
         <div className="flex justify-between items-center mb-4">
-          <div>
+          <div data-aos="flip-up" data-aos-duration="1000">
             <h2 className="text-xl font-semibold text-gray-700 dark:text-white">
               Fertilizer Details
             </h2>
@@ -131,16 +131,21 @@ function Fertilizer() {
           </div>
 
           {/* Button to access the Fertilizer Calculator*/}
-
-          <button
-            onClick={() => navigate(`/dashboard/fertilizer-cal`)}
-            className="bg-secondary hover:scale-105 text-white py-2 px-4 rounded-lg"
-          >
-            Fertilizer Calculator
-          </button>
+          <div data-aos="flip-up" data-aos-duration="1000">
+            <button
+              onClick={() => navigate(`/dashboard/fertilizer-cal`)}
+              className="bg-secondary hover:scale-105 text-white py-2 px-4 rounded-lg"
+            >
+              Fertilizer Calculator
+            </button>
+          </div>
         </div>
 
-        <div className="mb-4 flex justify-between items-center">
+        <div
+          className="mb-4 flex flex-col sm:flex-row justify-between items-center"
+          data-aos="flip-up"
+          data-aos-duration="1000"
+        >
           <select
             onChange={handleCategoryChange}
             value={selectedCategory}

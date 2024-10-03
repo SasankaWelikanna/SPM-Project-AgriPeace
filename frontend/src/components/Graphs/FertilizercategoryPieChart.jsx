@@ -60,7 +60,7 @@ const FertilizerCategoryPieChart = () => {
   const onPieLeave = () => setActiveIndex(-1);
 
   return (
-    <div className="flex flex-col md:flex-row ml-12 relative w-full px-4 mt-14 shadow-md h-min">
+    <div className="flex flex-col md:flex-row ml-12 relative w-full px-4  h-min">
       <div className="w-full md:w-2/3 ">
         <h3 className="font-bold text-center dark:text-white mb-4 text-lg md:text-xl">
           Fertilizers by Category
