@@ -16,6 +16,7 @@ const DiseaseForm = ({ handleSubmit, initialData }) => {
     fertilizers: [],
   });
   const [uploading, setUploading] = useState(false);
+  const [formErrors, setFormErrors] = useState({});
 
   useEffect(() => {
     if (img) {
@@ -93,9 +94,29 @@ const DiseaseForm = ({ handleSubmit, initialData }) => {
     }));
   };
 
+  const validateForm = () => {
+    const errors = {};
+    const nameRegex = /^[A-Za-z\s]+$/;
+
+    // Validate disease name
+    if (!formData.name || !nameRegex.test(formData.name)) {
+      errors.name = "Disease name must contain only letters.";
+    }
+
+    // Validate fertilizers
+    if (formData.fertilizers.some((fertilizer) => fertilizer.trim() === "")) {
+      errors.fertilizers = "Fertilizers cannot contain empty strings.";
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0; // Return true if no errors
+  };
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    handleSubmit(formData);
+    if (validateForm()) {
+      handleSubmit(formData);
+    }
   };
 
   return (
@@ -135,13 +156,18 @@ const DiseaseForm = ({ handleSubmit, initialData }) => {
             </label>
             <input
               type="text"
-              className="w-full p-2 border border-gray-300 rounded-md  dark:bg-gray-800 dark:text-white"
+              className={`w-full p-2 border ${
+                formErrors.name ? "border-red-500" : "border-gray-300"
+              } rounded-md dark:bg-gray-800 dark:text-white`}
               name="name"
               placeholder="Disease Name"
               onChange={handleChange}
               value={formData.name}
               required
             />
+            {formErrors.name && (
+              <p className="text-red-500 text-sm">{formErrors.name}</p>
+            )}
           </div>
           <div className="mb-4">
             <label
@@ -221,7 +247,11 @@ const DiseaseForm = ({ handleSubmit, initialData }) => {
               <div key={index} className="flex items-center mb-2">
                 <input
                   type="text"
-                  className="w-full p-2 border border-gray-300 rounded-md  dark:bg-gray-800 dark:text-white"
+                  className={`w-full p-2 border ${
+                    formErrors.fertilizers
+                      ? "border-red-500"
+                      : "border-gray-300"
+                  } rounded-md dark:bg-gray-800 dark:text-white`}
                   placeholder="Fertilizer"
                   value={fertilizer}
                   onChange={(e) => handleFertilizersChange(e, index)}
@@ -235,10 +265,13 @@ const DiseaseForm = ({ handleSubmit, initialData }) => {
                 </button>
               </div>
             ))}
+            {formErrors.fertilizers && (
+              <p className="text-red-500 text-sm">{formErrors.fertilizers}</p>
+            )}
             <button
               type="button"
               onClick={handleAddFertilizer}
-              className="mt-2 px-4 py-2 border border-secondary  text-secondary rounded hover:text-white  hover:bg-green-600"
+              className="mt-2 px-4 py-2 border border-secondary  text-secondary rounded hover:text-white  hover:bg-secondary"
             >
               Add Fertilizer
             </button>
@@ -246,16 +279,12 @@ const DiseaseForm = ({ handleSubmit, initialData }) => {
         </div>
       </div>
 
-      {/* Submit Button */}
-      <div className="flex justify-end">
-        <button
-          type="submit"
-          className="px-4 py-2 bg-secondary text-white rounded hover:bg-green-600"
-          disabled={uploading}
-        >
-          Submit
-        </button>
-      </div>
+      <button
+        type="submit"
+        className="w-full px-4 py-2 bg-secondary text-white rounded hover:bg-green-700 "
+      >
+        {initialData ? "Update Disease" : "Add Disease"}
+      </button>
     </form>
   );
 };

@@ -22,7 +22,7 @@ const LocationCount = () => {
 
   return (
     <div>
-      <div className=" gap-4 relative w-full px-4 mt-8 sm:grid-cols-4 sm:px-8">
+      <div className=" gap-4 relative w-96 px-4 mt-8 sm:grid-cols-4 sm:px-8">
         <div className="flex items-center bg-white border rounded-sm overflow-hidden shadow dark:bg-gray-800">
           <div className="p-4 bg-green-400">
             <GiField className="text-5xl text-white" />

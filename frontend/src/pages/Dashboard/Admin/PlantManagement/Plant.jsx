@@ -403,8 +403,6 @@ function Plant() {
           onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
         />
       </div>
-
-      <ToastContainer />
     </div>
   );
 }

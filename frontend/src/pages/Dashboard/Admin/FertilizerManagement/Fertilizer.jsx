@@ -4,7 +4,7 @@ import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { useNavigate } from "react-router-dom";
 import LargeModal from "../../../../components/Modal/LargeModal";
 import Modal from "../../../../components/Modal/Modal";
-import SearchBar from"../../../../components/Search/SearchBar";
+import SearchBar from "../../../../components/Search/SearchBar";
 import { ToastContainer, toast } from "react-toastify";
 import { MdDelete } from "react-icons/md";
 import * as XLSX from "xlsx";
@@ -15,7 +15,6 @@ import FertilizerForm from "./FertilizerForm";
 import FertilizerReport from "./FertilizerReport";
 import { BlobProvider } from "@react-pdf/renderer";
 import Pagination from "../../../../components/Pagination/Pagination"; // Import the Pagination component
-
 
 function Fertilizer() {
   const axiosFetch = useAxiosFetch();
@@ -30,9 +29,9 @@ function Fertilizer() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
 
-   // Pagination state
-   const [currentPage, setCurrentPage] = useState(1);
-   const [fertilizersPerPage] = useState(3); // Adjust as needed
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [fertilizersPerPage] = useState(3); // Adjust as needed
 
   useEffect(() => {
     fetchFertilizers();
@@ -71,14 +70,12 @@ function Fertilizer() {
       Quantity: fertilizer.quantity,
       Price: fertilizer.price,
     }));
-  
+
     const ws = XLSX.utils.json_to_sheet(rearrangedDataList);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Fertilizer Report");
     writeFile(wb, "fertilizer_report.xlsx");
   };
-  
-
 
   const handleRefreshClick = () => {
     fetchFertilizers();
@@ -159,7 +156,8 @@ function Fertilizer() {
               Fertilizer Details
             </h2>
             <h6 className="text-sm text-gray-500  dark:text-white">
-              Manage fertilizer details</h6>
+              Manage fertilizer details
+            </h6>
           </div>
           <div className="flex space-x-4">
             <BlobProvider
@@ -226,7 +224,9 @@ function Fertilizer() {
           onClose={handleCloseDeleteModal}
           title="Confirm Delete"
         >
-          <p className="dark:text-white">Are you sure you want to delete this record?</p>
+          <p className="dark:text-white">
+            Are you sure you want to delete this record?
+          </p>
           <div className="mt-6 flex justify-end">
             <button
               className="px-4 py-2 mr-4 bg-gray-300 rounded hover:bg-gray-400  dark:bg-gray-700 dark:hover:bg-gray-800 dark:text-white"
@@ -277,26 +277,26 @@ function Fertilizer() {
                   <td className="p-4">{fertilizer.price}</td>
 
                   <td className="p-4">
-                  <div className="flex space-x-2">
-                        <button
-                          className="text-3xl text-blue-600 hover:text-blue-800"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleEditModalOpen(fertilizer);
-                          }}
-                        >
-                          <FaEdit />
-                        </button>
-                        <button
-                          className="text-3xl text-red-600 hover:text-red-800"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleShowDeleteModal(fertilizer._id);
-                          }}
-                        >
-                          <MdDelete />
-                        </button>
-                      </div>
+                    <div className="flex space-x-2">
+                      <button
+                        className="text-3xl text-blue-600 hover:text-blue-800"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEditModalOpen(fertilizer);
+                        }}
+                      >
+                        <FaEdit />
+                      </button>
+                      <button
+                        className="text-3xl text-red-600 hover:text-red-800"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleShowDeleteModal(fertilizer._id);
+                        }}
+                      >
+                        <MdDelete />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))
@@ -316,18 +316,6 @@ function Fertilizer() {
           onPageChange={setCurrentPage}
         />
       </div>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
     </div>
   );
 }
