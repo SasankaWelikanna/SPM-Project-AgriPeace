@@ -25,6 +25,7 @@ const CostCalculator = () => {
   const [searchTerm, setSearchTerm] = useState(""); // New state for search term
   const [selectedCategory, setSelectedCategory] = useState(""); // New state for selected category
   const [categories, setCategories] = useState([]); // New state for categories
+  const [areaUnit, setAreaUnit] = useState("acres");
   const { currentUser } = useUser();
   const axiosSecure = useAxiosSecure();
   const axiosFetch = useAxiosFetch();
@@ -83,9 +84,14 @@ const CostCalculator = () => {
     setResult(null);
 
     try {
+      let convertedArea = area;
+      if (areaUnit === "perches") {
+        convertedArea = area / 160; // Convert perches to acres
+      }
+
       const response = await axiosSecure.post("/api/costCalculator/calculate", {
         crop,
-        area,
+        area: convertedArea, // Use converted area
         waterResources,
         soilType,
         userId: currentUser._id,
@@ -114,6 +120,23 @@ const CostCalculator = () => {
     return matchesSearchTerm && matchesCategory;
   });
 
+  const handleSearchTermChange = (e) => {
+    const value = e.target.value;
+    const regex = /^[A-Za-z\s]*$/; // Only allows letters and spaces
+
+    if (regex.test(value) || value === "") {
+      setSearchTerm(value); // Only set the search term if it's valid
+    }
+  };
+
+  const handleAreaChange = (e) => {
+    const value = e.target.value;
+    const regex = /^[0-9]*\.?[0-9]*$/; // Allows only numbers and a single decimal point
+    if (regex.test(value)) {
+      setArea(value);
+    }
+  };
+
   return (
     <>
       <div className="mt-20 mx-auto max-w-4xl p-6 bg-white dark:bg-slate-900 dark:border-2 dark:mt-25 shadow-lg rounded-lg">
@@ -133,7 +156,7 @@ const CostCalculator = () => {
                   placeholder="Search crop"
                   className="p-2 bg-gray-100 border border-gray-300 rounded-md w-full pr-10"
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={handleSearchTermChange}
                 />
                 <button
                   type="button"
@@ -145,7 +168,10 @@ const CostCalculator = () => {
                 </button>
                 <button
                   type="submit"
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500"
+                  className={`absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 ${
+                    !searchTerm ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  disabled={!searchTerm}
                 >
                   <FaSearch />
                 </button>
@@ -237,7 +263,8 @@ const CostCalculator = () => {
               ) : (
                 <div className="flex justify-center items-center h-36">
                   <p className="text-gray-500">
-                    No crops found for "{searchTerm}".
+                    No crops found for "{searchTerm}" in{" "}
+                    {selectedCategory || "all categories"}.
                   </p>
                 </div>
               )}
@@ -246,15 +273,25 @@ const CostCalculator = () => {
 
           <div>
             <label className="block text-lg font-semibold text-gray-700 dark:text-white">
-              Area (in acres):
+              Area:
             </label>
-            <input
-              type="number"
-              className="mt-2 p-2 bg-gray-100 border border-gray-300 rounded-md w-full"
-              value={area}
-              onChange={(e) => setArea(e.target.value)}
-              required
-            />
+            <div className="flex items-center space-x-4 mt-2">
+              <input
+                type="number"
+                className="p-2 bg-gray-100 border border-gray-300 rounded-md w-full"
+                value={area}
+                onChange={handleAreaChange}
+                required
+              />
+              <select
+                className="p-2 bg-gray-100 border border-gray-300 rounded-md"
+                value={areaUnit}
+                onChange={(e) => setAreaUnit(e.target.value)}
+              >
+                <option value="acres">Acres</option>
+                <option value="perches">Perches</option>
+              </select>
+            </div>
           </div>
 
           <div>
@@ -320,7 +357,9 @@ const CostCalculator = () => {
         {error && <p className="text-red-500 mt-4">{error}</p>}
         {result && (
           <div className="mt-8 p-4 border border-gray-300 rounded-md">
-            <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">Result</h2>
+            <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">
+              Result
+            </h2>
             <p className="mt-2 dark:text-white">
               Crop: <span className="font-medium">{result.crop}</span>
             </p>
