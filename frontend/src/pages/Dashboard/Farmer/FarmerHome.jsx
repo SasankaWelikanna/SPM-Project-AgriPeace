@@ -54,7 +54,7 @@ const FarmerHome = () => {
               <Link to={"/dashboard/user-plant"}>
                 <div className="flex gap-x-3 items-center mx-4 my-6">
                   <h3 className="font-bold dark:text-white">
-                    See About Plants
+                    See Plant Details
                   </h3>
                   <FaArrowRight className="text-secondary" />
                 </div>
