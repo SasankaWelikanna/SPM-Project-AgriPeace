@@ -86,7 +86,9 @@ function FertilizerCalculator() {
 
   return (
     <div className="mt-10 p-4 bg-gray-50 dark:bg-gray-900">
-      <div className="bg-white shadow-md rounded-lg p-6 dark:bg-gray-700">
+      <div className="bg-white shadow-md rounded-lg p-6 dark:bg-gray-700" 
+        data-aos="fade-in"
+        data-aos-duration="1000">
         <Link to="/dashboard/user-fertilizer">
           <MdOutlineArrowBackIosNew className="text-3xl mb-4" />
         </Link>

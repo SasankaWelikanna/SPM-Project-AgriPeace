@@ -293,7 +293,9 @@ function Fertilizer() {
           </div>
         </Modal>
 
-        <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-900 dark:text-white">
+        <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-900 dark:text-white" 
+          data-aos="fade-in"
+          data-aos-duration="2000">
           <thead className="bg-gray-100 dark:bg-gray-800 dark:text-white">
             <tr>
               <th className="p-4 text-left">Image</th>

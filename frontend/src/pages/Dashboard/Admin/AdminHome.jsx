@@ -63,7 +63,7 @@ const AdminHome = () => {
               <Link to={"/dashboard/manage-plant"}>
                 <div className="flex gap-x-3 items-center py-2">
                   <h3 className="font-bold dark:text-white">
-                    See About Plants
+                    See Plant Details
                   </h3>
                   <FaArrowRight className="text-secondary" />
                 </div>

@@ -44,7 +44,7 @@ const CurrentDateTime = () => {
 
   return (
     <div className="p-8 bg-white rounded-lg shadow-md text-center mt-5 dark:bg-gray-800 dark:text-white w-fit flex flex-col items-center justify-center">
-      <div className="text-3xl ">{formatDate()}</div>
+      <div className="text-3xl font-bold">{formatDate()}</div>
       <div className="text-lg">{formatTime()}</div>
     </div>
   );
