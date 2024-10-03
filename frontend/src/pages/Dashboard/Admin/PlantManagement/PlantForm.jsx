@@ -357,8 +357,8 @@ const PlantForm = ({ handleSubmit, initialData }) => {
                   onClick={() => handleRemoveFertilizer(index)}
                   className="ml-2 py-1 text-red-500"
                 >
-                  <div className="border border-gray-300 rounded-md p-2 hover:bg-red-600 hover:text-white">
-                    <MdClose size={20} className=" " />
+                  <div className="border border-gray-300 rounded-md p-2 hover:bg-red-600 hover:text-white hover:scale-110">
+                    <MdClose size={20} />
                   </div>
                 </button>
               </div>
@@ -366,7 +366,7 @@ const PlantForm = ({ handleSubmit, initialData }) => {
             <button
               type="button"
               onClick={handleAddFertilizer}
-              className="px-4 py-2 bg-green-500 text-white rounded-md"
+              className="mt-2 px-4 py-2 border border-secondary  text-secondary rounded hover:text-white  hover:bg-secondary"
             >
               Add Fertilizer
             </button>
@@ -377,15 +377,12 @@ const PlantForm = ({ handleSubmit, initialData }) => {
         </div>
       </div>
 
-      <div className="text-right">
-        <button
-          type="submit"
-          className="px-6 py-2 bg-blue-500 text-white rounded-md"
-          disabled={uploading}
-        >
-          {uploading ? "Uploading..." : "Submit"}
-        </button>
-      </div>
+      <button
+        type="submit"
+        className="w-full py-2 px-4 bg-secondary text-white rounded-md hover:bg-green-700"
+      >
+        {initialData ? "Update Plant" : "Add Plant"}
+      </button>
     </form>
   );
 };

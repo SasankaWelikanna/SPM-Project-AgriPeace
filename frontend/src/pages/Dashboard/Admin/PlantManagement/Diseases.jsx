@@ -215,7 +215,9 @@ function Diseases() {
           onClose={handleCloseDeleteModal}
           title="Confirm Delete"
         >
-          <p>Are you sure you want to delete this disease?</p>
+          <p className="dark:text-white">
+            Are you sure you want to delete this disease?
+          </p>
           <div className="mt-6 flex justify-end">
             <button
               className="px-4 py-2 mr-4 bg-gray-300 rounded hover:bg-gray-400"
