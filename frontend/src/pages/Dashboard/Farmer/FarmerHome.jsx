@@ -63,7 +63,7 @@ const FarmerHome = () => {
             </div>
 
             <div
-              className="dark:bg-gray-800 rounded-lg shadow-xl w-full sm:w-1/2"
+              className="dark:bg-gray-800 rounded-lg shadow-xl w-full sm:w-1/2 pr-10"
               data-aos="slide-up"
               data-aos-duration="1000"
             >

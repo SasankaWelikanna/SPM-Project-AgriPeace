@@ -62,7 +62,7 @@ const FertilizerCategoryPieChart = () => {
   return (
     <div className="flex flex-col md:flex-row ml-12 relative w-full px-4  h-min">
       <div className="w-full md:w-2/3 ">
-        <h3 className="font-bold text-center dark:text-white mb-4 text-lg md:text-xl">
+        <h3 className="font-bold text-center text-lg md:text-xl dark:text-white mb-4">
           Fertilizers by Category
         </h3>
         <ResponsiveContainer width="100%" height={300}>
@@ -86,7 +86,7 @@ const FertilizerCategoryPieChart = () => {
                     y={props.cy}
                     dy={8}
                     textAnchor="middle"
-                    fill="#333"
+                    fill="#1a7"
                     className="text-lg font-bold dark:text-white"
                   >
                     {props.payload.name}
@@ -120,15 +120,22 @@ const FertilizerCategoryPieChart = () => {
                 />
               ))}
             </Pie>
-            <Tooltip />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "#333",
+                borderColor: "#333",
+              }}
+              labelStyle={{ color: "#fff" }} // Tooltip label in white for dark mode
+              itemStyle={{ color: "#fff" }} // Tooltip content in white for dark mode
+            />
           </PieChart>
         </ResponsiveContainer>
       </div>
 
       {/* Add category list on the side */}
       <div className="w-full md:w-1/3 flex flex-col justify-center items-start px-4 mt-4 md:mt-0 dark:text-white">
-        <h4 className="font-bold mb-2">Categories:</h4>
-        <ul className="list-none">
+        <h4 className="font-bold mb-2 dark:text-white">Categories:</h4>
+        <ul className="list-none dark:text-white">
           {fertilizerCategoryData.map((entry, index) => (
             <li key={`category-${index}`} className="flex items-center mb-1">
               <span
