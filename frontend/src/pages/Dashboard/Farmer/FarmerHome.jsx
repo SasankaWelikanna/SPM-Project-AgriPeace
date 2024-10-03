@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import LocationCount from "../../../components/Counts/LocationCount";
 import CropsCount from "../../../components/Counts/CropsCount";
 import Weather from "../../../components/Weather/Weather";
+import CurrentDateTime from "../../../components/CurrentDateTime/CurrentDateTime";
 
 const FarmerHome = () => {
   const { currentUser } = useUser();
@@ -18,16 +19,18 @@ const FarmerHome = () => {
           </span>{" "}
           Welcome to your dashboard{" "}
         </h1>
-
-        <div
-          className="flex flex-col sm:flex-row gap-2 relative w-full"
-          data-aos="fade-up"
-          data-aos-duration="1500"
-        >
-          <LocationCount />
-          <CropsCount />
-          <div className="ml-14">
+        <div className="items-center justify-center">
+          <div
+            className="flex flex-col sm:flex-row gap-2 relative w-full"
+            data-aos="fade-up"
+            data-aos-duration="1500"
+          >
+            <LocationCount />
+            <CropsCount />
+          </div>
+          <div className="flex flex-row gap-2 mt-5 ">
             <Weather />
+            <CurrentDateTime />
           </div>
         </div>
 

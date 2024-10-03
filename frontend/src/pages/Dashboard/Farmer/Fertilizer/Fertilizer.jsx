@@ -125,16 +125,19 @@ function Fertilizer() {
             <h2 className="text-xl font-semibold text-gray-700 dark:text-white">
               Fertilizer Details
             </h2>
-            <h6 className="text-sm text-gray-500 dark:text-white">View fertilizer details</h6>
+            <h6 className="text-sm text-gray-500 dark:text-white">
+              View fertilizer details
+            </h6>
           </div>
-          
+
           {/* Button to access the Fertilizer Calculator*/}
 
-          <button onClick={() => navigate(`/dashboard/fertilizer-cal`)}
-            className="bg-secondary hover:scale-105 text-white py-2 px-4 rounded-lg">
+          <button
+            onClick={() => navigate(`/dashboard/fertilizer-cal`)}
+            className="bg-secondary hover:scale-105 text-white py-2 px-4 rounded-lg"
+          >
             Fertilizer Calculator
           </button>
-      
         </div>
 
         <div className="mb-4 flex justify-between items-center">
@@ -144,13 +147,13 @@ function Fertilizer() {
             className="border p-2 rounded dark:bg-gray-700 dark:text-white"
           >
             <option value="">All Categories</option>
-            {[...new Set(dataList.map((fertilizer) => fertilizer.category))].map(
-              (category, index) => (
-                <option key={index} value={category}>
-                  {category}
-                </option>
-              )
-            )}
+            {[
+              ...new Set(dataList.map((fertilizer) => fertilizer.category)),
+            ].map((category, index) => (
+              <option key={index} value={category}>
+                {category}
+              </option>
+            ))}
           </select>
           <SearchBar onSearch={setSearchQuery} />
         </div>
@@ -175,7 +178,8 @@ function Fertilizer() {
                     <strong>Name:</strong> {selectedFertilizer.productName}
                   </p>
                   <p className="text-sm">
-                    <strong>Description:</strong> {selectedFertilizer.description}
+                    <strong>Description:</strong>{" "}
+                    {selectedFertilizer.description}
                   </p>
                   <p className="text-sm">
                     <strong>Category:</strong> {selectedFertilizer.category}
@@ -184,7 +188,6 @@ function Fertilizer() {
                     <strong>Usage:</strong> {selectedFertilizer.usage}
                   </p>
                 </div>
-                
               </div>
             )}
           </div>
@@ -229,7 +232,6 @@ function Fertilizer() {
           onPageChange={setCurrentPage}
         />
       </div>
-      <ToastContainer />
     </div>
   );
 }
