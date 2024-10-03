@@ -202,7 +202,7 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
               Weight
             </label>
             <input
-              type="text"
+              type="number"
               className="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white"
               name="quantity"
               placeholder="Weight"
@@ -220,7 +220,7 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
               Average Price
             </label>
             <input
-              type="text"
+              type="number"
               className="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white"
               name="price"
               placeholder="Average Price"
