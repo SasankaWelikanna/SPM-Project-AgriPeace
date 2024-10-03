@@ -37,7 +37,7 @@ const FarmerHome = () => {
           </div>
 
           <div
-            className="flex flex-col sm:flex-row gap-2 mt-5 w-full justify-center"
+            className="flex flex-col sm:flex-row gap-2  w-full justify-center"
             data-aos="flip-up"
             data-aos-duration="1000"
           >
@@ -52,7 +52,7 @@ const FarmerHome = () => {
               data-aos-duration="1000"
             >
               <Link to={"/dashboard/user-plant"}>
-                <div className="flex gap-x-3 items-center mx-4 my-4">
+                <div className="flex gap-x-3 items-center mx-4 my-6">
                   <h3 className="font-bold dark:text-white">
                     See About Plants
                   </h3>
@@ -63,7 +63,7 @@ const FarmerHome = () => {
             </div>
 
             <div
-              className="dark:bg-gray-800 rounded-lg shadow-xl w-full sm:w-1/2 pr-10"
+              className="dark:bg-gray-800 rounded-lg shadow-xl w-full sm:w-1/2 pr-10 py-4"
               data-aos="slide-up"
               data-aos-duration="1000"
             >
