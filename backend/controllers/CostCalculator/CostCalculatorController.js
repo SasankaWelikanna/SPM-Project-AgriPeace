@@ -64,20 +64,20 @@ const getBaseCostPerAcre = (crop) => {
    
   const determineWaterNeeds = (crop, area, waterResources) => {
     const waterNeeds = {
-      'Gotukola': `${area.toFixed(2) * 0.5} acre-feet of water per season`,  // Gotukola is a leafy green and requires minimal water
-      'Carrot': `${area * 1.5} acre-feet per season`,  // Root crop with moderate water needs
-      'Pumpkin': `${area * 1.8} acre-feet per season`,  // Large fruit with high water demand
-      'Potato': `${area * 2.0} acre-feet per season`,  // Potatoes require a significant amount of water
-      'Tomato': `${area * 1.2} acre-feet per season`,  // Moderate water needs for fruiting vegetables
-      'Basmati Rice': `${area * 3.0} acre-feet per season`,  // Rice requires high water levels
-      'Spinach': `${area * 0.7} acre-feet per season`,  // Leafy green with lower water needs
-      'Garlic': `${area * 1.0} acre-feet per season`,  // Bulb crop with moderate water needs
+      'Gotukola': `${(area * 0.5).toFixed(2)} acre-feet of water per season`,  // Gotukola is a leafy green and requires minimal water
+      'Carrot': `${(area * 1.5).toFixed(2)} acre-feet per season`,  // Root crop with moderate water needs
+      'Pumpkin': `${(area * 1.8).toFixed(2)} acre-feet per season`,  // Large fruit with high water demand
+      'Potato': `${(area * 2.0).toFixed(2)} acre-feet per season`,  // Potatoes require a significant amount of water
+      'Tomato': `${(area * 1.2).toFixed(2)} acre-feet per season`,  // Moderate water needs for fruiting vegetables
+      'Basmati Rice': `${(area * 3.0).toFixed(2)} acre-feet per season`,  // Rice requires high water levels
+      'Spinach': `${(area * 0.7).toFixed(2)} acre-feet per season`,  // Leafy green with lower water needs
+      'Garlic': `${(area * 1.0).toFixed(2)} acre-feet per season`,  // Bulb crop with moderate water needs
       'Oyster Mushroom': `Water needs depend on controlled indoor cultivation`,  // Mushrooms require a controlled humid environment
-      'Chili Pepper': `${area * 1.1} acre-feet per season`,  // Requires moderate water for fruit development
-      'Cabbage': `${area * 1.5} acre-feet per season`,  // Leafy vegetable with moderate water needs
-      'Ginger': `${area * 1.4} acre-feet per season`,  // Requires consistent watering for tuber growth
-      'Beetroot': `${area * 1.6} acre-feet per season`,  // Root crop with moderate water needs
-      'Lettuce': `${area * 0.9} acre-feet per season`,  // Leafy vegetable with low-to-moderate water needs
+      'Chili Pepper': `${(area * 1.1).toFixed(2)} acre-feet per season`,  // Requires moderate water for fruit development
+      'Cabbage': `${(area * 1.5).toFixed(2)} acre-feet per season`,  // Leafy vegetable with moderate water needs
+      'Ginger': `${(area * 1.4).toFixed(2)} acre-feet per season`,  // Requires consistent watering for tuber growth
+      'Beetroot': `${(area * 1.6).toFixed(2)} acre-feet per season`,  // Root crop with moderate water needs
+      'Lettuce': `${(area * 0.9).toFixed(2)} acre-feet per season`,  // Leafy vegetable with low-to-moderate water needs
     };
     return waterNeeds[crop] || `Water needs based on ${waterResources} resources.`;
   };
