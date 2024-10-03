@@ -173,14 +173,18 @@ function Fertilizer() {
     <div className="mt-10 p-4 bg-gray-50  dark:bg-gray-900">
       <div className="bg-white shadow-md rounded-lg p-6  dark:bg-gray-700 ">
         <div className="flex justify-between items-center mb-4 ">
-          <div>
+          <div data-aos="flip-up" data-aos-duration="1000">
             <h2 className="text-xl font-semibold text-gray-700  dark:text-white">
               Fertilizer Details
             </h2>
             <h6 className="text-sm text-gray-500  dark:text-white">
               Manage fertilizer details</h6>
           </div>
-          <div className="flex space-x-4">
+          <div
+            className="flex space-x-4"
+            data-aos="flip-up"
+            data-aos-duration="1000"
+          >
             <BlobProvider
               document={<FertilizerReport dataList={dataList} />}
               fileName="FertilizerReport.pdf"
