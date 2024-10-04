@@ -139,7 +139,7 @@ const CostCalculator = () => {
 
   return (
     <>
-      <div className="mt-20 mx-auto max-w-4xl p-6 bg-white dark:bg-slate-900 dark:border-2 dark:mt-25 shadow-lg rounded-lg">
+      <div className="mt-20 mx-auto max-w-4xl p-6 bg-white dark:bg-slate-900 dark:border-2 dark:mt-32 shadow-lg rounded-lg">
         <Scroll />
         <h1 className="text-4xl font-bold mb-6 text-gray-800 text-center dark:text-white">
           Cost Calculator
@@ -232,9 +232,6 @@ const CostCalculator = () => {
                       onMouseLeave={(e) =>
                         (e.currentTarget.style.zIndex = "auto")
                       }
-                      style={{
-                        opacity: crop === "" || crop === plant.name ? 1 : 0.5, // Adjust opacity
-                      }}
                     >
                       <img
                         src={plant.imageUrl}

@@ -127,14 +127,15 @@ const DashboardLayout = () => {
               open && "rotate-[360deg]"
             }`}
           />
+          <Link to="/">
           <h1
-            onClick={() => setOpen(!open)}
             className={`text-secondary cursor-pointer font-bold origin-left text-xl duration-200 ${
               !open && "scale-0"
             }`}
           >
             AgriPeace
           </h1>
+          </Link>
         </div>
 
         {/* NavLinks */}

@@ -17,11 +17,11 @@ const PreviousCalculations = ({ previousCalculations, currentUser }) => {
         </div>
       ) : (
         <>
-          <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">
+          <h2 className="text-2xl font-semibold text-gray-800 dark:text-white text-center">
             Your Previous Calculations
           </h2>
           {previousCalculations.length === 0 ? (
-            <p className="mt-4 text-gray-600 dark:text-white">
+            <p className="mt-4 text-gray-600 dark:text-white text-center">
               No previous calculations found.
             </p>
           ) : (
