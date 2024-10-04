@@ -11,7 +11,10 @@ const PlantSlider = () => {
     const fetchPlants = async () => {
       try {
         const response = await axiosSecure.get("/Plant"); // Fetching plant data
-        setPlantsData(response.data);
+        const sortedPlants = response.data.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
+        setPlantsData(sortedPlants);
       } catch (error) {
         console.error("Error fetching plants:", error);
       }
@@ -37,7 +40,7 @@ const PlantSlider = () => {
   };
 
   return (
-    <div className="relative w-full max-w-md px-4  h-min ">
+    <div className="relative w-[1000px] max-w-md px-4  h-min ">
       <div className="relative overflow-hidden rounded-lg shadow-lg">
         <img
           src={currentPlant.imageUrl}
