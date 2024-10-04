@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import storage from "../../../../config/firebase.init";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import useUser from "../../../../hooks/useUser";
 
 const LocationForm = ({ handleSubmit, initialData }) => {
-  // const [img, setImg] = useState(undefined);
-  // const [imgPerc, setImgPerc] = useState(0);
+  const { currentUser } = useUser();
   const [formData, setFormData] = useState({
     province: "",
     district: "",
@@ -15,47 +13,13 @@ const LocationForm = ({ handleSubmit, initialData }) => {
     soilType: "",
     irrigationType: "",
   });
-  // const [uploading, setUploading] = useState(false); // Track if image is being uploaded
-
-  // useEffect(() => {
-  //   img && uploadFile(img, "imageUrl");
-  // }, [img]);
-
-  // const uploadFile = (file, fileType) => {
-  //   const fileName = new Date().getTime() + file.name;
-  //   const storageRef = ref(storage, "images/fruits/" + fileName);
-  //   const uploadTask = uploadBytesResumable(storageRef, file);
-  //   setUploading(true); // Start uploading
-
-  //   uploadTask.on(
-  //     "state_changed",
-  //     (snapshot) => {
-  //       const progress =
-  //         (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-  //       setImgPerc(Math.round(progress));
-  //     },
-  //     (error) => {
-  //       console.log(error);
-  //       setUploading(false); // Stop uploading on error
-  //     },
-  //     () => {
-  //       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-  //         console.log("DownloadURL - ", downloadURL);
-  //         setFormData((prev) => ({
-  //           ...prev,
-  //           [fileType]: downloadURL,
-  //         }));
-  //         setUploading(false); // Stop uploading after successful upload
-  //       });
-  //     }
-  //   );
-  // };
 
   useEffect(() => {
-    if (initialData) {
+    // Ensure initialData is set for the current user only
+    if (initialData && initialData.userId === currentUser._id) {
       setFormData(initialData);
     }
-  }, [initialData]);
+  }, [initialData, currentUser]);
 
   const getCurrentDate = () => {
     const now = new Date();
@@ -88,25 +52,13 @@ const LocationForm = ({ handleSubmit, initialData }) => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    handleSubmit(formData);
+    
+    const updatedFormData = { ...formData, userId: currentUser._id };
+    handleSubmit(updatedFormData);
   };
 
   return (
     <form onSubmit={handleFormSubmit} className="space-y-4">
-      {/* <div className="mb-4">
-        <label
-          htmlFor="imageUrl"
-          className="block text-gray-700 font-semibold mb-1"
-        >
-          {uploading ? `Uploading: ${imgPerc}%` : "Image"}
-        </label>
-        <input
-          type="file"
-          className="w-full p-2 border border-gray-300 rounded-md"
-          name="imageUrl"
-          onChange={(e) => setImg(e.target.files[0])}
-        />
-      </div> */}
       <div className="mb-4">
         <label htmlFor="province" className="block text-gray-700 font-semibold mb-1">
           Province

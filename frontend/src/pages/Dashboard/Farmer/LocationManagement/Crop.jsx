@@ -42,6 +42,9 @@ function Crop() {
   const [currentPage, setCurrentPage] = useState(1);
   const [cropsPerPage] = useState(5); // Number of diseases per page
 
+  const [totalLandSize, setTotalLandSize] = useState(0);
+  const [usedLandSize, setUsedLandSize] = useState(0);
+
   useEffect(() => {
     fetchCrops();
     fetchLocation();
@@ -49,6 +52,7 @@ function Crop() {
 
   useEffect(() => {
     setFilteredCrops(dataList);
+    calculateUsedLandSize(dataList);
   }, [dataList]);
 
   const fetchCrops = async () => {
@@ -62,6 +66,7 @@ function Crop() {
         setDataList(response.data);
         setCrop(response.data);
         setFilteredDataList(response.data);
+        calculateUsedLandSize(response.data);
       } else {
         console.error("Unexpected data format:", response.data);
         toast.error("Unexpected data format from server.");
@@ -77,6 +82,7 @@ function Crop() {
       const response = await axiosFetch.get(`/Location/${locationId}`);
       if (response.data && response.data.city) {
         setLocation(response.data.city);
+        setTotalLandSize(extractNumbers(response.data.areaSize)[0] || 0);
         fetchWeatherData(response.data.city);
       } else {
         console.error("Location not found:", response.data);
@@ -207,6 +213,18 @@ function Crop() {
     setDeleteId(null);
   };
 
+  const extractNumbers = (str) => {
+    const numbers = str.match(/(\d+(\.\d+)?)/g); // Regex to capture integers and decimals
+    return numbers ? numbers.map(Number) : [];
+  };  
+
+  const calculateUsedLandSize = (crops) => {
+    const total = crops.reduce((sum, crop) => sum + extractNumbers(crop.landSize)[0], 0);
+    setUsedLandSize(total);
+  };
+
+
+
   // Get current crops for pagination
   const indexOfLastCrop = currentPage * cropsPerPage;
   const indexOfFirstCrop = indexOfLastCrop - cropsPerPage;
@@ -223,7 +241,7 @@ function Crop() {
           <MdOutlineArrowBackIosNew className="text-3xl mb-3" />
         </Link>
         <div className="flex justify-between items-center mb-4">
-          <div>
+          <div data-aos="flip-up" data-aos-duration="1000">
             <h2 className="text-xl font-semibold text-gray-700 dark:text-white">
               Crop Details - {location}
             </h2>
@@ -231,7 +249,7 @@ function Crop() {
               Manage crop details
             </h6>
           </div>
-          <div className="flex space-x-4">
+          <div className="flex space-x-4" data-aos="flip-up" data-aos-duration="1000">
             <BlobProvider
               document={<CropReport dataList={dataList} />}
               fileName="CropReport.pdf"
@@ -274,7 +292,11 @@ function Crop() {
           onClose={handleAddModalClose}
           title="Add Crop"
         >
-          <CropForm handleSubmit={handleAddSubmit} />
+          <CropForm 
+            handleSubmit={handleAddSubmit} 
+            totalLandSize={totalLandSize}
+            usedLandSize={usedLandSize}
+          />
         </Modal>
 
         {/* Edit Crop Modal */}
@@ -286,6 +308,8 @@ function Crop() {
           <CropForm
             handleSubmit={handleEditSubmit}
             initialData={selectedCrop}
+            totalLandSize={totalLandSize}
+            usedLandSize={usedLandSize}
           />
         </Modal>
 
@@ -315,21 +339,21 @@ function Crop() {
         </Modal>
 
         {/* Weather Data */}
-        <div class="max-w-sm p-4 bg-white rounded-md shadow-md dark:bg-gray-800">
-          <h3 class="text-xl font-semibold text-gray-700 dark:text-white mb-2">
+        <div className="max-w-sm p-4 bg-white rounded-md shadow-md dark:bg-gray-800"  data-aos="flip-up" data-aos-duration="1000">
+          <h3 className="text-xl font-semibold text-gray-700 dark:text-white mb-2">
             Current Weather
           </h3>
-          <div class="text-center mb-4">
-            <p class="text-lg font-bold text-gray-900 dark:text-white">
+          <div className="text-center mb-4">
+            <p className="text-lg font-bold text-gray-900 dark:text-white">
               <strong>Temperature:</strong>{" "}
               {temperature ? `${temperature} °C` : "Loading..."}
             </p>
-            <p class="text-sm text-gray-500 dark:text-gray-300">
+            <p className="text-sm text-gray-500 dark:text-gray-300">
               <strong>Rainfall:</strong>{" "}
               {rainfall !== null ? `${rainfall} mm` : "Loading..."}
             </p>
           </div>
-          <div class="text-sm text-gray-600 dark:text-gray-300">
+          <div className="flex flex-wrap items-center justify-between text-sm text-gray-600 dark:text-gray-300">
             <p>
               <strong>Humidity:</strong>{" "}
               {humidity !== null ? `${humidity} %` : "Loading..."}
@@ -341,9 +365,11 @@ function Crop() {
           </div>
         </div>
 
-        <SearchBar onSearch={handleSearch} />
+        <div data-aos="flip-up" data-aos-duration="1000">
+          <SearchBar onSearch={handleSearch} />
+        </div>
 
-        <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-900">
+        <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-900" data-aos="fade-in" data-aos-duration="2000">
           <thead className="bg-gray-100 dark:bg-gray-800 dark:text-white">
             <tr>
               <th className="p-4 text-left">Crop Name</th>
