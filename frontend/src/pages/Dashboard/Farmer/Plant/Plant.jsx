@@ -111,10 +111,9 @@ function Plant() {
   // Pagination calculations
   const indexOfLastPlant = currentPage * plantsPerPage;
   const indexOfFirstPlant = indexOfLastPlant - plantsPerPage;
-  const currentPlants = filteredDataList.slice(
-    indexOfFirstPlant,
-    indexOfLastPlant
-  );
+  const currentPlants = filteredDataList
+    .sort((a, b) => a.name.localeCompare(b.name)) // Sort alphabetically
+    .slice(indexOfFirstPlant, indexOfLastPlant);
   const totalPages = Math.ceil(filteredDataList.length / plantsPerPage);
 
   // Handle back navigation
@@ -251,7 +250,7 @@ function Plant() {
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={(page) => setCurrentPage(page)}
+          onPageChange={setCurrentPage}
         />
       </div>
     </div>

@@ -45,9 +45,9 @@ const FarmerHome = () => {
             <CropsCount />
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-2 w-full my-5">
+          <div className="flex flex-col sm:flex-row gap-2 w-full my-5 ">
             <div
-              className="dark:bg-gray-800 rounded-lg shadow-xl w-full sm:w-1/2"
+              className="dark:bg-gray-800 rounded-lg shadow-xl w-max pl-8 sm:w-1/2"
               data-aos="slide-up"
               data-aos-duration="1000"
             >
