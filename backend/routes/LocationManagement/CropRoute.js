@@ -4,6 +4,9 @@ const CropCtrl = require("../../controllers/LocationManagement/CropCtrl");
 // Route for adding a new crop
 router.post("/", CropCtrl.createCrop);
 
+//Route for getting all crops
+router.get("/", CropCtrl.getAllcrops);
+
 // Route for getting all crops by location ID
 router.get("/location/:locationId", CropCtrl.getCropsByLocationId);
 
