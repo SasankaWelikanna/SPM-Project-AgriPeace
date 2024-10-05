@@ -12,18 +12,21 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
-    setError("");
+    setError(""); // Clear any previous error
     e.preventDefault();
 
     const data = new FormData(e.target);
     const formData = Object.fromEntries(data);
+
+    setLoader(true); // Show loader when submitting
     login(formData.email, formData.password)
       .then(() => {
+        setLoader(false); // Hide loader after successful login
         navigate(location.state?.from || "/dashboard");
       })
       .catch((err) => {
-        setError(err.code);
-        setLoader(false);
+        setError("Invalid email or password. Please try again.");
+        setLoader(false); // Hide loader after error
       });
   };
 
@@ -37,11 +40,10 @@ const Login = () => {
         Welcome back! Please sign in to continue.
       </p>
 
-      <div className="mx-auto max-w-lg mb-0 mt-6 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8  dark:bg-slate-800">
+      <div className="mx-auto max-w-lg mb-0 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8 dark:bg-slate-800">
         <form onSubmit={handleSubmit} className="space-y-4">
-          <p className="text-center text-red-400 text-lg font-medium">
-            Sign into your account
-          </p>
+        
+          {/* Email Field */}
           <div>
             <label htmlFor="email" className="sr-only">
               Email
@@ -59,7 +61,7 @@ const Login = () => {
             </div>
           </div>
 
-          {/* password */}
+          {/* Password Field */}
           <div>
             <label htmlFor="password" className="sr-only">
               Password
@@ -75,16 +77,28 @@ const Login = () => {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute inset-y-0 end-0 grid place-content-center px-4"
               >
-                <MdOutlineRemoveRedEye className="h-4 w-4 text-gray-400" />
+                <MdOutlineRemoveRedEye className="h-4 w-4 text-gray-400 cursor-pointer" />
               </span>
             </div>
           </div>
+
+          {/* Error Message */}
+          {error && (
+            <p className="text-center text-red-500 font-medium">
+              {error}
+            </p>
+          )}
+
+          {/* Submit Button */}
           <button
             type="submit"
             className="block w-full rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-white hover:scale-105 duration-300"
+            disabled={loader} // Disable button when loading
           >
-            Sign in
+            {loader ? "Signing in..." : "Sign in"}
           </button>
+
+          {/* Registration Link */}
           <p className="text-center text-sm text-gray-500">
             No account?{" "}
             <Link className="underline" to="/register">
@@ -92,6 +106,7 @@ const Login = () => {
             </Link>
           </p>
         </form>
+
         <GoogleLogin />
       </div>
     </div>
