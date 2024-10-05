@@ -4,11 +4,11 @@ import axios from "axios";
 const Weather = () => {
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true); // For loading state
-  const [city, setCity] = useState(""); // For storing nearest city name
+  const [loading, setLoading] = useState(true);
+  const [city, setCity] = useState("");
   const WEATHER_API_KEY = "3698e8d6feea12ad4045f45e0d0d0625";
 
-  // Fetch weather based on current location (latitude, longitude)
+  // Current location (latitude, longitude)
   const fetchWeather = async (lat, lon) => {
     try {
       const response = await axios.get(
@@ -31,7 +31,10 @@ const Weather = () => {
       const response = await axios.get(
         `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
       );
-      const cityName = response.data.address.city || response.data.address.town || response.data.address.village;
+      const cityName =
+        response.data.address.city ||
+        response.data.address.town ||
+        response.data.address.village;
       setCity(cityName);
       console.log("City name fetched:", cityName);
     } catch (error) {
@@ -50,7 +53,9 @@ const Weather = () => {
         },
         (error) => {
           console.error("Error getting location:", error);
-          setError("Failed to get your location. Please allow location access.");
+          setError(
+            "Failed to get your location. Please allow location access."
+          );
           setLoading(false); // Disable loading on error
         }
       );

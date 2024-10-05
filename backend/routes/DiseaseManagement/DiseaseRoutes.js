@@ -8,6 +8,7 @@ router.get("/plant/:plantId", diseaseController.getDiseasesByPlantId);
 // Get a single disease by ID
 router.get("/:id", diseaseController.getDiseaseById);
 
+// Get all diseases
 router.get("/", diseaseController.getAllDiseases);
 
 // Add a new disease

@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
-import { FaMoon } from "react-icons/fa"; // Moon icon for dark mode
-import { LuSun } from "react-icons/lu"; // Sun icon for light mode
+import { FaMoon } from "react-icons/fa";
+import { LuSun } from "react-icons/lu";
 
 const ThemeToggle = ({ isDarkMode, setIsDarkMode }) => {
-  // Toggle theme in the body when the mode changes
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add("dark");

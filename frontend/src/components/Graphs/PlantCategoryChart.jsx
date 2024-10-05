@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import useAxiosSecure from "../../hooks/useAxiosSecure"; // Import your Axios hook
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 import {
   BarChart,
   Bar,
@@ -8,7 +8,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from "recharts"; // Import recharts components
+} from "recharts";
 
 const PlantCategoryChart = () => {
   const [plantCategoryData, setPlantCategoryData] = useState([]);
@@ -17,12 +17,12 @@ const PlantCategoryChart = () => {
   useEffect(() => {
     const fetchPlantData = async () => {
       try {
-        const response = await axiosSecure.get("/Plant"); // Adjust the endpoint if necessary
+        const response = await axiosSecure.get("/Plant");
         const plants = response.data;
 
         // Group plants by category and count the quantity in each category
         const categoryMap = plants.reduce((acc, plant) => {
-          const category = plant.category; // Assuming the category is stored in `plant.category`
+          const category = plant.category;
           if (!acc[category]) {
             acc[category] = 1;
           } else {

@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import LargeModal from "../../../../components/Modal/LargeModal";
 import Modal from "../../../../components/Modal/Modal";
 import DiseaseForm from "./DiseaseForm";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { MdDelete, MdOutlineArrowBackIosNew } from "react-icons/md";
 import { FaEdit, FaFilePdf } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -27,14 +27,12 @@ function Diseases() {
   const [selectedDisease, setSelectedDisease] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
-
-  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [diseasesPerPage] = useState(5); // Number of diseases per page
 
   useEffect(() => {
     fetchDiseases();
-    fetchPlantName(); // Fetch the plant name
+    fetchPlantName();
   }, [plantId]);
 
   const fetchDiseases = async () => {
@@ -43,7 +41,7 @@ function Diseases() {
       if (Array.isArray(response.data)) {
         setDataList(response.data);
         setDiseases(response.data);
-        setFilteredDiseases(response.data); // Initialize filteredDiseases
+        setFilteredDiseases(response.data);
       } else {
         console.error("Unexpected data format:", response.data);
         toast.error("Unexpected data format from server.");
@@ -82,7 +80,7 @@ function Diseases() {
     try {
       await axiosSecure.delete(`/api/diseases/${id}`);
       toast.success("Disease Deleted!");
-      fetchDiseases(); // Ensure data is refreshed after deletion
+      fetchDiseases();
       handleCloseDeleteModal();
     } catch (err) {
       console.error("Error deleting disease:", err);
@@ -95,7 +93,7 @@ function Diseases() {
       await axiosSecure.post(`/api/diseases`, { ...formData, plantId });
       toast.success("Disease Added!");
       handleAddModalClose();
-      fetchDiseases(); // Refresh data after adding a disease
+      fetchDiseases();
     } catch (err) {
       console.error("Error adding disease:", err);
       toast.error("Failed to add disease.");
@@ -107,7 +105,7 @@ function Diseases() {
       await axiosSecure.put(`/api/diseases/${formData._id}`, formData);
       toast.success("Disease Updated!");
       handleEditModalClose();
-      fetchDiseases(); // Refresh data after editing a disease
+      fetchDiseases();
     } catch (err) {
       console.error("Error updating disease:", err);
       toast.error("Failed to update disease.");
@@ -130,7 +128,7 @@ function Diseases() {
       disease.name.toLowerCase().includes(lowercasedQuery)
     );
     setFilteredDiseases(filtered);
-    setCurrentPage(1); // Reset to first page on new search
+    setCurrentPage(1);
   };
 
   // Get current diseases for pagination

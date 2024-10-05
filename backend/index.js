@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-require("dotenv").config(); // Ensure dotenv is configured correctly
+require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const port = process.env.PORT || 3000;
@@ -15,7 +15,7 @@ mongoose
   .connect(
     `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@agripeace-server.sqb4jsm.mongodb.net/agripeace?retryWrites=true&w=majority`,
     {
-      connectTimeoutMS: 30000, // Adjust timeout as needed
+      connectTimeoutMS: 30000,
     }
   )
   .then(() => {
@@ -26,7 +26,7 @@ mongoose
   });
 
 // User Model
-const User = require("./models/User/User"); // Make sure to define User model correctly
+const User = require("./models/User/User");
 
 // Middleware to verify JWT
 const verifyJWT = (req, res, next) => {
@@ -67,7 +67,10 @@ app.use(
   require("./routes/CostCalculator/CostCalculatorRoutes")
 );
 app.use("/Plant", require("./routes/PlantManagement/PlantRoute"));
-app.use("/Fertilizer", require("./routes/FertilizerManagement/FertilizerRoute.js"));
+app.use(
+  "/Fertilizer",
+  require("./routes/FertilizerManagement/FertilizerRoute.js")
+);
 app.use("/api/diseases", require("./routes/DiseaseManagement/DiseaseRoutes"));
 app.use("/Location", require("./routes/LocationManagement/LocationRoute.js"));
 app.use("/api/crops", require("./routes/LocationManagement/CropRoute"));

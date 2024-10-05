@@ -9,7 +9,6 @@ const PlantCount = () => {
   const fetchPlantCount = async () => {
     try {
       const response = await axiosSecure.get("/Plant/");
-      // Assuming response.data is an array of plants
       setPlantCount(response.data.length);
     } catch (error) {
       console.error("Error fetching plants:", error);

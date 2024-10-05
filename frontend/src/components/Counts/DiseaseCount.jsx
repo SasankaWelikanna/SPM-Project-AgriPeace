@@ -10,7 +10,6 @@ const DiseaseCount = () => {
   const fetchDiseaseCount = async () => {
     try {
       const response = await axiosSecure.get("api/diseases/");
-      // Assuming response.data is an array of diseases
       setDiseaseCount(response.data.length);
     } catch (error) {
       console.error("Error fetching diseases:", error);

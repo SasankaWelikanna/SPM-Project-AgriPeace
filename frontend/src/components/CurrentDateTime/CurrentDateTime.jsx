@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { FaSun, FaMoon } from "react-icons/fa";
 
 const CurrentDateTime = () => {
   const [dateTime, setDateTime] = useState(new Date());
@@ -39,7 +38,7 @@ const CurrentDateTime = () => {
 
   const isDayTime = () => {
     const hour = dateTime.getHours();
-    return hour >= 6 && hour < 18; // Consider daytime from 6 AM to 6 PM
+    return hour >= 6 && hour < 18;
   };
 
   return (
