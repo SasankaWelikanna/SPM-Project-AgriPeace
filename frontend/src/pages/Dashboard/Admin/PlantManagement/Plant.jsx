@@ -134,7 +134,13 @@ function Plant() {
       fetchPlants();
     } catch (err) {
       console.error("Error adding plant:", err);
-      toast.error("Failed to add plant.");
+
+      // Check for duplicate entry error from backend response
+      if (err.response && err.response.status === 400) {
+        toast.error("Plant already exists!");
+      } else {
+        toast.error("Failed to add plant.");
+      }
     }
   };
 
