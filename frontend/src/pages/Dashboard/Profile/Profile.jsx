@@ -109,10 +109,10 @@ const Profile = () => {
                       <img
                         src={formData.photoUrl}
                         alt="Uploaded Preview"
-                        className="w-full h-full rounded-md border border-gray-300"
+                        className="w-full h-full object-cover rounded-md border border-gray-300"
                       />
                     ) : (
-                      <div className="w-40 h-40 rounded-md border border-gray-300"></div>
+                      <div className="w-40 h-40 rounded-md border object-cover border-gray-300"></div>
                     )}
 
                     {/* Pencil Icon */}
