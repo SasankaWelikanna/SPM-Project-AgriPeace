@@ -21,6 +21,16 @@ exports.getCropById = async (req, res) => {
   }
 };
 
+// Get all crops
+exports.getAllcrops = async (req, res) => {
+  try {
+    const crops = await Crop.find(); // Fetch all diseases
+    res.status(200).json(crops);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 // Add a new crop
 exports.createCrop = async (req, res) => {
   const {
