@@ -92,119 +92,127 @@ const ManageUsers = () => {
         <div className="flex flex-col">
           <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
             <div className="overflow-hidden">
-              <table className="min-w-full text-left text-sm font-light">
-                <thead className="border-b font-medium dark:border-neutral-500 hidden md:table-header-group">
-                  <tr>
-                    <th scope="col" className="px-4 py-4 dark:text-white">
-                      #
-                    </th>
-                    <th scope="col" className="px-4 py-4 dark:text-white">
-                      PHOTO
-                    </th>
-                    <th scope="col" className="px-4 py-4 dark:text-white">
-                      NAME
-                    </th>
-                    <th scope="col" className="px-4 py-4 dark:text-white">
-                      ROLE
-                    </th>
-                    <th scope="col" className="px-4 py-4 dark:text-white">
-                      UPDATE
-                    </th>
-                    <th scope="col" className="px-4 py-4 dark:text-white">
-                      DELETE
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
+              {filteredUsers.length === 0 ? (
+                <p className="text-center text-gray-500 dark:text-gray-300">
+                  No users found
+                </p>
+              ) : (
+                <table className="min-w-full text-left text-sm font-light">
+                  <thead className="border-b font-medium dark:border-neutral-500 hidden md:table-header-group">
+                    <tr>
+                      <th scope="col" className="px-4 py-4 dark:text-white">
+                        #
+                      </th>
+                      <th scope="col" className="px-4 py-4 dark:text-white">
+                        PHOTO
+                      </th>
+                      <th scope="col" className="px-4 py-4 dark:text-white">
+                        NAME
+                      </th>
+                      <th scope="col" className="px-4 py-4 dark:text-white">
+                        ROLE
+                      </th>
+                      <th scope="col" className="px-4 py-4 dark:text-white">
+                        UPDATE
+                      </th>
+                      <th scope="col" className="px-4 py-4 dark:text-white">
+                        DELETE
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredUsers.map((user, idx) => (
+                      <tr
+                        key={user._id}
+                        className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600"
+                      >
+                        <td className="whitespace-nowrap px-4 py-4 font-medium dark:text-white">
+                          {idx + 1}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-4">
+                          <img
+                            src={user?.photoUrl}
+                            alt=""
+                            className="h-[35px] w-[35px] object-cover rounded-full"
+                          />
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-4 dark:text-white">
+                          {user?.name}{" "}
+                          {currentUser?._id === user._id && (
+                            <span className="ml-2 px-2 py-1 text-xs font-semibold text-white bg-blue-500 rounded-md">
+                              You
+                            </span>
+                          )}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-4 dark:text-white">
+                          {user?.role}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-4">
+                          <span
+                            onClick={() =>
+                              navigate(`/dashboard/update-user/${user._id}`)
+                            }
+                            className="inline-flex items-center gap-2 cursor-pointer bg-green-500 py-1 rounded-md px-2 text-white"
+                          >
+                            Update <GrUpdate className="text-white" />
+                          </span>
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-4">
+                          <span
+                            onClick={() => handleDelete(user._id)}
+                            className="inline-flex items-center gap-2 cursor-pointer bg-red-600 py-1 rounded-md px-2 text-white"
+                          >
+                            Delete <MdDelete className="text-white" />
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+              
+              {/* Responsive Table for Mobile */}
+              {filteredUsers.length > 0 && (
+                <div className="md:hidden">
                   {filteredUsers.map((user, idx) => (
-                    <tr
-                      key={user._id}
-                      className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600"
-                    >
-                      <td className="whitespace-nowrap px-4 py-4 font-medium dark:text-white">
-                        {idx + 1}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-4">
+                    <div key={user._id} className="border-b py-4 flex flex-col">
+                      <div className="flex items-center justify-between">
+                        <span className="font-medium dark:text-white">#{idx + 1}</span>
                         <img
                           src={user?.photoUrl}
                           alt=""
-                          className="h-[35px] w-[35px] object-cover rounded-full"
+                          className="h-[35px] w-[35px] rounded-full"
                         />
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-4 dark:text-white">
-                        {user?.name}{" "}
+                      </div>
+                      <div className="flex justify-between mt-2">
+                        <span className="dark:text-white">{user?.name}</span>
                         {currentUser?._id === user._id && (
                           <span className="ml-2 px-2 py-1 text-xs font-semibold text-white bg-blue-500 rounded-md">
                             You
                           </span>
                         )}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-4 dark:text-white">
-                        {user?.role}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-4">
+                      </div>
+                      <div className="flex justify-between mt-2">
+                        <span className="dark:text-white">{user?.role}</span>
                         <span
                           onClick={() =>
                             navigate(`/dashboard/update-user/${user._id}`)
                           }
-                          className="inline-flex items-center gap-2 cursor-pointer bg-green-500 py-1 rounded-md px-2 text-white"
+                          className="cursor-pointer bg-green-500 py-1 rounded-md px-2 text-white"
                         >
-                          Update <GrUpdate className="text-white" />
+                          Update
                         </span>
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-4">
                         <span
                           onClick={() => handleDelete(user._id)}
-                          className="inline-flex items-center gap-2 cursor-pointer bg-red-600 py-1 rounded-md px-2 text-white"
+                          className="cursor-pointer bg-red-600 py-1 rounded-md px-2 text-white"
                         >
-                          Delete <MdDelete className="text-white" />
+                          Delete
                         </span>
-                      </td>
-                    </tr>
+                      </div>
+                    </div>
                   ))}
-                </tbody>
-              </table>
-
-              {/* Responsive Table for Mobile */}
-              <div className="md:hidden">
-                {filteredUsers.map((user, idx) => (
-                  <div key={user._id} className="border-b py-4 flex flex-col">
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium dark:text-white">#{idx + 1}</span>
-                      <img
-                        src={user?.photoUrl}
-                        alt=""
-                        className="h-[35px] w-[35px] rounded-full"
-                      />
-                    </div>
-                    <div className="flex justify-between mt-2">
-                      <span className="dark:text-white">{user?.name}</span>
-                      {currentUser?._id === user._id && (
-                        <span className="ml-2 px-2 py-1 text-xs font-semibold text-white bg-blue-500 rounded-md">
-                          You
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex justify-between mt-2">
-                      <span className="dark:text-white">{user?.role}</span>
-                      <span
-                        onClick={() =>
-                          navigate(`/dashboard/update-user/${user._id}`)
-                        }
-                        className="cursor-pointer bg-green-500 py-1 rounded-md px-2 text-white"
-                      >
-                        Update
-                      </span>
-                      <span
-                        onClick={() => handleDelete(user._id)}
-                        className="cursor-pointer bg-red-600 py-1 rounded-md px-2 text-white"
-                      >
-                        Delete
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
