@@ -44,16 +44,33 @@ function Crop() {
 
   const [totalLandSize, setTotalLandSize] = useState(0);
   const [usedLandSize, setUsedLandSize] = useState(0);
+  const [plantOptions, setPlantOptions] = useState([]);
 
   useEffect(() => {
     fetchCrops();
     fetchLocation();
+    fetchPlantOptions();
   }, [locationId]);
 
   useEffect(() => {
     setFilteredCrops(dataList);
     calculateUsedLandSize(dataList);
   }, [dataList]);
+
+  const fetchPlantOptions = async () => {
+    try {
+      const response = await axiosFetch.get('/Plant/');
+      if (Array.isArray(response.data)) {
+        setPlantOptions(response.data);
+      } else {
+        console.error("Unexpected plant data format:", response.data);
+        toast.error("Unexpected plant data format from server.");
+      }
+    } catch (err) {
+      console.error("Error fetching plant options:", err);
+      toast.error("Failed to fetch plant options.");
+    }
+  };
 
   const fetchCrops = async () => {
     try {
@@ -296,6 +313,7 @@ function Crop() {
             handleSubmit={handleAddSubmit} 
             totalLandSize={totalLandSize}
             usedLandSize={usedLandSize}
+            plantOptions={plantOptions}
           />
         </Modal>
 
@@ -310,6 +328,7 @@ function Crop() {
             initialData={selectedCrop}
             totalLandSize={totalLandSize}
             usedLandSize={usedLandSize}
+            plantOptions={plantOptions}
           />
         </Modal>
 

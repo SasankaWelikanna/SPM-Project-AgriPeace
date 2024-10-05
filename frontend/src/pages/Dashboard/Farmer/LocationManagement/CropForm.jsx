@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const CropForm = ({ handleSubmit, initialData, totalLandSize, usedLandSize }) => {
+const CropForm = ({ handleSubmit, initialData, totalLandSize, usedLandSize, plantOptions }) => {
   const [formData, setFormData] = useState({
     cropName: "",
     cropType: "",
@@ -58,15 +58,20 @@ const CropForm = ({ handleSubmit, initialData, totalLandSize, usedLandSize }) =>
         <label htmlFor="cropName" className="block text-gray-700 font-semibold mb-1">
           Crop Name
         </label>
-        <input
-          type="text"
+        <select
           className="w-full p-2 border border-gray-300 rounded-md"
           name="cropName"
-          placeholder="Crop Name"
           onChange={handleChange}
           value={formData.cropName}
           required
-        />
+        >
+          <option value="">Select a crop</option>
+          {plantOptions.map((plant) => (
+            <option key={plant._id} value={plant.name}>
+              {plant.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="mb-4">
