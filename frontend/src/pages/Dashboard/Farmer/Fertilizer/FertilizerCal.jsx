@@ -161,12 +161,20 @@ function FertilizerCalculator() {
               Area (in acres)
             </label>
             <input
-              type="number"
-              value={area}
-              onChange={(e) => setArea(e.target.value)}
-              className="border border-gray-300 dark:border-gray-600 p-2 rounded-md w-full md:w-5/6 dark:bg-gray-700 dark:text-white"
-              placeholder="Enter area in acres"
+                  type="number"
+                  value={area}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value > 0) {
+                      setArea(value);
+                    } else {
+                      setArea(""); // Reset or handle invalid input case if needed
+                    }
+                  }}
+                  className="border border-gray-300 dark:border-gray-600 p-2 rounded-md w-full md:w-5/6 dark:bg-gray-700 dark:text-white"
+                  placeholder="Enter area in acres"
             />
+
           </div>
         </div>
 

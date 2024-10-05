@@ -128,7 +128,7 @@ const ManageUsers = () => {
                         <img
                           src={user?.photoUrl}
                           alt=""
-                          className="h-[35px] w-[35px] rounded-full"
+                          className="h-[35px] w-[35px] object-cover rounded-full"
                         />
                       </td>
                       <td className="whitespace-nowrap px-4 py-4 dark:text-white">

@@ -183,14 +183,11 @@ function Fertilizer() {
                     <strong>Name:</strong> {selectedFertilizer.productName}
                   </p>
                   <p className="text-sm">
-                    <strong>Description:</strong>{" "}
-                    {selectedFertilizer.description}
-                  </p>
-                  <p className="text-sm">
                     <strong>Category:</strong> {selectedFertilizer.category}
                   </p>
                   <p className="text-sm">
-                    <strong>Usage:</strong> {selectedFertilizer.usage}
+                    <strong>Description:</strong>{" "}
+                    {selectedFertilizer.description}
                   </p>
                 </div>
               </div>
