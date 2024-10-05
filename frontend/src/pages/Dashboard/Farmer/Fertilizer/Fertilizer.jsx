@@ -189,6 +189,14 @@ function Fertilizer() {
                     <strong>Description:</strong>{" "}
                     {selectedFertilizer.description}
                   </p>
+                  <p className="text-sm">
+                    <strong>Weight:</strong>{" "}
+                    {parseFloat(selectedFertilizer.quantity).toFixed(2)}<strong> kg</strong>
+                  </p>
+                  <p className="text-sm">
+                    <strong>Average price: Rs.</strong>{" "}
+                    {parseFloat(selectedFertilizer.price).toFixed(2)}
+                  </p>
                 </div>
               </div>
             )}
