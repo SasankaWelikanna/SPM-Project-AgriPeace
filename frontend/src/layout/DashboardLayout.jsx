@@ -6,7 +6,6 @@ import logo from "/logo.png";
 import { BiHomeAlt, BiLogInCircle } from "react-icons/bi";
 import { FaUsers, FaUserAlt } from "react-icons/fa";
 import { GiFertilizerBag, GiField } from "react-icons/gi";
-import { MdPayments } from "react-icons/md";
 import { RiPlantFill } from "react-icons/ri";
 import { RiDashboardFill } from "react-icons/ri";
 import Swal from "sweetalert2";
@@ -128,13 +127,13 @@ const DashboardLayout = () => {
             }`}
           />
           <Link to="/">
-          <h1
-            className={`text-secondary cursor-pointer font-bold origin-left text-xl duration-200 ${
-              !open && "scale-0"
-            }`}
-          >
-            AgriPeace
-          </h1>
+            <h1
+              className={`text-secondary cursor-pointer font-bold origin-left text-xl duration-200 ${
+                !open && "scale-0"
+              }`}
+            >
+              AgriPeace
+            </h1>
           </Link>
         </div>
 

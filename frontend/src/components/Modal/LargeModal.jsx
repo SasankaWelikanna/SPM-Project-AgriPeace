@@ -7,7 +7,6 @@ function Modal({ isOpen, onClose, title, children }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50">
       <div className="relative w-full max-w-3xl p-6 bg-white rounded-lg shadow-lg dark:bg-gray-700">
         {" "}
-        {/* Increased width */}
         <div className="flex justify-between items-center pb-3">
           <h2 className="text-xl font-semibold dark:text-white">{title}</h2>
           <button

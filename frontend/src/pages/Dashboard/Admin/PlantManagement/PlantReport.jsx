@@ -125,7 +125,6 @@ const styles = StyleSheet.create({
   },
 });
 
-// Helper function to split data into chunks of 5 rows
 const paginateData = (dataList, itemsPerPage) => {
   const pages = [];
   for (let i = 0; i < dataList.length; i += itemsPerPage) {
@@ -140,14 +139,12 @@ const Footer = () => (
   </Text>
 );
 
-// Main Component
 const PlantReport = ({ dataList }) => {
   const reportDateTime = new Date().toLocaleString("en-US", {
     timeZone: "Asia/Colombo",
   });
 
-  // Adjust itemsPerPage based on the available page height
-  const paginatedData = paginateData(dataList, 6); // Adjust this number to control rows per page
+  const paginatedData = paginateData(dataList, 6);
 
   return (
     <Document>
@@ -159,7 +156,6 @@ const PlantReport = ({ dataList }) => {
           style={styles.page}
         >
           <View style={styles.section}>
-            {/* Render header and date only on the first page */}
             {pageIndex === 0 && (
               <>
                 <View style={styles.header}>
@@ -208,7 +204,6 @@ const PlantReport = ({ dataList }) => {
               ))}
             </View>
 
-            {/* Render signature only on the last page */}
             {pageIndex === paginatedData.length - 1 && (
               <View style={styles.signatureContainerCenter}>
                 <View style={styles.signatureLine} />
@@ -217,7 +212,6 @@ const PlantReport = ({ dataList }) => {
             )}
           </View>
 
-          {/* Render footer only on the last page */}
           {pageIndex === paginatedData.length - 1 && <Footer />}
         </Page>
       ))}

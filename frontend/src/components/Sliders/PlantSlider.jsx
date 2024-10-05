@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-import { HiChevronLeft, HiChevronRight } from "react-icons/hi"; // Importing icons for navigation
+import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
 const PlantSlider = () => {
   const [plantsData, setPlantsData] = useState([]);
@@ -10,7 +10,7 @@ const PlantSlider = () => {
   useEffect(() => {
     const fetchPlants = async () => {
       try {
-        const response = await axiosSecure.get("/Plant"); // Fetching plant data
+        const response = await axiosSecure.get("/Plant");
         const sortedPlants = response.data.sort((a, b) =>
           a.name.localeCompare(b.name)
         );
@@ -24,7 +24,7 @@ const PlantSlider = () => {
   }, [axiosSecure]);
 
   if (plantsData.length === 0) {
-    return <p className="text-center">Loading plants...</p>; // Show a loading message while fetching data
+    return <p className="text-center">Loading plants...</p>;
   }
 
   const currentPlant = plantsData[currentIndex];

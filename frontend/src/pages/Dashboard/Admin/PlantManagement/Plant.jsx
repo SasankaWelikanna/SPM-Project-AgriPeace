@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import LargeModal from "../../../../components/Modal/LargeModal";
 import Modal from "../../../../components/Modal/Modal";
 import SearchBar from "../../../../components/Search/SearchBar";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { MdDelete } from "react-icons/md";
 import { FaEdit, FaFilePdf, FaFileExcel } from "react-icons/fa";
 import { HiRefresh } from "react-icons/hi";
@@ -28,11 +28,7 @@ function Plant() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [selectedPlant, setSelectedPlant] = useState(null);
-
-  // Filter state
   const [selectedCategory, setSelectedCategory] = useState("");
-
-  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [plantsPerPage] = useState(3); // Adjust as needed
 
@@ -134,8 +130,6 @@ function Plant() {
       fetchPlants();
     } catch (err) {
       console.error("Error adding plant:", err);
-
-      // Check for duplicate entry error from backend response
       if (err.response && err.response.status === 400) {
         toast.error("Plant already exists!");
       } else {

@@ -9,7 +9,6 @@ const CropsCount = () => {
   const fetchCropCount = async () => {
     try {
       const response = await axiosSecure.get("api/crops/");
-      // Assuming response.data is an array of Crops
       setCropCount(response.data.length);
     } catch (error) {
       console.error("Error fetching Crops:", error);

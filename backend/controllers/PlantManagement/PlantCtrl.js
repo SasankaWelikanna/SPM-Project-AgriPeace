@@ -1,5 +1,6 @@
 const Plant = require("../../models/PlantManagement/plant");
 
+// Add a new plant
 const addPlant = async (req, res) => {
   const {
     imageUrl,
@@ -36,6 +37,7 @@ const addPlant = async (req, res) => {
   }
 };
 
+// Get all plants
 const getAllPlants = async (req, res) => {
   try {
     const plants = await Plant.find().sort({ name: 1 });
@@ -45,6 +47,7 @@ const getAllPlants = async (req, res) => {
   }
 };
 
+// Get a single plant by ID
 const getOnePlant = async (req, res) => {
   const id = req.params.id;
   try {
@@ -55,6 +58,7 @@ const getOnePlant = async (req, res) => {
   }
 };
 
+// Delete a plant
 const deletePlant = async (req, res) => {
   const id = req.params.id;
   try {
@@ -65,6 +69,7 @@ const deletePlant = async (req, res) => {
   }
 };
 
+// Update a Plant
 const updatePlant = async (req, res) => {
   const id = req.params.id;
   const {

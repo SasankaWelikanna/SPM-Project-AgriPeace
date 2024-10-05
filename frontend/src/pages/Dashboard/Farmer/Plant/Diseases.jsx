@@ -14,7 +14,7 @@ function Diseases() {
   const [filteredDiseases, setFilteredDiseases] = useState([]);
   const [plantName, setPlantName] = useState("");
   const [selectedDisease, setSelectedDisease] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null); // State for selected image
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     fetchDiseases();
@@ -22,7 +22,6 @@ function Diseases() {
   }, [plantId]);
 
   useEffect(() => {
-    // Save filtered diseases in local storage
     localStorage.setItem(
       `diseases-filteredDiseases-${plantId}`,
       JSON.stringify(filteredDiseases)
@@ -30,7 +29,6 @@ function Diseases() {
   }, [filteredDiseases]);
 
   useEffect(() => {
-    // Load saved state
     const savedFilteredDiseases = localStorage.getItem(
       `diseases-filteredDiseases-${plantId}`
     );
@@ -79,7 +77,7 @@ function Diseases() {
   };
 
   const handleImageClick = (imageUrl) => {
-    setSelectedImage(imageUrl); // Set the clicked image URL to the state
+    setSelectedImage(imageUrl);
   };
 
   return (
@@ -114,8 +112,8 @@ function Diseases() {
             filteredDiseases.map((disease) => (
               <Card
                 key={disease._id}
-                plant={disease} // Passing the disease as plant prop
-                handleViewDetails={handleDiseaseClick} // Passing click handler
+                plant={disease}
+                handleViewDetails={handleDiseaseClick}
               />
             ))
           ) : (
@@ -181,7 +179,7 @@ function Diseases() {
             <img
               src={selectedImage}
               alt="Selected Disease"
-              className="w-full h-full object-cover rounded-lg border border-gray-300"
+              className="w-full max-h-[80vh] object-cover rounded-lg border border-gray-300"
             />
           </div>
         </LargeModal>

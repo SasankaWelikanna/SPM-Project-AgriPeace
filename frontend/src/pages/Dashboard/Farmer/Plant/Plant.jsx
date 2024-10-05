@@ -3,7 +3,7 @@ import useAxiosFetch from "../../../../hooks/useAxiosFetch";
 import { useNavigate, useLocation } from "react-router-dom";
 import LargeModal from "../../../../components/Modal/LargeModal";
 import SearchBar from "../../../../components/Search/SearchBar";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import Pagination from "../../../../components/Pagination/Pagination";
 import useDebounce from "../../../../hooks/useDebounce";
 import Card from "../../../../components/Card/Card";
@@ -115,9 +115,6 @@ function Plant() {
     .sort((a, b) => a.name.localeCompare(b.name)) // Sort alphabetically
     .slice(indexOfFirstPlant, indexOfLastPlant);
   const totalPages = Math.ceil(filteredDataList.length / plantsPerPage);
-
-  // Handle back navigation
-  const handleBackClick = () => navigate(-1);
 
   return (
     <div className="mt-10 p-4 bg-gray-50 dark:bg-gray-900">

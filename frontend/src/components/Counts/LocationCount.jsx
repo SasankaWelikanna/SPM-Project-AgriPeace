@@ -9,7 +9,6 @@ const LocationCount = () => {
   const fetchLocationCount = async () => {
     try {
       const response = await axiosSecure.get("/Location/");
-      // Assuming response.data is an array of locations
       setLocationCount(response.data.length);
     } catch (error) {
       console.error("Error fetching locations:", error);

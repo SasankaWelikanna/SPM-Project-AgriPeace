@@ -9,7 +9,6 @@ const FertilizerCount = () => {
   const fetchFertilizerCount = async () => {
     try {
       const response = await axiosSecure.get("/Fertilizer/");
-      // Assuming response.data is an array of fertilizers
       setFertilizerCount(response.data.length);
     } catch (error) {
       console.error("Error fetching fertilizers:", error);
