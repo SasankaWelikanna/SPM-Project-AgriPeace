@@ -203,13 +203,31 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
             </label>
             <input
               type="number"
+              step="0.01"
               className="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white"
-              name="quantity"
+              name="quantity"  // Assuming 'quantity' refers to the weight
               placeholder="Weight"
-              onChange={handleChange}
+              onBlur={(e) => {
+                let value = parseFloat(e.target.value);
+                if (!isNaN(value) && value >= 0) {  // Ensure no negative values
+                  value = value.toFixed(2); // Ensure the value has 2 decimal places
+                  handleChange({ target: { name: e.target.name, value } });
+                } else if (value < 0) {
+                  // If the value is negative, reset it to an empty string or zero
+                  handleChange({ target: { name: e.target.name, value: '' } });
+                }
+              }}
+              onChange={(e) => {
+                let value = parseFloat(e.target.value);
+                if (value >= 0 || e.target.value === '') { // Allow only non-negative values or empty input
+                  handleChange(e); // Regular onChange handler to track valid input value
+                }
+              }}
               value={formData.quantity}
               required
             />
+
+
           </div>
 
           <div className="mb-4">
@@ -221,13 +239,33 @@ const FertilizerForm = ({ handleSubmit, initialData }) => {
             </label>
             <input
               type="number"
+              step="0.01"
               className="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white"
               name="price"
               placeholder="Average Price"
-              onChange={handleChange}
+              onBlur={(e) => {
+                let value = parseFloat(e.target.value);
+                if (!isNaN(value) && value >= 0) {  // Ensure no negative values
+                  value = value.toFixed(2); // Ensure the value has 2 decimal places
+                  handleChange({ target: { name: e.target.name, value } });
+                } else if (value < 0) {
+                  // If the value is negative, reset it to an empty string or zero
+                  handleChange({ target: { name: e.target.name, value: '' } });
+                }
+              }}
+              onChange={(e) => {
+                let value = parseFloat(e.target.value);
+                if (value >= 0 || e.target.value === '') { // Allow only non-negative values or empty input
+                  handleChange(e); // Regular onChange handler to track valid input value
+                }
+              }}
               value={formData.price}
               required
             />
+
+
+
+
           </div>
         </div>
       </div>

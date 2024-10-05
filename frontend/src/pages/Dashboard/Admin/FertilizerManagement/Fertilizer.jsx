@@ -323,8 +323,8 @@ function Fertilizer() {
                   <td className="p-4">{fertilizer.productName}</td>
                   <td className="p-4">{fertilizer.category}</td>
                   <td className="p-4">{fertilizer.description}</td>
-                  <td className="p-4">{fertilizer.quantity}</td>
-                  <td className="p-4">{fertilizer.price}</td>
+                  <td className="p-4">{parseFloat(fertilizer.quantity).toFixed(2)}</td>
+                  <td className="p-4">{parseFloat(fertilizer.price).toFixed(2)}</td>
 
                   <td className="p-4">
                   <div className="flex space-x-2">
