@@ -179,7 +179,7 @@ function Diseases() {
             <img
               src={selectedImage}
               alt="Selected Disease"
-              className="w-full h-full object-cover rounded-lg border border-gray-300"
+              className="w-full max-h-[80vh] object-cover rounded-lg border border-gray-300"
             />
           </div>
         </LargeModal>
