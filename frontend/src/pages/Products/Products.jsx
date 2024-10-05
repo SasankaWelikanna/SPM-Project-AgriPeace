@@ -46,8 +46,14 @@ const Products = () => {
   };
 
   // Get unique categories for plants and fertilizers
-  const plantCategories = ["All", ...new Set(plantsData.map((plant) => plant.category))];
-  const fertilizerCategories = ["All", ...new Set(fertilizersData.map((fertilizer) => fertilizer.category))];
+  const plantCategories = [
+    "All",
+    ...new Set(plantsData.map((plant) => plant.category)),
+  ];
+  const fertilizerCategories = [
+    "All",
+    ...new Set(fertilizersData.map((fertilizer) => fertilizer.category)),
+  ];
 
   // Filter plants or fertilizers based on the search query and selected category
   const filteredPlants = plantsData.filter((plant) => {
@@ -59,7 +65,9 @@ const Products = () => {
 
   const filteredFertilizers = fertilizersData.filter((fertilizer) => {
     return (
-      fertilizer.productName.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      fertilizer.productName
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) &&
       (selectedCategory === "All" || fertilizer.category === selectedCategory)
     );
   });
@@ -69,28 +77,36 @@ const Products = () => {
       <Scroll />
 
       {/* Section Toggle Buttons */}
-      <div className="flex justify-center mb-4">
-        <div className="bg-white py-2 px-4 dark:bg-gray-950">
-          <button
-            className={`px-20 py-2 mr-2 rounded ${
-              selectedSection === "plants"
-                ? "bg-secondary text-white"
-                : "bg-gray-300 dark:bg-gray-900 dark:text-white hover:scale-105 duration-300"
-            }`}
-            onClick={() => handleSectionChange("plants")}
-          >
-            Plants
-          </button>
-          <button
-            className={`px-20 py-2 rounded ${
-              selectedSection === "fertilizers"
-                ? "bg-secondary text-white"
-                : "bg-gray-300 dark:bg-gray-900 dark:text-white hover:scale-105 duration-300"
-            }`}
-            onClick={() => handleSectionChange("fertilizers")}
-          >
-            Fertilizers
-          </button>
+      <div className="flex justify-center mb-6">
+        <div className="bg-white py-2 px-4 dark:bg-gray-950 relative">
+          <div className="flex space-x-4">
+            <button
+              className={`relative px-20 py-2 mr-2 rounded ${
+                selectedSection === "plants"
+                  ? "text-black text-2xl font-bold"
+                  : "text-gray-600 text-2xl font-bold dark:text-gray-400 hover:scale-105 duration-300"
+              }`}
+              onClick={() => handleSectionChange("plants")}
+            >
+              Plants
+              {selectedSection === "plants" && (
+                <div className="absolute bottom-0 left-0 w-full h-1 bg-secondary rounded transition-all duration-300"></div>
+              )}
+            </button>
+            <button
+              className={`relative px-20 py-2 rounded ${
+                selectedSection === "fertilizers"
+                  ? "text-black text-2xl font-bold"
+                  : "text-gray-600 text-2xl font-bold dark:text-gray-400 hover:scale-105 duration-300"
+              }`}
+              onClick={() => handleSectionChange("fertilizers")}
+            >
+              Fertilizers
+              {selectedSection === "fertilizers" && (
+                <div className="absolute bottom-0 left-0 w-full h-1 bg-secondary rounded transition-all duration-300"></div>
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
