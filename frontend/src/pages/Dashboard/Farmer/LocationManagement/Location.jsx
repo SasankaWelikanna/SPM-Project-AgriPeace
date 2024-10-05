@@ -14,6 +14,8 @@ import LocationReport from "./LocationReport";
 import * as XLSX from "xlsx";
 import { writeFile } from "xlsx";
 import { HiRefresh } from "react-icons/hi";
+import Crop from "./Crop";
+import CropForm from "./CropForm";
 
 function Location() {
   const axiosFetch = useAxiosFetch();
@@ -146,6 +148,14 @@ function Location() {
     navigate(`/dashboard/location/crops/${locationId}`);
   };
 
+  // Function to extract numbers from areaSize
+  const extractNumber = (str) => {
+    const numbers = str.match(/(\d+(\.\d+)?)/g); // Regex to capture integers and decimals
+    return numbers ? numbers.map(Number) : [];
+  };  
+
+  
+
   // Pagination calculations
   const indexOfLastLocation = currentPage * locationsPerPage;
   const indexOfFirstLocation = indexOfLastLocation - locationsPerPage;
@@ -159,13 +169,19 @@ function Location() {
     <div className="mt-10 p-4 bg-gray-50 dark:bg-gray-900">
       <div className="bg-white shadow-md rounded-lg p-6 dark:bg-gray-700">
         <div className="flex justify-between items-center mb-4">
-          <div>
+          <div data-aos="flip-up" data-aos-duration="1000">
             <h2 className="text-xl font-semibold text-gray-700 dark:text-white">
               Location Details
             </h2>
-            <h6 className="text-sm text-gray-500 dark:text-gray-200">Manage location details</h6>
+            <h6 className="text-sm text-gray-500 dark:text-gray-200">
+              Manage location details
+            </h6>
           </div>
-          <div className="flex space-x-4">
+          <div
+            className="flex space-x-4"
+            data-aos="flip-up"
+            data-aos-duration="1000"
+          >
             <BlobProvider
               document={<LocationReport dataList={dataList} />}
               fileName="LocationReport.pdf"
@@ -229,7 +245,9 @@ function Location() {
           onClose={handleCloseDeleteModal}
           title="Confirm Delete"
         >
-          <p className="dark:text-white">Are you sure you want to delete this record?</p>
+          <p className="dark:text-white">
+            Are you sure you want to delete this record?
+          </p>
           <div className="mt-6 flex justify-end">
             <button
               className="px-4 py-2 mr-4 bg-gray-300 rounded hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-800 dark:text-white"
@@ -246,9 +264,15 @@ function Location() {
           </div>
         </Modal>
 
-        <SearchBar onSearch={handleSearch} />
+        <div data-aos="flip-up" data-aos-duration="1000">
+          <SearchBar onSearch={handleSearch} />
+        </div>
 
-        <table className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-900">
+        <table
+          className="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-900"
+          data-aos="fade-in"
+          data-aos-duration="2000"
+        >
           <thead className="bg-gray-100 dark:bg-gray-800 dark:text-white">
             <tr>
               <th className="p-4 text-left">Province</th>
@@ -315,6 +339,20 @@ function Location() {
           onPageChange={setCurrentPage}
         />
       </div>
+
+      {selectedLocation && (
+        <div className="mt-6">
+          <h3 className="text-lg font-semibold text-gray-700 dark:text-white">
+            Crops for {selectedLocation.city} (Area Size:{" "}
+            {selectedLocation.areaSize} units)
+          </h3>
+          <Crop
+            totalLandSize={extractNumber(selectedLocation.areaSize)[0]}
+            locationId={selectedLocation._id}
+          />
+        </div>
+      )}
+
       <ToastContainer
         position="top-right"
         autoClose={5000}

@@ -247,7 +247,7 @@ const NavBar = () => {
                       <img
                         src={currentUser?.photoUrl || farmerImg}
                         alt="User Avatar"
-                        className="h-[40px] rounded-full w-[40px]"
+                        className="w-10 h-10 rounded-full object-cover"
                       />
                     </Link>
                   </li>

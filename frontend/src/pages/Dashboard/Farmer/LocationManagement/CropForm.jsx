@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const CropForm = ({ handleSubmit, initialData }) => {
+const CropForm = ({ handleSubmit, initialData, totalLandSize, usedLandSize, plantOptions }) => {
   const [formData, setFormData] = useState({
     cropName: "",
     cropType: "",
@@ -12,18 +12,27 @@ const CropForm = ({ handleSubmit, initialData }) => {
     ...initialData, // Pre-populate form data if initialData is provided
   });
 
+  const [warningMessage, setWarningMessage] = useState("");
+
   useEffect(() => {
     if (initialData) {
       setFormData(initialData);
     }
   }, [initialData]);
 
+  const remainingArea = totalLandSize - usedLandSize;
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Basic validation to prevent numbers in cropName if needed
-    if (name === "cropName" && /[^\p{L}\s]/u.test(value)) {
-      return;
+    if (name === "landSize") {
+      const numericValue = parseFloat(value);
+      if (numericValue > remainingArea) {
+        setWarningMessage(`You have exceeded the remaining area of ${remainingArea.toFixed(2)} units.`);
+        return;
+      } else {
+        setWarningMessage(""); // Clear warning if valid
+      }
     }
 
     setFormData((prev) => ({
@@ -34,6 +43,12 @@ const CropForm = ({ handleSubmit, initialData }) => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+
+    if (parseFloat(formData.landSize) > remainingArea) {
+      setWarningMessage(`The entered land size exceeds the remaining area of ${remainingArea.toFixed(2)} units.`);
+      return;
+    }
+
     handleSubmit(formData);
   };
 
@@ -43,15 +58,20 @@ const CropForm = ({ handleSubmit, initialData }) => {
         <label htmlFor="cropName" className="block text-gray-700 font-semibold mb-1">
           Crop Name
         </label>
-        <input
-          type="text"
+        <select
           className="w-full p-2 border border-gray-300 rounded-md"
           name="cropName"
-          placeholder="Crop Name"
           onChange={handleChange}
           value={formData.cropName}
           required
-        />
+        >
+          <option value="">Select a crop</option>
+          {plantOptions.map((plant) => (
+            <option key={plant._id} value={plant.name}>
+              {plant.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="mb-4">
@@ -82,6 +102,11 @@ const CropForm = ({ handleSubmit, initialData }) => {
           value={formData.landSize}
           required
         />
+        <p className="text-sm text-gray-500">
+          Remaining area: {remainingArea.toFixed(2)} units
+        </p>
+        {warningMessage && <p className="text-red-500 text-sm">{warningMessage}</p>}
+      
       </div>
 
       <div className="mb-4">
