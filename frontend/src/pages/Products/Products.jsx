@@ -78,13 +78,13 @@ const Products = () => {
 
       {/* Section Toggle Buttons */}
       <div className="flex justify-center mb-6">
-        <div className="bg-white py-2 px-4 dark:bg-gray-950 relative">
+        <div className="bg-white py-2 px-4 dark:bg-slate-900 relative">
           <div className="flex space-x-4">
             <button
               className={`relative px-20 py-2 mr-2 rounded ${
                 selectedSection === "plants"
-                  ? "text-black text-2xl font-bold"
-                  : "text-gray-600 text-2xl font-bold dark:text-gray-400 hover:scale-105 duration-300"
+                  ? "text-black dark:text-white text-2xl font-bold"
+                  : "text-gray-600 text-2xl font-bold dark:text-white hover:scale-105 duration-300"
               }`}
               onClick={() => handleSectionChange("plants")}
             >
@@ -96,8 +96,8 @@ const Products = () => {
             <button
               className={`relative px-20 py-2 rounded ${
                 selectedSection === "fertilizers"
-                  ? "text-black text-2xl font-bold"
-                  : "text-gray-600 text-2xl font-bold dark:text-gray-400 hover:scale-105 duration-300"
+                  ? "text-black dark:text-white text-2xl font-bold"
+                  : "text-gray-600 text-2xl font-bold dark:text-white hover:scale-105 duration-300"
               }`}
               onClick={() => handleSectionChange("fertilizers")}
             >
