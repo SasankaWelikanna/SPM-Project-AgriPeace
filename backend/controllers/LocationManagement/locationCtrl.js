@@ -21,7 +21,7 @@ const addLocation = async (req, res) => {
 
 const getAllLocations = async (req, res) => {
   try {
-    const locations = await Location.find(); // Corrected to Location.find()
+    const locations = await Location.find();
     res.json(locations);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -65,7 +65,7 @@ const updateLocation = async (req, res) => {
         irrigationType,
       },
       { new: true }
-    ); // Added { new: true } to return updated document
+    );
     res.status(200).json({ message: "Location Updated" }); // Corrected message
   } catch (err) {
     res.status(500).json({ error: err.message });

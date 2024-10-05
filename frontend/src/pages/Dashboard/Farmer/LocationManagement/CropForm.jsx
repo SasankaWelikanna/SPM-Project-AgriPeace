@@ -9,10 +9,11 @@ const CropForm = ({ handleSubmit, initialData, totalLandSize, usedLandSize, plan
     expectedQuantity: "",
     plantingDate: "",
     expectedDate: "",
-    ...initialData, // Pre-populate form data if initialData is provided
+    ...initialData,
   });
 
   const [warningMessage, setWarningMessage] = useState("");
+  const [dateWarning, setDateWarning] = useState("");
 
   useEffect(() => {
     if (initialData) {
@@ -35,6 +36,20 @@ const CropForm = ({ handleSubmit, initialData, totalLandSize, usedLandSize, plan
       }
     }
 
+    // Validate planting and expected dates
+    if (name === "plantingDate" || name === "expectedDate") {
+      const plantingDate = new Date(formData.plantingDate);
+      const expectedDate = new Date(name === "expectedDate" ? value : formData.expectedDate);
+      
+      if (name === "plantingDate" && expectedDate && new Date(value) > expectedDate) {
+        setDateWarning("Planting date cannot be after the expected date.");
+      } else if (name === "expectedDate" && plantingDate && new Date(value) < plantingDate) {
+        setDateWarning("Expected date cannot be before the planting date.");
+      } else {
+        setDateWarning(""); // Clear date warning if valid
+      }
+    }
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -44,8 +59,15 @@ const CropForm = ({ handleSubmit, initialData, totalLandSize, usedLandSize, plan
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
+    //Check remaining area size
     if (parseFloat(formData.landSize) > remainingArea) {
       setWarningMessage(`The entered land size exceeds the remaining area of ${remainingArea.toFixed(2)} units.`);
+      return;
+    }
+
+    // Check date validation
+    if (new Date(formData.plantingDate) > new Date(formData.expectedDate)) {
+      setDateWarning("Planting date cannot be after the expected date.");
       return;
     }
 
@@ -165,6 +187,7 @@ const CropForm = ({ handleSubmit, initialData, totalLandSize, usedLandSize, plan
           value={formData.expectedDate}
           required
         />
+        {dateWarning && <p className="text-red-500 text-sm">{dateWarning}</p>}
       </div>
 
       <button
