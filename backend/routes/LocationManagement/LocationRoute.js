@@ -9,7 +9,7 @@ router.post("/add", LocationCtrl.addLocation);
 router.get("/", LocationCtrl.getAllLocations);
 
 // Route for getting a specific location by ID
-router.get("/:id", LocationCtrl.getOneLocation); // Adjusted to match frontend route
+router.get("/:id", LocationCtrl.getOneLocation);
 
 // Route for deleting a location by ID
 router.delete("/delete/:id", LocationCtrl.deleteLocation);

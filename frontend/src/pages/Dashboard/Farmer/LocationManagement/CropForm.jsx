@@ -9,7 +9,7 @@ const CropForm = ({ handleSubmit, initialData, totalLandSize, usedLandSize, plan
     expectedQuantity: "",
     plantingDate: "",
     expectedDate: "",
-    ...initialData, // Pre-populate form data if initialData is provided
+    ...initialData,
   });
 
   const [warningMessage, setWarningMessage] = useState("");
