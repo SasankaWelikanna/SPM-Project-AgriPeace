@@ -73,11 +73,7 @@ const AdminHome = () => {
           </div>
         </div>
       </div>
-      <div
-        className="dark:bg-gray-800 rounded-xl my-4 pt-4 pr-8 shadow-xl"
-        data-aos="fade-in"
-        data-aos-duration="1500"
-      >
+      <div className="dark:bg-gray-800 rounded-xl my-4 pt-4 pr-8 shadow-xl">
         <PlantCategoryChart className="w-full sm:w-1/2" />
       </div>
     </div>
