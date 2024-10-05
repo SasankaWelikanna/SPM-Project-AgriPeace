@@ -75,7 +75,7 @@ const AdminHome = () => {
       </div>
       <div
         className="dark:bg-gray-800 rounded-xl my-4 pt-4 pr-8 shadow-xl"
-        data-aos="slide-up"
+        data-aos="fade-in"
         data-aos-duration="1500"
       >
         <PlantCategoryChart className="w-full sm:w-1/2" />
