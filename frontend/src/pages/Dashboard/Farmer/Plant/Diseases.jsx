@@ -131,7 +131,7 @@ function Diseases() {
           onClose={() => setSelectedDisease(null)}
           title={selectedDisease.name}
         >
-          <div className="p-6 bg-gray-50 rounded-lg">
+          <div className="p-6 bg-gray-50 rounded-lg dark:bg-gray-800">
             <div className="flex flex-col space-y-4">
               <img
                 src={selectedDisease.imageUrl}
@@ -140,7 +140,7 @@ function Diseases() {
                 loading="lazy"
                 onClick={() => handleImageClick(selectedDisease.imageUrl)} // Open image modal
               />
-              <div className="text-gray-700 space-y-3">
+              <div className="text-gray-700 space-y-3  dark:text-white">
                 <p className="text-lg font-semibold">
                   <strong>Causal Agent:</strong> {selectedDisease.causalAgent}
                 </p>
@@ -175,7 +175,7 @@ function Diseases() {
           onClose={() => setSelectedImage(null)}
           title="Image Preview"
         >
-          <div className="p-6 bg-gray-50 rounded-lg">
+          <div className="p-6 bg-gray-50 rounded-lg dark:bg-gray-700">
             <img
               src={selectedImage}
               alt="Selected Disease"
