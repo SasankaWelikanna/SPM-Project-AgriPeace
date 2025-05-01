@@ -147,6 +147,28 @@ For the AgriPeace farming management system, we selected the following tools:
 - Easy setup and configuration
 - Strong documentation and community support
 
+### Postman
+**Reasons for selection:**
+- Powerful API testing platform with intuitive UI
+- Supports automated API testing with Newman CLI
+- Collections can be shared among team members
+- Environment variables for different deployment contexts
+- Comprehensive request and response validation
+- Test scripts written in JavaScript
+- API documentation generation capabilities
+- Integration with CI/CD pipelines
+
+### K6
+**Reasons for selection:**
+- Open-source performance testing tool
+- JavaScript-based scripting for developers' familiarity
+- Low resource consumption compared to other performance tools
+- Support for various load test patterns (spike, stress, soak)
+- Local and cloud execution options
+- Integration with CI/CD and monitoring systems
+- Metrics visualization and comprehensive reporting
+- Can simulate thousands of virtual users
+
 ### Why these tools over alternatives?
 
 **Jest vs Mocha/Chai:**
@@ -159,6 +181,20 @@ For the AgriPeace farming management system, we selected the following tools:
 - Modern architecture that reduces flaky tests
 - Superior developer experience and debugging tools
 - Easier setup and maintenance
+- Real-time test feedback during development
+
+**Postman vs REST-assured/SoapUI:**
+- More intuitive user interface for manual and automated testing
+- Better suited for JavaScript-based projects
+- Stronger collaboration features for team sharing
+- Easier learning curve for developers and QA engineers
+
+**K6 vs JMeter/Gatling:**
+- Code-based approach fits better with developer workflow
+- Lighter resource footprint enables more realistic load testing
+- JavaScript support aligns with our full-stack JS ecosystem
+- More modern architecture and cloud integration options
+- Superior developer experience and easier CI/CD integration
 
 ## 6. Test Cases Used
 
