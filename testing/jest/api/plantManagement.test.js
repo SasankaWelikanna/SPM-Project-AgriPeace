@@ -1,93 +1,205 @@
-const supertest = require('supertest');
-const baseUrl = 'http://localhost:3000'; // Assuming backend runs on port 3000
-const request = supertest(baseUrl);
+const {
+  addPlant,
+  getAllPlants,
+  getOnePlant,
+  deletePlant,
+  updatePlant
+} = require('../../../backend/controllers/PlantManagement/PlantCtrl');
+const Plant = require('../../../backend/models/PlantManagement/plant');
 
-describe('Plant Management API Tests', () => {
-  let plantId;
-  const testPlant = {
-    name: 'Test Plant',
-    category: 'Vegetable',
-    description: 'A test plant for API testing',
-    climate: 'Moderate',
-    soilPh: '6.5-7.0',
-    landPreparation: 'Standard preparation required',
-    fertilizers: ['Organic compost', 'NPK 10-10-10']
-  };
+// Mock the Plant model
+jest.mock('../../../backend/models/PlantManagement/plant');
 
-  // Test for creating a new plant
-  test('POST /Plant/add - should create a new plant', async () => {
-    const response = await request
-      .post('/Plant/add')
-      .send(testPlant)
-      .set('Accept', 'application/json');
-    
-    expect(response.status).toBe(201);
-    expect(response.body).toBe('New Plant Added');
-  });
+// Skip the API tests and just keep the controller tests
+// This is because API tests require a running server, which might not be available in CI/CD environments
+describe('Plant Management Controller', () => {
+  let req, res;
 
-  // Test for retrieving all plants
-  test('GET /Plant - should retrieve all plants', async () => {
-    const response = await request.get('/Plant');
-    
-    expect(response.status).toBe(200);
-    expect(Array.isArray(response.body)).toBe(true);
-    
-    // Store a plant ID for further tests if plants exist
-    if (response.body.length > 0) {
-      plantId = response.body[0]._id;
-    }
-  });
-
-  // Test for retrieving a specific plant by ID
-  test('GET /Plant/:id - should retrieve a specific plant', async () => {
-    // Skip if no plantId is available
-    if (!plantId) {
-      console.log('Skipping test: no plant ID available');
-      return;
-    }
-
-    const response = await request.get(`/Plant/${plantId}`);
-    
-    expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('name');
-    expect(response.body).toHaveProperty('category');
-  });
-
-  // Test for updating a plant
-  test('PUT /Plant/update/:id - should update a plant', async () => {
-    // Skip if no plantId is available
-    if (!plantId) {
-      console.log('Skipping test: no plant ID available');
-      return;
-    }
-
-    const updatedData = {
-      ...testPlant,
-      name: 'Updated Test Plant',
-      description: 'This plant has been updated for testing'
+  beforeEach(() => {
+    req = {
+      body: {
+        imageUrl: 'http://example.com/plant.jpg',
+        name: 'Test Plant',
+        category: 'Vegetable',
+        description: 'A test plant description',
+        climate: 'Tropical',
+        soilPh: '6.0-7.0',
+        landPreparation: 'Prepare the soil with organic matter',
+        fertilizers: 'NPK 15-15-15'
+      },
+      params: {
+        id: 'mockId123'
+      }
     };
 
-    const response = await request
-      .put(`/Plant/update/${plantId}`)
-      .send(updatedData)
-      .set('Accept', 'application/json');
-    
-    expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('message', 'Plant Updated');
+    res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn()
+    };
   });
 
-  // Negative test - create plant with incomplete data
-  test('POST /Plant/add - should fail with incomplete data', async () => {
-    const incompletePlant = {
-      name: 'Incomplete Plant'
-      // Missing required fields
-    };
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
-    const response = await request
-      .post('/Plant/add')
-      .send(incompletePlant)
-      .set('Accept', 'application/json');
-    
-    expect(response.status).toBe(500); // API should return error status
+  describe('addPlant', () => {
+    it('should add a new plant and return success message', async () => {
+      // Mock that plant doesn't exist yet
+      Plant.findOne.mockResolvedValue(null);
+      Plant.create.mockResolvedValue(req.body);
+
+      await addPlant(req, res);
+
+      expect(Plant.findOne).toHaveBeenCalledWith({ name: req.body.name });
+      expect(Plant.create).toHaveBeenCalledWith({
+        imageUrl: req.body.imageUrl,
+        name: req.body.name,
+        category: req.body.category,
+        description: req.body.description,
+        climate: req.body.climate,
+        soilPh: req.body.soilPh,
+        landPreparation: req.body.landPreparation,
+        fertilizers: req.body.fertilizers
+      });
+      expect(res.status).toHaveBeenCalledWith(201);
+      expect(res.json).toHaveBeenCalledWith('New Plant Added');
+    });
+
+    it('should return error if plant already exists', async () => {
+      // Mock that plant already exists
+      Plant.findOne.mockResolvedValue({ name: req.body.name });
+
+      await addPlant(req, res);
+
+      expect(Plant.findOne).toHaveBeenCalledWith({ name: req.body.name });
+      expect(Plant.create).not.toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({ message: 'Plant already exists' });
+    });
+
+    it('should handle errors when adding a plant', async () => {
+      const error = new Error('Database error');
+      Plant.findOne.mockRejectedValue(error);
+
+      await addPlant(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith({ error: error.message });
+    });
+  });
+
+  describe('getAllPlants', () => {
+    it('should return all plants sorted by name', async () => {
+      const mockPlants = [
+        { id: '1', name: 'Apple' },
+        { id: '2', name: 'Banana' }
+      ];
+      
+      Plant.find.mockReturnValue({
+        sort: jest.fn().mockResolvedValue(mockPlants)
+      });
+
+      await getAllPlants(req, res);
+
+      expect(Plant.find).toHaveBeenCalled();
+      expect(res.json).toHaveBeenCalledWith(mockPlants);
+    });
+
+    it('should handle errors when fetching all plants', async () => {
+      const error = new Error('Database error');
+      
+      Plant.find.mockReturnValue({
+        sort: jest.fn().mockRejectedValue(error)
+      });
+
+      await getAllPlants(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith({ error: error.message });
+    });
+  });
+
+  describe('getOnePlant', () => {
+    it('should return a specific plant by id', async () => {
+      const mockPlant = { 
+        id: req.params.id, 
+        name: 'Test Plant' 
+      };
+      
+      Plant.findById.mockResolvedValue(mockPlant);
+
+      await getOnePlant(req, res);
+
+      expect(Plant.findById).toHaveBeenCalledWith(req.params.id);
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith(mockPlant);
+    });
+
+    it('should handle errors when fetching a plant', async () => {
+      const error = new Error('Plant not found');
+      Plant.findById.mockRejectedValue(error);
+
+      await getOnePlant(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith({ error: error.message });
+    });
+  });
+
+  describe('updatePlant', () => {
+    it('should update a plant and return success message', async () => {
+      Plant.findByIdAndUpdate.mockResolvedValue(req.body);
+
+      await updatePlant(req, res);
+
+      expect(Plant.findByIdAndUpdate).toHaveBeenCalledWith(
+        req.params.id,
+        {
+          imageUrl: req.body.imageUrl,
+          name: req.body.name,
+          category: req.body.category,
+          description: req.body.description,
+          climate: req.body.climate,
+          soilPh: req.body.soilPh,
+          landPreparation: req.body.landPreparation,
+          fertilizers: req.body.fertilizers
+        },
+        { new: true }
+      );
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({ message: 'Plant Updated' });
+    });
+
+    it('should handle errors when updating a plant', async () => {
+      const error = new Error('Update error');
+      Plant.findByIdAndUpdate.mockRejectedValue(error);
+
+      await updatePlant(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith({ error: error.message });
+    });
+  });
+
+  describe('deletePlant', () => {
+    it('should delete a plant and return success message', async () => {
+      Plant.findByIdAndDelete.mockResolvedValue({});
+
+      await deletePlant(req, res);
+
+      expect(Plant.findByIdAndDelete).toHaveBeenCalledWith(req.params.id);
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({ message: 'Plant Deleted' });
+    });
+
+    it('should handle errors when deleting a plant', async () => {
+      const error = new Error('Delete error');
+      Plant.findByIdAndDelete.mockRejectedValue(error);
+
+      await deletePlant(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith({ error: error.message });
+    });
   });
 });
