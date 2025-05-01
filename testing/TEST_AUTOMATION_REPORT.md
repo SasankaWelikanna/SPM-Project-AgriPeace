@@ -335,69 +335,264 @@ Key components:
 - Verifies proper redirection after authentication
 - Tests navigation to registration page
 
-#### Plant Management Tests (Admin)
-Located at: `/testing/cypress/e2e/admin/plantManagement.cy.js`
+## 8. Detailed Test Cases and Automation Steps
 
-Key components:
-- Tests the plant management interface
-- Tests adding, editing, and deleting plants
-- Tests viewing plant diseases
-- Verifies success messages and UI updates
+### API Testing with Jest
 
-#### Location Management Tests (Farmer)
-Located at: `/testing/cypress/e2e/farmer/locationManagement.cy.js`
+#### Plant Management API
 
-Key components:
-- Tests the location management interface
-- Tests adding, editing, and deleting locations
-- Tests viewing crops for a location
-- Tests generating location reports
+##### Test Case: Create New Plant (Valid Data)
+- **Objective**: Verify that a new plant can be added with valid data
+- **Automation Steps**:
+  1. Mock the `Plant.findOne` method to return null (plant does not exist)
+  2. Mock the `Plant.create` method to return the request body
+  3. Call the `addPlant` controller function with a request containing valid plant data
+  4. Verify that `Plant.findOne` was called with the correct plant name
+  5. Verify that `Plant.create` was called with the correct plant data
+  6. Verify that response status is 201
+  7. Verify that response JSON contains 'New Plant Added'
+- **Expected Result**: Plant is successfully added to the database and appropriate success response is returned
 
-## 8. Test Execution and Results
+##### Test Case: Create New Plant (Duplicate Plant)
+- **Objective**: Verify that system handles duplicate plant names properly
+- **Automation Steps**:
+  1. Mock the `Plant.findOne` method to return an existing plant
+  2. Call the `addPlant` controller function with a request containing a duplicate plant name
+  3. Verify that `Plant.findOne` was called with the correct plant name
+  4. Verify that `Plant.create` was not called
+  5. Verify that response status is 400
+  6. Verify that response JSON contains appropriate error message
+- **Expected Result**: System prevents duplicate plant creation and returns appropriate error response
 
-### API Test Execution
+##### Test Case: Create New Plant (Database Error)
+- **Objective**: Verify error handling when database operation fails
+- **Automation Steps**:
+  1. Mock the `Plant.findOne` method to reject with an error
+  2. Call the `addPlant` controller function
+  3. Verify that response status is 500
+  4. Verify that response JSON contains the error message
+- **Expected Result**: System handles database errors gracefully with appropriate error response
 
-To execute the API tests:
-```bash
-cd /path/to/SPM-Project/testing
-npm run test:api
-```
+##### Test Case: Retrieve All Plants (Success)
+- **Objective**: Verify that all plants can be retrieved successfully
+- **Automation Steps**:
+  1. Create mock plant data array
+  2. Mock the `Plant.find` and `sort` methods to return the mock data
+  3. Call the `getAllPlants` controller function
+  4. Verify that `Plant.find` was called
+  5. Verify that response JSON contains the mock plant data
+- **Expected Result**: All plants are retrieved and returned in the response
 
-#### Expected Results:
-- All plant API endpoints respond correctly
-- CRUD operations complete successfully
-- Error handling behaves as expected
+##### Test Case: Retrieve All Plants (Database Error)
+- **Objective**: Verify error handling when database retrieval fails
+- **Automation Steps**:
+  1. Mock the `Plant.find` method to return an object with a `sort` method
+  2. Mock the `sort` method to reject with an error
+  3. Call the `getAllPlants` controller function
+  4. Verify that response status is 500
+  5. Verify that response JSON contains the error message
+- **Expected Result**: System handles database errors gracefully with appropriate error response
 
-### E2E Test Execution
+##### Test Case: Retrieve Specific Plant (Valid ID)
+- **Objective**: Verify that a specific plant can be retrieved by ID
+- **Automation Steps**:
+  1. Create mock plant data for a specific ID
+  2. Mock the `Plant.findById` method to return the mock data
+  3. Call the `getOnePlant` controller function with a request containing a valid plant ID
+  4. Verify that `Plant.findById` was called with the correct ID
+  5. Verify that response status is 200
+  6. Verify that response JSON contains the mock plant data
+- **Expected Result**: Specific plant is retrieved and returned in the response
 
-To execute the E2E tests:
-```bash
-cd /path/to/SPM-Project/testing
-npm run test:cypress
-```
+##### Test Case: Update Plant (Valid Data)
+- **Objective**: Verify that a plant can be updated with valid data
+- **Automation Steps**:
+  1. Mock the `Plant.findByIdAndUpdate` method to return the updated data
+  2. Call the `updatePlant` controller function with a request containing valid plant ID and updated data
+  3. Verify that `Plant.findByIdAndUpdate` was called with the correct ID and data
+  4. Verify that response status is 200
+  5. Verify that response JSON contains confirmation message
+- **Expected Result**: Plant is successfully updated and appropriate success response is returned
 
-#### Expected Results:
-- Authentication process works correctly
-- Admin can manage plants successfully
-- Farmer can manage locations successfully
-- All UI interactions work as expected
+##### Test Case: Delete Plant (Success)
+- **Objective**: Verify that a plant can be deleted successfully
+- **Automation Steps**:
+  1. Mock the `Plant.findByIdAndDelete` method to return an empty object
+  2. Call the `deletePlant` controller function with a request containing valid plant ID
+  3. Verify that `Plant.findByIdAndDelete` was called with the correct ID
+  4. Verify that response status is 200
+  5. Verify that response JSON contains confirmation message
+- **Expected Result**: Plant is successfully deleted and appropriate success response is returned
 
-### Test Execution Screenshots
+### E2E Testing with Cypress
 
-[Include screenshots of test execution and results here]
+#### Authentication Testing
 
-### Test Logs
+##### Test Case: Login Page Validation
+- **Objective**: Verify that the login page displays correctly with all required elements
+- **Automation Steps**:
+  1. Visit the login page URL
+  2. Check that the AgriPeace logo/text is visible
+  3. Verify that the login form exists
+  4. Verify that email and password input fields are present
+  5. Verify that the "Sign in" button is visible
+- **Expected Result**: All login page elements are correctly displayed
 
-[Include relevant test logs here]
+##### Test Case: Invalid Login Attempt
+- **Objective**: Verify that the system correctly handles invalid login attempts
+- **Automation Steps**:
+  1. Visit the login page URL
+  2. Enter invalid email "invalid@example.com"
+  3. Enter incorrect password "wrongpassword123"
+  4. Click the "Sign in" button
+  5. Check for error message display
+- **Expected Result**: System displays appropriate error message for invalid credentials
 
-## Conclusion
+##### Test Case: Successful User Login
+- **Objective**: Verify that a regular user can login successfully
+- **Automation Steps**:
+  1. Visit the login page URL
+  2. Enter valid user email "user@gmail.com"
+  3. Enter correct password "user12345"
+  4. Click the "Sign in" button
+  5. Verify URL redirection to dashboard
+  6. Verify welcome message is displayed
+- **Expected Result**: User is successfully logged in and redirected to appropriate dashboard
 
-The implemented test automation framework provides comprehensive coverage for the AgriPeace farming management system. By combining Jest for API testing and Cypress for E2E testing, we've created a robust testing solution that helps ensure the application's quality and reliability.
+##### Test Case: Successful Admin Login
+- **Objective**: Verify that an admin user can login successfully
+- **Automation Steps**:
+  1. Visit the login page URL
+  2. Enter valid admin email "admin@gmail.com"
+  3. Enter correct password "admin12345"
+  4. Click the "Sign in" button
+  5. Verify URL redirection to admin dashboard
+  6. Verify admin-specific content is displayed
+- **Expected Result**: Admin is successfully logged in and redirected to appropriate dashboard
 
-The automation framework addresses key testing needs:
-- API endpoint validation
-- User authentication flows
-- Admin management features
-- Farmer-specific functionality
+#### Plant Management Testing (Admin)
 
-This test automation approach significantly reduces manual testing effort, improves test coverage, and enables faster feedback cycles during development.
+##### Test Case: Add New Plant
+- **Objective**: Verify that admin can add a new plant to the system
+- **Automation Steps**:
+  1. Login as admin user
+  2. Navigate to plant management page
+  3. Click "Add Plant" button
+  4. Fill out plant details form:
+     - Enter unique name with timestamp
+     - Select a plant category
+     - Enter description, climate information
+     - Enter soil pH value
+     - Enter land preparation instructions
+  5. Click submit button
+  6. Check for success message/toast
+  7. Verify new plant appears in the plant list
+- **Expected Result**: New plant is successfully added and appears in the plant list
+
+##### Test Case: Edit Existing Plant
+- **Objective**: Verify that admin can edit an existing plant
+- **Automation Steps**:
+  1. Login as admin user
+  2. Navigate to plant management page
+  3. Identify first plant in the list and store initial name
+  4. Click edit button for the first plant
+  5. Modify plant details (name, description, etc.)
+  6. Save changes
+  7. Verify success message appears
+  8. Verify plant details were updated in the list
+- **Expected Result**: Plant details are successfully updated and changes appear in the plant list
+
+##### Test Case: Delete Plant
+- **Objective**: Verify that admin can delete a plant from the system
+- **Automation Steps**:
+  1. Login as admin user
+  2. Navigate to plant management page
+  3. Count initial number of plants in the list
+  4. Click delete button for the first plant
+  5. Confirm deletion in the confirmation modal
+  6. Verify success message appears
+  7. Verify plant count is reduced by one
+- **Expected Result**: Plant is successfully removed from the system
+
+#### Location Management Testing (Farmer)
+
+##### Test Case: Add New Location
+- **Objective**: Verify that farmer can add a new farming location
+- **Automation Steps**:
+  1. Login as farmer user
+  2. Navigate to location management page
+  3. Click "Add Location" button
+  4. Fill out location details form:
+     - Enter province, district information
+     - Enter unique city name with timestamp
+     - Enter coordinates (latitude, longitude)
+     - Enter area size
+     - Select or enter soil type
+     - Select or enter irrigation type
+  5. Submit the form
+  6. Check for success message or verify location appears in list
+- **Expected Result**: New location is successfully added and appears in the location list
+
+##### Test Case: Edit Existing Location
+- **Objective**: Verify that farmer can edit an existing location
+- **Automation Steps**:
+  1. Login as farmer user
+  2. Navigate to location management page
+  3. Store initial location name from first row
+  4. Click edit button for the first location
+  5. Modify location details:
+     - Update city name to include "Updated" and timestamp
+     - Update area size
+  6. Save changes
+  7. Verify success message or check that location details were updated
+- **Expected Result**: Location details are successfully updated and changes appear in the location list
+
+##### Test Case: Delete Location
+- **Objective**: Verify that farmer can delete a location from the system
+- **Automation Steps**:
+  1. Login as farmer user
+  2. Navigate to location management page
+  3. Count initial number of locations
+  4. Click delete button for the first location
+  5. Confirm deletion in the confirmation modal
+  6. Check for success message
+  7. Verify location count is reduced by one or "No Data" message appears if there was only one location
+- **Expected Result**: Location is successfully removed from the system
+
+##### Test Case: View Location Crops
+- **Objective**: Verify that farmer can view crops associated with a location
+- **Automation Steps**:
+  1. Login as farmer user
+  2. Navigate to location management page
+  3. Click "View Crops" button for the first location
+  4. Verify navigation to crop details page
+  5. Verify "Crop Details" heading is displayed
+- **Expected Result**: System navigates to crop details page showing crops for the selected location
+
+### Performance Testing with K6
+
+##### Test Case: API Endpoints Load Test
+- **Objective**: Verify system performance under normal load conditions
+- **Automation Steps**:
+  1. Set up K6 test configuration for normal load (50 virtual users)
+  2. Authenticate with the system to get JWT token
+  3. Execute batch requests to critical API endpoints:
+     - GET /Plant
+     - GET /Fertilizer
+     - GET /api/diseases
+     - GET /Location
+     - GET /api/crops
+  4. Check response status codes (should be 200)
+  5. Verify response times are under acceptable threshold (2 seconds)
+- **Expected Result**: All API endpoints respond successfully with acceptable response times
+
+##### Test Case: API Spike Test
+- **Objective**: Verify system behavior under sudden traffic spikes
+- **Automation Steps**:
+  1. Configure K6 for spike test pattern (starting with 10 users, spiking to 200)
+  2. Authenticate with the system to get JWT token
+  3. Execute batch requests to critical API endpoints
+  4. Monitor error rates during spike period
+  5. Check if system recovers after spike period
+- **Expected Result**: System handles sudden traffic spike with minimal errors and recovers properly afterwards
+````
