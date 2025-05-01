@@ -198,7 +198,7 @@ For the AgriPeace farming management system, we selected the following tools:
 
 ## 6. Test Cases Used
 
-### API Testing with Jest
+### Unit Testing with Jest
 
 #### Test Case Group: Plant Management API
 **Test Objective:** Verify CRUD operations for plant management API endpoints

@@ -42,6 +42,13 @@ npm install
 npm run test:api            # Run all API controller tests
 npm run test:api -- --watch # Run in watch mode
 ```
+
+### Running Performance Tests
+```bash
+cd testing/k6
+k6 run load-tests.js        # Run load tests
+k6 run stress-tests.js      # Run stress tests
+k6 run spike-tests.js       # Run spike tests
 ```
 
 ## 📝 Project Structure
