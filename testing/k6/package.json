@@ -1,0 +1,14 @@
+{
+  "name": "k6-performance-tests",
+  "version": "1.0.0",
+  "description": "Performance tests using k6 for SPM Project",
+  "scripts": {
+    "test": "k6 run",
+    "test:load": "k6 run load-tests.js",
+    "test:stress": "k6 run stress-tests.js",
+    "test:spike": "k6 run spike-tests.js"
+  },
+  "dependencies": {
+    "k6": "^0.0.0"
+  }
+} 
