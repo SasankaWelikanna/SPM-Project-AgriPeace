@@ -44,6 +44,19 @@ npm run test:api -- --watch # Run in watch mode
 ```
 
 ### Running Performance Tests
+
+#### Installing k6
+First, install k6 on your system:
+
+**macOS (using Homebrew):**
+```bash
+brew install k6
+```
+
+**Download k6:**
+Download and install from https://k6.io/docs/get-started/installation/
+
+#### Running tests
 ```bash
 cd testing/k6
 k6 run load-tests.js        # Run load tests
