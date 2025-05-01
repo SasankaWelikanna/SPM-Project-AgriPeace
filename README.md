@@ -35,6 +35,15 @@ npm install
 npm run test:cypress
 ```
 
+### Running Unit Tests
+```bash
+cd testing
+npm install
+npm run test:api            # Run all API controller tests
+npm run test:api -- --watch # Run in watch mode
+```
+```
+
 ## 📝 Project Structure
 
 - `frontend/` - React application with Tailwind CSS
