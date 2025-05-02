@@ -424,175 +424,390 @@ Key components:
   5. Verify that response JSON contains confirmation message
 - **Expected Result**: Plant is successfully deleted and appropriate success response is returned
 
-### E2E Testing with Cypress
+### API Testing with Postman
 
-#### Authentication Testing
+#### User Authentication API
 
-##### Test Case: Login Page Validation
-- **Objective**: Verify that the login page displays correctly with all required elements
+##### Test Case: User Login (Valid Credentials)
+- **Objective**: Verify successful user authentication with valid credentials
 - **Automation Steps**:
-  1. Visit the login page URL
-  2. Check that the AgriPeace logo/text is visible
-  3. Verify that the login form exists
-  4. Verify that email and password input fields are present
-  5. Verify that the "Sign in" button is visible
-- **Expected Result**: All login page elements are correctly displayed
+  1. Set up a POST request to `/api/set-token`
+  2. Configure request body with valid user credentials:
+     ```json
+     {
+       "email": "user@gmail.com", 
+       "password": "user12345"
+     }
+     ```
+  3. Add test script to verify:
+     ```javascript
+     pm.test("Status code is 200", function() {
+       pm.response.to.have.status(200);
+     });
+     pm.test("Response contains JWT token", function() {
+       var jsonData = pm.response.json();
+       pm.expect(jsonData.token).to.exist;
+       pm.environment.set("userToken", jsonData.token);
+     });
+     ```
+  4. Execute the request
+- **Expected Result**: Server responds with status 200 and a valid JWT token
 
-##### Test Case: Invalid Login Attempt
-- **Objective**: Verify that the system correctly handles invalid login attempts
+##### Test Case: User Login (Invalid Credentials)
+- **Objective**: Verify system properly handles invalid login attempts
 - **Automation Steps**:
-  1. Visit the login page URL
-  2. Enter invalid email "invalid@example.com"
-  3. Enter incorrect password "wrongpassword123"
-  4. Click the "Sign in" button
-  5. Check for error message display
-- **Expected Result**: System displays appropriate error message for invalid credentials
+  1. Set up a POST request to `/api/set-token`
+  2. Configure request body with invalid credentials:
+     ```json
+     {
+       "email": "nonexistent@gmail.com", 
+       "password": "wrongpassword"
+     }
+     ```
+  3. Add test script to verify:
+     ```javascript
+     pm.test("Status code is 401", function() {
+       pm.response.to.have.status(401);
+     });
+     pm.test("Error message is returned", function() {
+       var jsonData = pm.response.json();
+       pm.expect(jsonData.error).to.be.true;
+       pm.expect(jsonData.message).to.exist;
+     });
+     ```
+  4. Execute the request
+- **Expected Result**: Server responds with appropriate authentication error and status 401
 
-##### Test Case: Successful User Login
-- **Objective**: Verify that a regular user can login successfully
+#### Plant Management API
+
+##### Test Case: Retrieve All Plants
+- **Objective**: Verify retrieval of all plants in the system
 - **Automation Steps**:
-  1. Visit the login page URL
-  2. Enter valid user email "user@gmail.com"
-  3. Enter correct password "user12345"
-  4. Click the "Sign in" button
-  5. Verify URL redirection to dashboard
-  6. Verify welcome message is displayed
-- **Expected Result**: User is successfully logged in and redirected to appropriate dashboard
+  1. Set up a GET request to `/Plant`
+  2. Add authorization header using the saved JWT token:
+     ```
+     Authorization: Bearer {{userToken}}
+     ```
+  3. Add test script to verify:
+     ```javascript
+     pm.test("Status code is 200", function() {
+       pm.response.to.have.status(200);
+     });
+     pm.test("Response is an array", function() {
+       var jsonData = pm.response.json();
+       pm.expect(jsonData).to.be.an('array');
+     });
+     pm.test("Plants have required properties", function() {
+       var jsonData = pm.response.json();
+       if (jsonData.length > 0) {
+         pm.expect(jsonData[0]).to.have.property('name');
+         pm.expect(jsonData[0]).to.have.property('category');
+       }
+     });
+     ```
+  4. Execute the request
+- **Expected Result**: Server returns an array of plant objects with status 200
 
-##### Test Case: Successful Admin Login
-- **Objective**: Verify that an admin user can login successfully
+##### Test Case: Create New Plant
+- **Objective**: Verify a new plant can be created with valid data
 - **Automation Steps**:
-  1. Visit the login page URL
-  2. Enter valid admin email "admin@gmail.com"
-  3. Enter correct password "admin12345"
-  4. Click the "Sign in" button
-  5. Verify URL redirection to admin dashboard
-  6. Verify admin-specific content is displayed
-- **Expected Result**: Admin is successfully logged in and redirected to appropriate dashboard
+  1. Set up a POST request to `/Plant/add`
+  2. Add authorization header with admin token
+  3. Configure request body with valid plant data:
+     ```json
+     {
+       "name": "Test Plant {{$timestamp}}",
+       "category": "Vegetable",
+       "description": "A test plant created via automation",
+       "climate": "Tropical",
+       "soilPH": 6.5,
+       "landPreparation": "Standard preparation steps"
+     }
+     ```
+  4. Add test script to verify:
+     ```javascript
+     pm.test("Status code is 201", function() {
+       pm.response.to.have.status(201);
+     });
+     pm.test("Success message is returned", function() {
+       var jsonData = pm.response.json();
+       pm.expect(jsonData).to.include("New Plant Added");
+     });
+     // Save plant ID for later tests
+     var responseBody = pm.response.json();
+     if (responseBody._id) {
+       pm.environment.set("plantId", responseBody._id);
+     }
+     ```
+  5. Execute the request
+- **Expected Result**: Server responds with status 201 and confirmation message
 
-#### Plant Management Testing (Admin)
-
-##### Test Case: Add New Plant
-- **Objective**: Verify that admin can add a new plant to the system
+##### Test Case: Retrieve Plant By ID
+- **Objective**: Verify retrieval of a specific plant by ID
 - **Automation Steps**:
-  1. Login as admin user
-  2. Navigate to plant management page
-  3. Click "Add Plant" button
-  4. Fill out plant details form:
-     - Enter unique name with timestamp
-     - Select a plant category
-     - Enter description, climate information
-     - Enter soil pH value
-     - Enter land preparation instructions
-  5. Click submit button
-  6. Check for success message/toast
-  7. Verify new plant appears in the plant list
-- **Expected Result**: New plant is successfully added and appears in the plant list
+  1. Set up a GET request to `/Plant/{{plantId}}`
+  2. Add authorization header with JWT token
+  3. Add test script to verify:
+     ```javascript
+     pm.test("Status code is 200", function() {
+       pm.response.to.have.status(200);
+     });
+     pm.test("Plant has correct ID", function() {
+       var jsonData = pm.response.json();
+       pm.expect(jsonData._id).to.equal(pm.environment.get("plantId"));
+     });
+     pm.test("Plant has required properties", function() {
+       var jsonData = pm.response.json();
+       pm.expect(jsonData).to.have.property('name');
+       pm.expect(jsonData).to.have.property('category');
+       pm.expect(jsonData).to.have.property('description');
+     });
+     ```
+  4. Execute the request
+- **Expected Result**: Server returns the specific plant object with status 200
 
-##### Test Case: Edit Existing Plant
-- **Objective**: Verify that admin can edit an existing plant
+##### Test Case: Update Plant
+- **Objective**: Verify a plant can be updated with new information
 - **Automation Steps**:
-  1. Login as admin user
-  2. Navigate to plant management page
-  3. Identify first plant in the list and store initial name
-  4. Click edit button for the first plant
-  5. Modify plant details (name, description, etc.)
-  6. Save changes
-  7. Verify success message appears
-  8. Verify plant details were updated in the list
-- **Expected Result**: Plant details are successfully updated and changes appear in the plant list
+  1. Set up a PUT request to `/Plant/update/{{plantId}}`
+  2. Add authorization header with admin token
+  3. Configure request body with updated plant data:
+     ```json
+     {
+       "name": "Updated Plant Name {{$timestamp}}",
+       "description": "This description was updated via automation test"
+     }
+     ```
+  4. Add test script to verify:
+     ```javascript
+     pm.test("Status code is 200", function() {
+       pm.response.to.have.status(200);
+     });
+     pm.test("Success message is returned", function() {
+       var jsonData = pm.response.json();
+       pm.expect(jsonData.message).to.equal("Plant Updated");
+     });
+     ```
+  5. Execute the request
+- **Expected Result**: Server responds with status 200 and confirmation message
 
 ##### Test Case: Delete Plant
-- **Objective**: Verify that admin can delete a plant from the system
+- **Objective**: Verify a plant can be deleted from the system
 - **Automation Steps**:
-  1. Login as admin user
-  2. Navigate to plant management page
-  3. Count initial number of plants in the list
-  4. Click delete button for the first plant
-  5. Confirm deletion in the confirmation modal
-  6. Verify success message appears
-  7. Verify plant count is reduced by one
-- **Expected Result**: Plant is successfully removed from the system
+  1. Set up a DELETE request to `/Plant/delete/{{plantId}}`
+  2. Add authorization header with admin token
+  3. Add test script to verify:
+     ```javascript
+     pm.test("Status code is 200", function() {
+       pm.response.to.have.status(200);
+     });
+     pm.test("Success message is returned", function() {
+       var jsonData = pm.response.json();
+       pm.expect(jsonData.message).to.equal("Plant Deleted");
+     });
+     ```
+  4. Execute the request
+- **Expected Result**: Server responds with status 200 and confirmation message
 
-#### Location Management Testing (Farmer)
+#### Location Management API
 
-##### Test Case: Add New Location
-- **Objective**: Verify that farmer can add a new farming location
+##### Test Case: Create New Location
+- **Objective**: Verify a new farming location can be added
 - **Automation Steps**:
-  1. Login as farmer user
-  2. Navigate to location management page
-  3. Click "Add Location" button
-  4. Fill out location details form:
-     - Enter province, district information
-     - Enter unique city name with timestamp
-     - Enter coordinates (latitude, longitude)
-     - Enter area size
-     - Select or enter soil type
-     - Select or enter irrigation type
-  5. Submit the form
-  6. Check for success message or verify location appears in list
-- **Expected Result**: New location is successfully added and appears in the location list
+  1. Set up a POST request to `/Location/add`
+  2. Add authorization header with farmer token
+  3. Configure request body with valid location data:
+     ```json
+     {
+       "province": "Western",
+       "district": "Colombo",
+       "city": "Test Location {{$timestamp}}",
+       "latitude": 6.9271,
+       "longitude": 79.8612,
+       "areaSize": 5.75,
+       "soilType": "Loamy",
+       "irrigationType": "Drip"
+     }
+     ```
+  4. Add test script to verify:
+     ```javascript
+     pm.test("Status code is 200", function() {
+       pm.response.to.have.status(200);
+     });
+     pm.test("Success message is returned", function() {
+       var jsonData = pm.response.json();
+       pm.expect(jsonData).to.include("New Location Added");
+     });
+     ```
+  5. Execute the request
+- **Expected Result**: Server responds with status 200 and confirmation message
 
-##### Test Case: Edit Existing Location
-- **Objective**: Verify that farmer can edit an existing location
+##### Test Case: Retrieve All Locations
+- **Objective**: Verify retrieval of all farming locations
 - **Automation Steps**:
-  1. Login as farmer user
-  2. Navigate to location management page
-  3. Store initial location name from first row
-  4. Click edit button for the first location
-  5. Modify location details:
-     - Update city name to include "Updated" and timestamp
-     - Update area size
-  6. Save changes
-  7. Verify success message or check that location details were updated
-- **Expected Result**: Location details are successfully updated and changes appear in the location list
+  1. Set up a GET request to `/Location`
+  2. Add authorization header with JWT token
+  3. Add test script to verify:
+     ```javascript
+     pm.test("Status code is 200", function() {
+       pm.response.to.have.status(200);
+     });
+     pm.test("Response is an array", function() {
+       var jsonData = pm.response.json();
+       pm.expect(jsonData).to.be.an('array');
+     });
+     // Save first location ID for later tests
+     if (jsonData.length > 0) {
+       pm.environment.set("locationId", jsonData[0]._id);
+     }
+     ```
+  4. Execute the request
+- **Expected Result**: Server returns an array of location objects with status 200
 
-##### Test Case: Delete Location
-- **Objective**: Verify that farmer can delete a location from the system
+##### Test Case: Add Crop to Location
+- **Objective**: Verify a crop can be added to a specific location
 - **Automation Steps**:
-  1. Login as farmer user
-  2. Navigate to location management page
-  3. Count initial number of locations
-  4. Click delete button for the first location
-  5. Confirm deletion in the confirmation modal
-  6. Check for success message
-  7. Verify location count is reduced by one or "No Data" message appears if there was only one location
-- **Expected Result**: Location is successfully removed from the system
+  1. Set up a POST request to `/api/crops`
+  2. Add authorization header with farmer token
+  3. Configure request body with valid crop data:
+     ```json
+     {
+       "name": "Test Crop {{$timestamp}}",
+       "plantingDate": "2025-05-01",
+       "harvestDate": "2025-09-01",
+       "locationId": "{{locationId}}",
+       "status": "Growing"
+     }
+     ```
+  4. Add test script to verify:
+     ```javascript
+     pm.test("Status code is 200", function() {
+       pm.response.to.have.status(200);
+     });
+     pm.test("Crop has been created", function() {
+       var jsonData = pm.response.json();
+       pm.expect(jsonData._id).to.exist;
+       pm.environment.set("cropId", jsonData._id);
+     });
+     ```
+  5. Execute the request
+- **Expected Result**: Server responds with status 200 and the created crop object
 
-##### Test Case: View Location Crops
-- **Objective**: Verify that farmer can view crops associated with a location
+#### Fertilizer Management API
+
+##### Test Case: Create New Fertilizer
+- **Objective**: Verify a new fertilizer can be added to the system
 - **Automation Steps**:
-  1. Login as farmer user
-  2. Navigate to location management page
-  3. Click "View Crops" button for the first location
-  4. Verify navigation to crop details page
-  5. Verify "Crop Details" heading is displayed
-- **Expected Result**: System navigates to crop details page showing crops for the selected location
+  1. Set up a POST request to `/Fertilizer/add`
+  2. Add authorization header with admin token
+  3. Configure request body with valid fertilizer data:
+     ```json
+     {
+       "name": "Test Fertilizer {{$timestamp}}",
+       "type": "Organic",
+       "composition": "N-P-K 5-10-5",
+       "application": "Apply 2kg per hectare",
+       "benefits": "Improves soil structure",
+       "limitations": "May attract pests if overused"
+     }
+     ```
+  4. Add test script to verify:
+     ```javascript
+     pm.test("Status code is 200", function() {
+       pm.response.to.have.status(200);
+     });
+     pm.test("Success message is returned", function() {
+       var jsonData = pm.response.json();
+       pm.expect(jsonData).to.include("New Fertilizer Added");
+     });
+     ```
+  5. Execute the request
+- **Expected Result**: Server responds with status 200 and confirmation message
 
-### Performance Testing with K6
-
-##### Test Case: API Endpoints Load Test
-- **Objective**: Verify system performance under normal load conditions
+##### Test Case: Retrieve All Fertilizers
+- **Objective**: Verify retrieval of all fertilizers in the system
 - **Automation Steps**:
-  1. Set up K6 test configuration for normal load (50 virtual users)
-  2. Authenticate with the system to get JWT token
-  3. Execute batch requests to critical API endpoints:
-     - GET /Plant
-     - GET /Fertilizer
-     - GET /api/diseases
-     - GET /Location
-     - GET /api/crops
-  4. Check response status codes (should be 200)
-  5. Verify response times are under acceptable threshold (2 seconds)
-- **Expected Result**: All API endpoints respond successfully with acceptable response times
+  1. Set up a GET request to `/Fertilizer`
+  2. Add authorization header with JWT token
+  3. Add test script to verify:
+     ```javascript
+     pm.test("Status code is 200", function() {
+       pm.response.to.have.status(200);
+     });
+     pm.test("Response is an array", function() {
+       var jsonData = pm.response.json();
+       pm.expect(jsonData).to.be.an('array');
+     });
+     // Save first fertilizer ID for later tests
+     if (jsonData.length > 0) {
+       pm.environment.set("fertilizerId", jsonData[0]._id);
+     }
+     ```
+  4. Execute the request
+- **Expected Result**: Server returns an array of fertilizer objects with status 200
 
-##### Test Case: API Spike Test
-- **Objective**: Verify system behavior under sudden traffic spikes
+#### Cost Calculator API
+
+##### Test Case: Calculate Farming Cost
+- **Objective**: Verify cost calculation functionality for farming operations
 - **Automation Steps**:
-  1. Configure K6 for spike test pattern (starting with 10 users, spiking to 200)
-  2. Authenticate with the system to get JWT token
-  3. Execute batch requests to critical API endpoints
-  4. Monitor error rates during spike period
-  5. Check if system recovers after spike period
-- **Expected Result**: System handles sudden traffic spike with minimal errors and recovers properly afterwards
-````
+  1. Set up a POST request to `/api/costCalculator/calculate`
+  2. Add authorization header with farmer token
+  3. Configure request body with cost calculation data:
+     ```json
+     {
+       "landSize": 5,
+       "soilPreparation": 10000,
+       "seeds": 5000,
+       "fertilizer": 7500,
+       "irrigation": 8000,
+       "labor": 15000,
+       "harvesting": 12000,
+       "transportation": 5000,
+       "miscellaneous": 3000,
+       "cropName": "Test Crop",
+       "locationName": "Test Location"
+     }
+     ```
+  4. Add test script to verify:
+     ```javascript
+     pm.test("Status code is 200", function() {
+       pm.response.to.have.status(200);
+     });
+     pm.test("Calculation is correct", function() {
+       var jsonData = pm.response.json();
+       pm.expect(jsonData.totalCost).to.exist;
+       // Validate calculation (sum of all cost components)
+       var expectedTotal = 10000 + 5000 + 7500 + 8000 + 15000 + 12000 + 5000 + 3000;
+       pm.expect(jsonData.totalCost).to.equal(expectedTotal);
+     });
+     ```
+  5. Execute the request
+- **Expected Result**: Server responds with status 200 and correct cost calculation
+
+##### Test Case: Retrieve Previous Calculations
+- **Objective**: Verify retrieval of user's previous cost calculations
+- **Automation Steps**:
+  1. Set up a GET request to `/api/costCalculator/userCalculations`
+  2. Add authorization header with farmer token
+  3. Add test script to verify:
+     ```javascript
+     pm.test("Status code is 200", function() {
+       pm.response.to.have.status(200);
+     });
+     pm.test("Response is an array", function() {
+       var jsonData = pm.response.json();
+       pm.expect(jsonData).to.be.an('array');
+     });
+     pm.test("Calculation history has required properties", function() {
+       var jsonData = pm.response.json();
+       if (jsonData.length > 0) {
+         pm.expect(jsonData[0]).to.have.property('totalCost');
+         pm.expect(jsonData[0]).to.have.property('cropName');
+       }
+     });
+     ```
+  4. Execute the request
+- **Expected Result**: Server returns an array of previous calculations with status 200
+
+### E2E Testing with Cypress
