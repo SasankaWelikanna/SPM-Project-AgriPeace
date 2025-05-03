@@ -87,42 +87,79 @@ const getBaseCostPerAcre = (crop) => {
    exports.calculateCost = async (req, res) => {
       try {
           const { crop, area, waterResources, soilType, userId } = req.body;
-   
-          if (!crop || !area || !waterResources || !soilType) {
+
+          // Detailed logging for debugging
+          console.log('Cost calculation request received:', { crop, area, waterResources, soilType, userId });
+
+          if (!crop || area === undefined || area === null || !waterResources || !soilType) {
+              console.log('Missing required fields:', { 
+                  cropProvided: !!crop, 
+                  areaProvided: !(area === undefined || area === null),
+                  waterResourcesProvided: !!waterResources, 
+                  soilTypeProvided: !!soilType 
+              });
               throw new Error('Missing required input fields');
           }
-   
+
+          // Convert area to a number if it's a string
+          const numericArea = Number(area);
+          if (isNaN(numericArea)) {
+              console.log('Invalid area value:', area);
+              throw new Error('Area must be a valid number');
+          }
+
           const baseCostPerAcre = getBaseCostPerAcre(crop);
           const waterCostAdjustment = adjustCostForWaterResources(waterResources);
           const soilCostAdjustment = adjustCostForSoilType(soilType);
-   
+
+          // Log calculation parameters
+          console.log('Calculation parameters:', {
+              crop,
+              numericArea,
+              waterResources,
+              soilType,
+              baseCostPerAcre,
+              waterCostAdjustment,
+              soilCostAdjustment
+          });
+
           if (baseCostPerAcre === undefined || waterCostAdjustment === undefined || soilCostAdjustment === undefined) {
+              console.log('Invalid calculation parameters:', {
+                  baseCostPerAcre,
+                  waterCostAdjustment,
+                  soilCostAdjustment
+              });
               throw new Error('Calculation parameters not properly defined');
           }
-   
-          const estimatedCostInDollars = area * baseCostPerAcre * waterCostAdjustment * soilCostAdjustment;
-          const estimatedCost = estimatedCostInDollars.toFixed(2)*300.00;
+
+          const estimatedCostInDollars = numericArea * baseCostPerAcre * waterCostAdjustment * soilCostAdjustment;
+          const estimatedCost = parseFloat((estimatedCostInDollars * 300.00).toFixed(2));
 
           const fertilizerNeeds = determineFertilizerNeeds(crop, soilType);
-          const waterNeeds = determineWaterNeeds(crop, area, waterResources);
-   
+          const waterNeeds = determineWaterNeeds(crop, numericArea, waterResources);
+
+          // Create new calculation object
           const newCalculation = new CostCalculator({
             crop,
-            area,
+            area: numericArea,
             waterResources,
             soilType,
             estimatedCost,
             fertilizerNeeds,
             waterNeeds,
-            userId
+            userId: userId || 'guest' // Provide a default if userId is missing
           });
-   
+
+          console.log('Saving calculation to database:', newCalculation);
+
+          // Save to database
           await newCalculation.save();
-   
+
+          // Return success response
           res.status(200).json(newCalculation);
       } catch (error) {
-          console.error('Error calculating cost:', error.message);
-          res.status(500).json({ message: 'Error calculating cost. Please try again.' });
+          console.error('Error calculating cost:', error);
+          res.status(500).json({ message: 'Error calculating cost. Please try again.', error: error.message });
       }
    };
 
