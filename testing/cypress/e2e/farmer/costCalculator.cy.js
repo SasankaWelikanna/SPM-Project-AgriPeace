@@ -5,9 +5,7 @@ describe('Cost Calculator (Farmer)', () => {
     cy.visit('/login');
     cy.get('input[type="email"]').first().clear().type('user@gmail.com');
     cy.get('input[type="password"]').first().clear().type('user12345');
-    
-    // Fix for the sign-in button selector
-    cy.get('button[type="submit"]').click();
+    cy.contains('button', 'Sign in').click();
     
     // Wait for successful login and dashboard to load
     cy.url().should('include', '/dashboard', { timeout: 10000 });
@@ -33,45 +31,33 @@ describe('Cost Calculator (Farmer)', () => {
     cy.get('input[placeholder="Search crop"]').clear().type('Tomato');
     cy.wait(1000); // Wait for search results
     
-    // Try to handle crop selection in different ways
+    // Improved crop selection - first check if swiper slides are visible after search
     cy.get('body').then($body => {
       // First check if swiper slides exist and are visible
-      if ($body.find('.swiper-slide').length > 0) {
-        cy.get('.swiper-slide').first().click({ force: true });
+      if ($body.find('.swiper-slide:visible').length > 0) {
+        // Click on the first visible crop card (more specific selector)
+        cy.get('.swiper-slide:visible label').first().click({ force: true });
+        
+        // Verify the selection was made by checking for the bg-secondary class
+        cy.get('.swiper-slide:visible label').first().should('have.class', 'bg-secondary');
       } else {
-        // If no swiper slides, directly set the crop value
-        cy.log('No swiper slides found, setting crop directly');
-        // We continue anyway as typing in the search box should set the crop value
+        cy.log('No crop slides found for selection, using direct input method');
+        // If we can't find swiper slides, we've at least set the search term
+        // which might be enough for form submission
       }
     });
     
     // Enter area
     cy.get('input[type="number"]').clear().type('2.5');
     
-    // Select water resources - try multiple approaches
-    cy.get('body').then($body => {
-      const waterOptions = ['Moderate', 'Abundant', 'Scarce', 'Limited'];
-      
-      // Try each water resource option until one works
-      for (const option of waterOptions) {
-        if ($body.find(`label:contains("${option}")`).length) {
-          cy.contains(option).click({ force: true });
-          break;
-        }
-      }
+    // Select water resources - more reliable approach
+    cy.contains('Water Resources:').parent().within(() => {
+      cy.get('input[type="radio"]').first().check({ force: true });
     });
     
-    // Select soil type - try multiple approaches
-    cy.get('body').then($body => {
-      const soilOptions = ['Moderately Fertile', 'Fertile', 'Poor', 'Sandy', 'Rich'];
-      
-      // Try each soil type option until one works
-      for (const option of soilOptions) {
-        if ($body.find(`label:contains("${option}")`).length) {
-          cy.contains(option).click({ force: true });
-          break;
-        }
-      }
+    // Select soil type - more reliable approach
+    cy.contains('Soil Type:').parent().within(() => {
+      cy.get('input[type="radio"]').first().check({ force: true });
     });
     
     // Take screenshot before submission
@@ -104,21 +90,26 @@ describe('Cost Calculator (Farmer)', () => {
     cy.get('input[placeholder="Search crop"]').clear().type('Potato');
     cy.wait(1000);
     
-    // Try to select the crop if slides are available
+    // Improved crop selection
     cy.get('body').then($body => {
-      if ($body.find('.swiper-slide').length > 0) {
-        cy.get('.swiper-slide').first().click({ force: true });
+      if ($body.find('.swiper-slide:visible').length > 0) {
+        cy.get('.swiper-slide:visible label').first().click({ force: true });
+      } else {
+        cy.log('No crop slides found for selection, continuing with test');
       }
     });
     
     // Enter area
     cy.get('input[type="number"]').clear().type('1.5');
     
-    // Select water resources - select the first available option
-    cy.get('input[type="radio"]').first().check({ force: true });
+    // Select water resources and soil type within their respective sections
+    cy.contains('Water Resources:').parent().within(() => {
+      cy.get('input[type="radio"]').first().check({ force: true });
+    });
     
-    // Select soil type - select the last available option
-    cy.get('input[type="radio"]').last().check({ force: true });
+    cy.contains('Soil Type:').parent().within(() => {
+      cy.get('input[type="radio"]').first().check({ force: true });
+    });
     
     // Submit the form
     cy.contains('button', 'Calculate Cost').click();
@@ -150,14 +141,12 @@ describe('Cost Calculator (Farmer)', () => {
     // Test with different area units if available
     cy.get('select').then($selects => {
       // Find the area unit select if it exists
-      const areaUnitSelect = Array.from($selects).find(select => 
-        select.textContent.includes('Acres') || 
-        select.textContent.includes('Perches')
-      );
-      
-      if (areaUnitSelect) {
-        cy.wrap(areaUnitSelect).select('Perches', { force: true });
-      }
+      $selects.each((i, select) => {
+        const $select = cy.wrap(select);
+        if (select.textContent.includes('Acres') || select.textContent.includes('Perches')) {
+          $select.select('Perches', { force: true });
+        }
+      });
     });
     
     // Enter area value
@@ -167,14 +156,20 @@ describe('Cost Calculator (Farmer)', () => {
     cy.get('input[placeholder="Search crop"]').clear().type('Rice');
     cy.wait(1000);
     
-    // Select any water resource option that exists
+    // Improved crop selection
     cy.get('body').then($body => {
-      if ($body.find('input[type="radio"]').length > 0) {
-        // Select the middle radio button for water resources
-        const radioButtons = $body.find('input[type="radio"]');
-        const middleIndex = Math.floor(radioButtons.length / 2);
-        cy.get('input[type="radio"]').eq(middleIndex).check({ force: true });
+      if ($body.find('.swiper-slide:visible').length > 0) {
+        cy.get('.swiper-slide:visible label').first().click({ force: true });
       }
+    });
+    
+    // More structured approach to select radio buttons
+    cy.contains('Water Resources:').parent().within(() => {
+      cy.get('input[type="radio"]').eq(1).check({ force: true }); // Select second option
+    });
+    
+    cy.contains('Soil Type:').parent().within(() => {
+      cy.get('input[type="radio"]').eq(1).check({ force: true }); // Select second option
     });
     
     // Submit the form
