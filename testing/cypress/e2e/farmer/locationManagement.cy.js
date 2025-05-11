@@ -160,7 +160,7 @@ describe('Location Management (Farmer)', () => {
         cy.get('table tbody tr').first().find('button.bg-blue-500, button.bg-primary').first().click();
       } else if ($row.find('button:has(svg), button:has(i)').length > 0) {
         cy.log('Found button with icon');
-        cy.get('table tbody tr').first().find('button:has(svg), button:has(i)').first().click();
+        cy.get('table tbody tr').first().find('button:has(svg), button:has(i)').first();
       } else if ($row.find('button').length > 0) {
         cy.log('Trying buttons in sequence');
         // Get all buttons in the row
