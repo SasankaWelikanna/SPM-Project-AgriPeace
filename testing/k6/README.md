@@ -14,20 +14,26 @@ This directory contains performance tests for the SPM Project using Grafana k6. 
    - Simulates normal load conditions
    - Ramps up to 20 concurrent users
    - Tests basic functionality and response times
-   - Duration: 5 minutes
+   - Duration: Each stage lasts 15 seconds, with a total of 60 seconds .
 
 2. **Stress Tests** (`stress-tests.js`)
 
    - Tests system behavior under extreme conditions
    - Ramps up to 100 concurrent users
    - Tests system stability and error handling
-   - Duration: 16 minutes
+   - Duration: Each stage lasts 20 seconds, with a total of 100 seconds .
 
 3. **Spike Tests** (`spike-tests.js`)
+
    - Tests system response to sudden traffic spikes
    - Alternates between normal load and spikes up to 200 users
    - Tests system's ability to handle sudden load changes
-   - Duration: 5 minutes
+   - Duration: Each stage lasts 15 seconds, with a total of 60 seconds.
+   - Concurrent Users: Alternates between 10, 30, and 50 users.
+   - Thresholds:
+     - 95% of requests should complete within 5000ms.
+     - 99% of requests should complete within 6000ms.
+     - Error rate should be less than 5%.
 
 ## Running the Tests
 
@@ -78,6 +84,8 @@ The tests cover the following endpoints:
 - GET `/Plant` - Get all plants
 - GET `/Fertilizer` - Get all fertilizers
 - GET `/api/diseases` - Get all diseases
+- GET `/Location` - Get all locations
+- GET `/api/crops` - Get all crops
 - POST `/api/costCalculator/calculate` - Calculate costs
 
 ## Customizing Tests
